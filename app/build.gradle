@@ -5,6 +5,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+apply from: 'themoviedb.gradle'
+
 android {
     compileSdk 30
 
@@ -30,6 +32,17 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    flavorDimensions "default"
+    productFlavors {
+        mock {
+            buildConfigField 'String', 'BASE_URL', '""'
+            buildConfigField 'String', 'API_KEY', '""'
+        }
+        pro {
+            buildConfigField 'String', 'BASE_URL', "\"$baseUrl\""
+            buildConfigField 'String', 'API_KEY', "\"$apiKey\""
+        }
     }
 }
 
