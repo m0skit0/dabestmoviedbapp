@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class TVGenres(
     @JsonProperty("genres")
-    val genres: List<Genre> = listOf()
+    val tVGenres: List<TVGenre> = listOf()
 )
 
-data class Genre(
+data class TVGenre(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("name")
