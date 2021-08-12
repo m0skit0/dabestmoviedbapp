@@ -13,6 +13,6 @@ class TVGenreMapperImpl
     // TODO Cache the mapped values instead of calling the API every time
     override fun mapGenres(ids: List<Int>): Flow<List<String>> =
         tvGenreService.tvGenres().map { tvGenres ->
-            ids.map { id -> tvGenres.tVGenres.first { it.id == id }.name }
+            ids.mapNotNull { id -> tvGenres.tVGenres.firstOrNull { it.id == id }?.name }
         }
 }
