@@ -2,12 +2,12 @@ package org.m0skit0.android.dabestmoviedbapp.data.retrofit
 import com.fasterxml.jackson.annotation.JsonProperty
 
 
-data class TVGenres(
+data class TVGenresApi(
     @JsonProperty("genres")
-    val tVGenres: List<TVGenre> = listOf()
+    val tVGenres: List<TVGenreApi> = listOf()
 )
 
-data class TVGenre(
+data class TVGenreApi(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("name")

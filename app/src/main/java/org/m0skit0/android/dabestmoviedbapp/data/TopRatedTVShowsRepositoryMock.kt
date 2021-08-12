@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 class TopRatedTVShowsRepositoryMock : TopRatedTVShowsRepository {
 
     private val mockTVShows = listOf(
-        TVShow(
+        TVShowData(
             "somepath",
             "The Expanse",
             10.0,
@@ -19,7 +19,7 @@ class TopRatedTVShowsRepositoryMock : TopRatedTVShowsRepository {
             10.0,
             1,
         ),
-        TVShow(
+        TVShowData(
             "anotherpath",
             "Breaking Bad",
             8.5,
@@ -34,5 +34,5 @@ class TopRatedTVShowsRepositoryMock : TopRatedTVShowsRepository {
         ),
     )
 
-    override fun topRatedTVShows(): Flow<List<TVShow>> = flow { emit(mockTVShows) }
+    override fun topRatedTVShows(): Flow<List<TVShowData>> = flow { emit(mockTVShows) }
 }

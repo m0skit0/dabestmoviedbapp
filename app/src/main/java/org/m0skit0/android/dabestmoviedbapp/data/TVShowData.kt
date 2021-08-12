@@ -1,6 +1,6 @@
 package org.m0skit0.android.dabestmoviedbapp.data
 
-data class TVShow(
+data class TVShowData(
     val imagePath: String,
     val name: String,
     val voteAverage: Double,

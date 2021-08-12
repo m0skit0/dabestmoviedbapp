@@ -2,18 +2,18 @@ package org.m0skit0.android.dabestmoviedbapp.data.retrofit
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class TopRatedTVShows(
+data class TopRatedTVShowsApi(
     @JsonProperty("page")
     val page: Int = 0,
     @JsonProperty("results")
-    val topRatedTVShows: List<TopRatedTVShow> = emptyList(),
+    val topRatedTVShows: List<TopRatedTVShowApi> = emptyList(),
     @JsonProperty("total_pages")
     val totalPages: Int = 0,
     @JsonProperty("total_results")
     val totalResults: Int = 0
 )
 
-data class TopRatedTVShow(
+data class TopRatedTVShowApi(
     @JsonProperty("backdrop_path")
     val backdropPath: String = "",
     @JsonProperty("first_air_date")

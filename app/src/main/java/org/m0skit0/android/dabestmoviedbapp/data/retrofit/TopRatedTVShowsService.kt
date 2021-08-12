@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface TopRatedTVShowsService {
     // TODO Paginate
     @GET("tv/top_rated?apiKey=${BuildConfig.API_KEY}")
-    fun topRatedTVShows(): Flow<TopRatedTVShows>
+    fun topRatedTVShows(): Flow<TopRatedTVShowsApi>
 }

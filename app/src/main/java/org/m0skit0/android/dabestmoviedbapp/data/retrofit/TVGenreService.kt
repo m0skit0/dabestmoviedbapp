@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface TVGenreService {
     @GET("genre/tv/list?apiKey=${BuildConfig.API_KEY}")
-    fun tvGenres(): Flow<TVGenres>
+    fun tvGenres(): Flow<TVGenresApi>
 }
