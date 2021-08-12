@@ -7,6 +7,7 @@ class TopRatedTVShowsRepositoryMock : TopRatedTVShowsRepository {
 
     private val mockTVShows = listOf(
         TVShowData(
+            1,
             "somepath",
             "The Expanse",
             10.0,
@@ -20,6 +21,7 @@ class TopRatedTVShowsRepositoryMock : TopRatedTVShowsRepository {
             1,
         ),
         TVShowData(
+            2,
             "anotherpath",
             "Breaking Bad",
             8.5,

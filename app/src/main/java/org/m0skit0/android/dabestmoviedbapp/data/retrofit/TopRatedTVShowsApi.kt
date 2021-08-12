@@ -21,7 +21,7 @@ data class TopRatedTVShowApi(
     @JsonProperty("genre_ids")
     val genreIds: List<Int> = emptyList(),
     @JsonProperty("id")
-    val id: Int = 0,
+    val id: Long = 0,
     @JsonProperty("name")
     val name: String = "",
     @JsonProperty("origin_country")
