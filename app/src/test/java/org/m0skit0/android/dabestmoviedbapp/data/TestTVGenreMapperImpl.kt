@@ -4,6 +4,7 @@ import io.kotlintest.matchers.collections.shouldBeEmpty
 import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -91,6 +92,52 @@ class TestTVGenreMapperImpl {
                 )
         runBlocking {
             tvGenreMapperImpl.mapGenres(listOf(3, 4)) shouldBe emptyList()
+        }
+    }
+
+    @Test
+    fun `when mapping, it should call the API on the first call`() {
+        coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi()
+        runBlocking {
+            tvGenreMapperImpl.mapGenres(emptyList())
+        }
+        coVerify {
+            mockTvGenreService.tvGenres()
+        }
+    }
+
+    @Test
+    fun `when mapping, it should call API repeatedly if no genres were resolved`() {
+        coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi()
+        runBlocking {
+            tvGenreMapperImpl.run {
+                repeat(5) {
+                    mapGenres(emptyList())
+                }
+            }
+        }
+        coVerify(exactly = 5) {
+            mockTvGenreService.tvGenres()
+        }
+    }
+
+    @Test
+    fun `when mapping, it should only call API on the first call if genres were resolved`() {
+        coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi(
+            tVGenres = listOf(
+                TVGenreApi(id = 1, name = "Genre 1"),
+                TVGenreApi(id = 2, name = "Genre 2")
+            )
+        )
+        runBlocking {
+            tvGenreMapperImpl.run {
+                repeat(5) {
+                    mapGenres(emptyList())
+                }
+            }
+        }
+        coVerify(atLeast = 1, atMost = 1) {
+            mockTvGenreService.tvGenres()
         }
     }
 }
