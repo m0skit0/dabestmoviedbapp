@@ -1,0 +1,15 @@
+android {
+    flavorDimensions "default"
+    productFlavors {
+        mock {
+            buildConfigField 'String', 'BASE_URL', '""'
+            buildConfigField 'String', 'API_KEY', '""'
+            buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_MOCK"'
+        }
+        prod {
+            buildConfigField 'String', 'BASE_URL', "\"$baseUrl\""
+            buildConfigField 'String', 'API_KEY', "\"$apiKey\""
+            buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_REAL"'
+        }
+    }
+}

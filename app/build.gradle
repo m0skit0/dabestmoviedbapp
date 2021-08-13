@@ -21,6 +21,7 @@ android {
     }
 
     buildTypes {
+        debug {}
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -33,20 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    flavorDimensions "default"
-    productFlavors {
-        mock {
-            buildConfigField 'String', 'BASE_URL', '""'
-            buildConfigField 'String', 'API_KEY', '""'
-            buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_MOCK"'
-        }
-        pro {
-            buildConfigField 'String', 'BASE_URL', "\"$baseUrl\""
-            buildConfigField 'String', 'API_KEY', "\"$apiKey\""
-            buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_REAL"'
-        }
-    }
 }
+
+apply from: 'flavors.gradle'
 
 dependencies {
 
