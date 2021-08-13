@@ -1,8 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.data
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
+import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenresApi
 import javax.inject.Inject
 
 class TVGenreMapperImpl
@@ -10,9 +9,18 @@ class TVGenreMapperImpl
     private val tvGenreService: TVGenreService
 ) : TVGenreMapper {
 
-    // TODO Cache the mapped values instead of calling the API every time
-    override fun mapGenres(ids: List<Int>): Flow<List<String>> =
-        tvGenreService.tvGenres().map { tvGenres ->
-            ids.mapNotNull { id -> tvGenres.tVGenres.firstOrNull { it.id == id }?.name }
+    private var genreMapping: Map<Int, String> = mapOf()
+
+    override suspend fun mapGenres(ids: List<Int>): List<String> = run {
+        if (genreMapping.isEmpty()) {
+            genreMapping = tvGenreService.tvGenres().toMap()
         }
+        ids.mapFromCache()
+    }
+
+    private fun TVGenresApi.toMap(): Map<Int, String> = tVGenres.associate { it.id to it.name }
+
+    private fun List<Int>.mapFromCache(): List<String> = mapNotNull {
+        genreMapping.getOrDefault(it, null)
+    }
 }
