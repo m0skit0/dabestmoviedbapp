@@ -2,7 +2,6 @@ package org.m0skit0.android.dabestmoviedbapp.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import javax.inject.Inject
@@ -25,8 +24,7 @@ class TopRatedTVShowsRepositoryImpl
         voteAverage = voteAverage,
         originalName = originalName,
         overview = overview,
-        // TODO There's surely a better way to do this...
-        genres = tvGenreMapper.mapGenres(genreIds).toList().first(),
+        genres = tvGenreMapper.mapGenres(genreIds),
         firstAirDate = firstAirDate,
         originCountry = originCountry,
         originalLanguage = originalLanguage,
