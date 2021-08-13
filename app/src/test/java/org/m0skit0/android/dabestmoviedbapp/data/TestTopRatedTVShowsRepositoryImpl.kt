@@ -5,6 +5,7 @@ import io.kotlintest.matchers.numerics.shouldBeZero
 import io.kotlintest.matchers.string.shouldBeEmpty
 import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.flow.collect
@@ -53,7 +54,7 @@ class TestTopRatedTVShowsRepositoryImpl {
         every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
             emit(TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows))
         }
-        every { mockTVGenreMapper.mapGenres(any()) } returns flow { emit(emptyList<String>()) }
+        coEvery { mockTVGenreMapper.mapGenres(any()) } returns emptyList()
         runBlocking {
             topRatedTVShowsRepositoryImpl.topRatedTVShows().collect {
                 it.size shouldBe 3
@@ -77,7 +78,7 @@ class TestTopRatedTVShowsRepositoryImpl {
         every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
             emit(TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows))
         }
-        every { mockTVGenreMapper.mapGenres(any()) } returns flow { emit(emptyList<String>()) }
+        coEvery { mockTVGenreMapper.mapGenres(any()) } returns emptyList()
         runBlocking {
             topRatedTVShowsRepositoryImpl.topRatedTVShows().collect { list ->
                 list.size shouldBe 4
@@ -103,7 +104,7 @@ class TestTopRatedTVShowsRepositoryImpl {
         every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
             emit(TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows))
         }
-        every { mockTVGenreMapper.mapGenres(any()) } returns flow { emit(genresList) }
+        coEvery { mockTVGenreMapper.mapGenres(any()) } returns genresList
         runBlocking {
             topRatedTVShowsRepositoryImpl.topRatedTVShows().collect { list ->
                 (0..3).forEach {
