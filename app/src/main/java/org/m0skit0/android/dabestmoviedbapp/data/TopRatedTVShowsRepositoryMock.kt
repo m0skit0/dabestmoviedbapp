@@ -2,8 +2,9 @@ package org.m0skit0.android.dabestmoviedbapp.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class TopRatedTVShowsRepositoryMock : TopRatedTVShowsRepository {
+class TopRatedTVShowsRepositoryMock @Inject constructor() : TopRatedTVShowsRepository {
 
     private val mockTVShows = listOf(
         TVShowData(
