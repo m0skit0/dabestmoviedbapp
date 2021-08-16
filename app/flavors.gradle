@@ -4,11 +4,17 @@ android {
         mock {
             buildConfigField 'String', 'BASE_URL', '""'
             buildConfigField 'String', 'API_KEY', '""'
+            buildConfigField 'String', 'IMAGE_BASE_URL', '""'
+            buildConfigField 'String', 'PREVIEW_POSTER_SIZE', '""'
+            buildConfigField 'String', 'ORIGINAL_POSTER_SIZE', '""'
             buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_MOCK"'
         }
         prod {
             buildConfigField 'String', 'BASE_URL', "\"$baseUrl\""
             buildConfigField 'String', 'API_KEY', "\"$apiKey\""
+            buildConfigField 'String', 'IMAGE_BASE_URL', "\"$imageBaseUrl\""
+            buildConfigField 'String', 'PREVIEW_POSTER_SIZE', "\"$previewPosterSize\""
+            buildConfigField 'String', 'ORIGINAL_POSTER_SIZE', "\"$originalPosterSize\""
             buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_REAL"'
         }
     }

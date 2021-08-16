@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import javax.inject.Inject
@@ -27,7 +28,7 @@ class TopRatedTVShowsRepositoryImpl
 
     private suspend fun TopRatedTVShowApi.toTVShow(): TVShowData = TVShowData(
         id = id,
-        imagePath = posterPath ?: "",
+        imagePath = posterPath?.toPreviewPosterFullUrl() ?: "",
         name = name,
         voteAverage = voteAverage,
         originalName = originalName,
@@ -39,4 +40,7 @@ class TopRatedTVShowsRepositoryImpl
         popularity = popularity,
         voteCount = voteCount,
     )
+
+    private fun String.toPreviewPosterFullUrl(): String =
+        "${BuildConfig.IMAGE_BASE_URL}${BuildConfig.PREVIEW_POSTER_SIZE}$this"
 }
