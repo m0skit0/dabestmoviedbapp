@@ -16,13 +16,14 @@ class TopRatedTVShowsViewModel
     private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase
 ) : ViewModel() {
 
-    val topRatedShows: StateFlow<List<TopRatedTVShowsItem>> = topRatedTVShowsUseCase.topTVShows()
-        .map { list ->
-            list.map { it.toTopRatedListingItem() }
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            emptyList()
-        )
+    val topRatedShows: StateFlow<List<TopRatedTVShowsItem>> =
+        topRatedTVShowsUseCase.topTVShows()
+            .map { list ->
+                list.map { it.toTopRatedListingItem() }
+            }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 }
