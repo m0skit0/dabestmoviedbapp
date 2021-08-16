@@ -41,7 +41,7 @@ class TopRatedListAdapter(
             Glide.with(context)
                 .load(poster)
                 .thumbnail(0.5f)
-                .fallback(R.drawable.image_error)
+                .error(R.drawable.image_error)
                 .into(binding.poster)
         }
     }
