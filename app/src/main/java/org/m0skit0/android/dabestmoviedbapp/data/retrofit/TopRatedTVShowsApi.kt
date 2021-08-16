@@ -15,7 +15,7 @@ data class TopRatedTVShowsApi(
 
 data class TopRatedTVShowApi(
     @JsonProperty("backdrop_path")
-    val backdropPath: String = "",
+    val backdropPath: String? = "",
     @JsonProperty("first_air_date")
     val firstAirDate: String = "",
     @JsonProperty("genre_ids")
@@ -35,7 +35,7 @@ data class TopRatedTVShowApi(
     @JsonProperty("popularity")
     val popularity: Double = 0.0,
     @JsonProperty("poster_path")
-    val posterPath: String = "",
+    val posterPath: String? = "",
     @JsonProperty("vote_average")
     val voteAverage: Double = 0.0,
     @JsonProperty("vote_count")
