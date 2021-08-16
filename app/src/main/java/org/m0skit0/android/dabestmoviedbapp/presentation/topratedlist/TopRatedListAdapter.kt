@@ -1,8 +1,11 @@
 package org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.ItemTopRatedTvShowBinding
 
 class TopRatedListAdapter(
@@ -25,11 +28,21 @@ class TopRatedListAdapter(
     inner class TopRatedTVShowViewHolder(
         private val binding: ItemTopRatedTvShowBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(tvShowItem: TopRatedTVShowsItem) {
             binding.run {
                 tvShowData = tvShowItem
                 executePendingBindings()
+                tvShowItem.loadPoster(root.context, binding)
             }
+        }
+
+        private fun TopRatedTVShowsItem.loadPoster(context: Context, binding: ItemTopRatedTvShowBinding) {
+            Glide.with(context)
+                .load(poster)
+                .thumbnail(0.5f)
+                .fallback(R.drawable.image_error)
+                .into(binding.poster)
         }
     }
 }

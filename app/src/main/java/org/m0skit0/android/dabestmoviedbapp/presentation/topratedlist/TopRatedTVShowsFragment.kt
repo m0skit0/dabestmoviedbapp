@@ -36,6 +36,5 @@ class TopRatedTVShowsFragment : Fragment() {
                 binding.topRatedRecycler.adapter = TopRatedListAdapter(it)
             }
         }
-        // TODO Load the poster preview!
     }
 }
