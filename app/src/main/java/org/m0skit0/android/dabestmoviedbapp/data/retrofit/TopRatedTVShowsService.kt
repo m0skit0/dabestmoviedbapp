@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface TopRatedTVShowsService {
     // TODO Paginate
-    @GET("tv/top_rated?apiKey=${BuildConfig.API_KEY}")
+    @GET("tv/top_rated?api_key=${BuildConfig.API_KEY}")
     suspend fun topRatedTVShows(): TopRatedTVShowsApi
 }
