@@ -9,8 +9,6 @@ import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import javax.inject.Inject
 
-private const val LOGTAG = "Repository"
-
 class TopRatedTVShowsRepositoryImpl
 @Inject constructor(
     private val topRatedTVShowsService: TopRatedTVShowsService,
