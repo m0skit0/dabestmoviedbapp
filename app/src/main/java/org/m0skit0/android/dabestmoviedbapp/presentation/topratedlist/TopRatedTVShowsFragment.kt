@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 
+@AndroidEntryPoint
 class TopRatedTVShowsFragment : Fragment() {
 
     private val viewModel: TopRatedTVShowsViewModel by viewModels()
@@ -34,5 +36,6 @@ class TopRatedTVShowsFragment : Fragment() {
                 binding.topRatedRecycler.adapter = TopRatedListAdapter(it)
             }
         }
+        // TODO Load the poster preview!
     }
 }
