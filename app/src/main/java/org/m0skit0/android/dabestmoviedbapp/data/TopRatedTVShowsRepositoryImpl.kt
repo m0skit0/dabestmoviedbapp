@@ -27,7 +27,7 @@ class TopRatedTVShowsRepositoryImpl
 
     private suspend fun TopRatedTVShowApi.toTVShow(): TVShowData = TVShowData(
         id = id,
-        imagePath = posterPath,
+        imagePath = posterPath ?: "",
         name = name,
         voteAverage = voteAverage,
         originalName = originalName,
