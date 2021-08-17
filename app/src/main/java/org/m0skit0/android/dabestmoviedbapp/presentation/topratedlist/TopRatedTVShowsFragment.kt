@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.hasReachedBottom
+import org.m0skit0.android.dabestmoviedbapp.presentation.invisible
+import org.m0skit0.android.dabestmoviedbapp.presentation.visible
 
 @AndroidEntryPoint
 class TopRatedTVShowsFragment : Fragment() {
@@ -48,14 +50,30 @@ class TopRatedTVShowsFragment : Fragment() {
     }
 
     private fun refresh() {
+        loading()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.topRatedShows().let {
                 binding.topRatedRecycler updateWith it
             }
+            loaded()
+        }
+    }
+
+    private fun loading() {
+        with(binding) {
+//            topRatedRecycler.invisible()
+            loading.visible()
         }
     }
 
     private infix fun RecyclerView.updateWith(list: List<TopRatedTVShowsItem>) {
         (adapter as? TopRatedListAdapter)?.updateWith(list) ?: run { adapter = TopRatedListAdapter(list) }
+    }
+
+    private fun loaded() {
+        with(binding) {
+            loading.invisible()
+//            topRatedRecycler.visible()
+        }
     }
 }
