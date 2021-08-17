@@ -11,13 +11,13 @@ class TopRatedTVShowsRepositoryImpl
     private val tvGenreMapper: TVGenreMapper
 ) : TopRatedTVShowsRepository {
 
-    override suspend fun topRatedTVShows(page: Int): List<TVShowData> =
+    override suspend fun topRatedTVShows(page: Int): List<TopRatedTVShowData> =
         topRatedTVShowsService
             .topRatedTVShows(page = page)
             .topRatedTVShows
             .map { tvShow -> tvShow.toTVShow() }
 
-    private suspend fun TopRatedTVShowApi.toTVShow(): TVShowData = TVShowData(
+    private suspend fun TopRatedTVShowApi.toTVShow(): TopRatedTVShowData = TopRatedTVShowData(
         id = id,
         imagePath = posterPath?.toPreviewPosterFullUrl() ?: "",
         name = name,

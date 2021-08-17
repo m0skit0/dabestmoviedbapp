@@ -1,8 +1,8 @@
 package org.m0skit0.android.dabestmoviedbapp.domain
 
-import org.m0skit0.android.dabestmoviedbapp.data.TVShowData
+import org.m0skit0.android.dabestmoviedbapp.data.TopRatedTVShowData
 
-data class TVShowDomain(
+data class TopRatedTVShowDomain(
     val id: Long,
     val imagePath: String,
     val name: String,
@@ -17,7 +17,7 @@ data class TVShowDomain(
     val voteCount: Int,
 )
 
-fun TVShowData.toTVShowDomain(): TVShowDomain = TVShowDomain(
+fun TopRatedTVShowData.toTVShowDomain(): TopRatedTVShowDomain = TopRatedTVShowDomain(
     id = id,
     imagePath = imagePath,
     name = name,

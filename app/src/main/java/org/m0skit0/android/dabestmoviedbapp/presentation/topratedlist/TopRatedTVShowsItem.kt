@@ -1,6 +1,6 @@
 package org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist
 
-import org.m0skit0.android.dabestmoviedbapp.domain.TVShowDomain
+import org.m0skit0.android.dabestmoviedbapp.domain.TopRatedTVShowDomain
 
 data class TopRatedTVShowsItem(
     val id: Long,
@@ -9,7 +9,7 @@ data class TopRatedTVShowsItem(
     val voteAverage: String,
 )
 
-fun TVShowDomain.toTopRatedListingItem() = TopRatedTVShowsItem(
+fun TopRatedTVShowDomain.toTopRatedListingItem() = TopRatedTVShowsItem(
     id = id,
     poster = imagePath,
     title = name,

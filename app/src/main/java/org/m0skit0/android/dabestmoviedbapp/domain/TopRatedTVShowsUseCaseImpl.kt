@@ -13,7 +13,7 @@ class TopRatedTVShowsUseCaseImpl
     private val topRatedTVShowsRepository: TopRatedTVShowsRepository
 ) : TopRatedTVShowsUseCase {
 
-    override suspend fun topTVShows(page: Int): List<TVShowDomain> =
+    override suspend fun topTVShows(page: Int): List<TopRatedTVShowDomain> =
         withContext(Dispatchers.IO) {
             topRatedTVShowsRepository.topRatedTVShows(page).map { it.toTVShowDomain() }
         }

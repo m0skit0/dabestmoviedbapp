@@ -1,7 +1,5 @@
 package org.m0skit0.android.dabestmoviedbapp.domain
 
-import io.kotlintest.matchers.collections.shouldBeEmpty
-import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -9,7 +7,7 @@ import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.m0skit0.android.dabestmoviedbapp.data.TVShowData
+import org.m0skit0.android.dabestmoviedbapp.data.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.TopRatedTVShowsRepository
 
 class TestTopRatedTVShowsUseCaseImpl {
@@ -21,7 +19,7 @@ class TestTopRatedTVShowsUseCaseImpl {
         get() = TopRatedTVShowsUseCaseImpl(mockTopRatedTVShowsRepository)
 
     private fun tvShowData(id: Int) =
-        TVShowData(
+        TopRatedTVShowData(
             id = id.toLong(),
             imagePath = "$id",
             name = "$id",
@@ -78,7 +76,7 @@ class TestTopRatedTVShowsUseCaseImpl {
         runBlocking {
             topRatedTVShowsUseCaseImpl.topTVShows().let { list ->
                 list shouldBe (1..3).map {
-                    TVShowDomain(
+                    TopRatedTVShowDomain(
                         id = it.toLong(),
                         imagePath = "$it",
                         name = "$it",
