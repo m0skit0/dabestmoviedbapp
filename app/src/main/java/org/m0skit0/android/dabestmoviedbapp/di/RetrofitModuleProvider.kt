@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
+import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVShowDetailsService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -45,4 +46,9 @@ class RetrofitModuleProvider {
     @Singleton
     fun provideTVGenresService(retrofit: Retrofit): TVGenreService =
         retrofit.create(TVGenreService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTVShowDetailsService(retrofit: Retrofit): TVShowDetailsService =
+        retrofit.create(TVShowDetailsService::class.java)
 }

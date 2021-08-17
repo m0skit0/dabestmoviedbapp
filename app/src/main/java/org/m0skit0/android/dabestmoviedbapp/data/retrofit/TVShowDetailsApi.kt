@@ -5,7 +5,7 @@ data class TVShowDetailsApi(
     @JsonProperty("backdrop_path")
     val backdropPath: String? = "",
     @JsonProperty("created_by")
-    val createdBy: List<Any> = listOf(), // TODO Fix with actual data
+    val createdBy: List<String>? = listOf(), // TODO Fix with actual data
     @JsonProperty("episode_run_time")
     val episodeRunTime: List<Int> = listOf(),
     @JsonProperty("first_air_date")
@@ -45,7 +45,7 @@ data class TVShowDetailsApi(
     @JsonProperty("popularity")
     val popularity: Double = 0.0,
     @JsonProperty("poster_path")
-    val posterPath: String = "",
+    val posterPath: String? = "",
     @JsonProperty("production_companies")
     val productionCompanies: List<ProductionCompany> = listOf(),
     @JsonProperty("production_countries")
