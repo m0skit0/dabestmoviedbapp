@@ -1,12 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import org.m0skit0.android.dabestmoviedbapp.domain.TopRatedTVShowsUseCase
 import javax.inject.Inject
 
@@ -16,14 +11,15 @@ class TopRatedTVShowsViewModel
     private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase
 ) : ViewModel() {
 
-    val topRatedShows: StateFlow<List<TopRatedTVShowsItem>> =
-        topRatedTVShowsUseCase.topTVShows()
-            .map { list ->
-                list.map { it.toTopRatedListingItem() }
+    private var currentPage = 1
+
+    private var currentTVShowList: List<TopRatedTVShowsItem> = emptyList()
+
+    suspend fun topRatedShows(): List<TopRatedTVShowsItem> =
+        topRatedTVShowsUseCase.topTVShows(currentPage++)
+            .map { it.toTopRatedListingItem() }
+            .let { nextPage ->
+                currentTVShowList = currentTVShowList + nextPage
+                currentTVShowList
             }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5000),
-                emptyList()
-            )
 }

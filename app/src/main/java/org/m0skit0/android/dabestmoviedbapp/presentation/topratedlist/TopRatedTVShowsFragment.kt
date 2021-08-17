@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
@@ -32,7 +31,7 @@ class TopRatedTVShowsFragment : Fragment() {
             lifecycleOwner = this@TopRatedTVShowsFragment
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.topRatedShows.collect {
+            viewModel.topRatedShows().let {
                 binding.topRatedRecycler.adapter = TopRatedListAdapter(it)
             }
         }
