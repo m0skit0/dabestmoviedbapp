@@ -80,8 +80,8 @@ class TopRatedTVShowsFragment : Fragment() {
 
     private fun setupErrorListener() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.error.collect {
-                toast(R.string.error_happened)
+            viewModel.error.collect { isError ->
+                if (isError) toast(R.string.error_happened)
             }
         }
     }
