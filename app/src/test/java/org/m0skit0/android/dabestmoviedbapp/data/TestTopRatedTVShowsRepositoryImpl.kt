@@ -6,10 +6,7 @@ import io.kotlintest.matchers.string.shouldBeEmpty
 import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -38,30 +35,23 @@ class TestTopRatedTVShowsRepositoryImpl {
 
     @Test
     fun `when top rated tv shows is an empty list, repo should return an empty list`() {
-        every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
-            emit(TopRatedTVShowsApi())
-        }
+        coEvery { mockTopRatedTVShowsService.topRatedTVShows() } returns TopRatedTVShowsApi()
         runBlocking {
-            topRatedTVShowsRepositoryImpl.topRatedTVShows().collect {
-                it shouldBe emptyList()
-            }
+            topRatedTVShowsRepositoryImpl.topRatedTVShows() shouldBe emptyList()
         }
     }
 
     @Test
     fun `when top rated tv shows has empty objects, repo should return an default data class values`() {
         val topRatedTVShows = (1..3).map { TopRatedTVShowApi() }
-        every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
-            emit(TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows))
-        }
+        coEvery { mockTopRatedTVShowsService.topRatedTVShows() } returns TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows)
         coEvery { mockTVGenreMapper.mapGenres(any()) } returns emptyList()
         runBlocking {
-            topRatedTVShowsRepositoryImpl.topRatedTVShows().collect {
-                it.size shouldBe 3
-                it.first().id.shouldBeZero()
-                it.first().imagePath.shouldBeEmpty()
-                it.first().genres.shouldBeEmpty()
-                it.first().name.shouldBeEmpty()
+            topRatedTVShowsRepositoryImpl.topRatedTVShows().run {
+                size shouldBe 3
+                first().id.shouldBeZero()
+                first().genres.shouldBeEmpty()
+                first().name.shouldBeEmpty()
             }
         }
     }
@@ -75,15 +65,13 @@ class TestTopRatedTVShowsRepositoryImpl {
                 voteAverage = it.toDouble(),
             )
         }
-        every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
-            emit(TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows))
-        }
+        coEvery { mockTopRatedTVShowsService.topRatedTVShows() } returns TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows)
         coEvery { mockTVGenreMapper.mapGenres(any()) } returns emptyList()
         runBlocking {
-            topRatedTVShowsRepositoryImpl.topRatedTVShows().collect { list ->
-                list.size shouldBe 4
+            topRatedTVShowsRepositoryImpl.topRatedTVShows().run {
+                size shouldBe 4
                 (0..3).forEach {
-                    list[it].run {
+                    get(it).run {
                         id shouldBe it.toLong()
                         name shouldBe "$it"
                         voteAverage shouldBe it.toDouble()
@@ -95,20 +83,18 @@ class TestTopRatedTVShowsRepositoryImpl {
 
     @Test
     fun `when top rated tv shows has actual objects with valid genres, repo should correctly map genres`() {
-        val genresList = listOf("Genre 1", "Genre 2", "Genre 3")
+        val genresList = listOf("org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1", "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2", "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 3")
         val topRatedTVShows = (0..3).map {
             TopRatedTVShowApi(
                 genreIds = listOf(1, 2, 3)
             )
         }
-        every { mockTopRatedTVShowsService.topRatedTVShows() } returns flow {
-            emit(TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows))
-        }
+        coEvery { mockTopRatedTVShowsService.topRatedTVShows() } returns TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows)
         coEvery { mockTVGenreMapper.mapGenres(any()) } returns genresList
         runBlocking {
-            topRatedTVShowsRepositoryImpl.topRatedTVShows().collect { list ->
+            topRatedTVShowsRepositoryImpl.topRatedTVShows().run {
                 (0..3).forEach {
-                    list[it].genres shouldBe genresList
+                    get(it).genres shouldBe genresList
                 }
             }
         }

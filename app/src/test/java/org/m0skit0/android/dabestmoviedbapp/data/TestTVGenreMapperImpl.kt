@@ -45,7 +45,7 @@ class TestTVGenreMapperImpl {
     @Test
     fun `when mapping a empty list of genres against a non-empty genre API, mapping should also return an empty list`() {
         coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi(
-            tVGenres = listOf(TVGenreApi(name = "Genre 1"), TVGenreApi(name = "Genre 2"))
+            tVGenres = listOf(TVGenreApi(name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"), TVGenreApi(name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2"))
         )
         runBlocking {
             tvGenreMapperImpl.mapGenres(emptyList()).shouldBeEmpty()
@@ -57,13 +57,13 @@ class TestTVGenreMapperImpl {
         coEvery { mockTvGenreService.tvGenres() } returns
                 TVGenresApi(
                     tVGenres = listOf(
-                        TVGenreApi(id = 1, name = "Genre 1"),
-                        TVGenreApi(id = 2, name = "Genre 2"),
-                        TVGenreApi(id = 3, name = "Genre 3"),
+                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
+                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2"),
+                        TVGenreApi(id = 3, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 3"),
                     )
                 )
         runBlocking {
-            tvGenreMapperImpl.mapGenres(listOf(1, 2)) shouldBe listOf("Genre 1", "Genre 2")
+            tvGenreMapperImpl.mapGenres(listOf(1, 2)) shouldBe listOf("org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1", "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
         }
     }
 
@@ -72,12 +72,12 @@ class TestTVGenreMapperImpl {
         coEvery { mockTvGenreService.tvGenres() } returns
                 TVGenresApi(
                     tVGenres = listOf(
-                        TVGenreApi(id = 1, name = "Genre 1"),
-                        TVGenreApi(id = 2, name = "Genre 2")
+                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
+                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
                     )
                 )
         runBlocking {
-            tvGenreMapperImpl.mapGenres(listOf(2, 4)) shouldBe listOf("Genre 2")
+            tvGenreMapperImpl.mapGenres(listOf(2, 4)) shouldBe listOf("org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
         }
     }
 
@@ -86,8 +86,8 @@ class TestTVGenreMapperImpl {
         coEvery { mockTvGenreService.tvGenres() } returns
                 TVGenresApi(
                     tVGenres = listOf(
-                        TVGenreApi(id = 1, name = "Genre 1"),
-                        TVGenreApi(id = 2, name = "Genre 2")
+                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
+                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
                     )
                 )
         runBlocking {
@@ -125,8 +125,8 @@ class TestTVGenreMapperImpl {
     fun `when mapping, it should only call API on the first call if genres were resolved`() {
         coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi(
             tVGenres = listOf(
-                TVGenreApi(id = 1, name = "Genre 1"),
-                TVGenreApi(id = 2, name = "Genre 2")
+                TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
+                TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
             )
         )
         runBlocking {

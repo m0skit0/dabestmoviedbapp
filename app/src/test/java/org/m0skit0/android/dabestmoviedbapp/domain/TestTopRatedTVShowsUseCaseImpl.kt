@@ -3,11 +3,9 @@ package org.m0skit0.android.dabestmoviedbapp.domain
 import io.kotlintest.matchers.collections.shouldBeEmpty
 import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -45,44 +43,40 @@ class TestTopRatedTVShowsUseCaseImpl {
 
     @Test
     fun `when calling use case, it should call the repository`() {
-        every { mockTopRatedTVShowsRepository.topRatedTVShows() } returns flow { emit(emptyList<TVShowData>()) }
+        coEvery { mockTopRatedTVShowsRepository.topRatedTVShows() } returns emptyList()
         runBlocking {
             topRatedTVShowsUseCaseImpl.topTVShows()
         }
-        verify {
+        coVerify {
             mockTopRatedTVShowsRepository.topRatedTVShows()
         }
     }
 
     @Test
     fun `when calling use case once, it should call the repository just once`() {
-        every { mockTopRatedTVShowsRepository.topRatedTVShows() } returns flow { emit(emptyList<TVShowData>()) }
+        coEvery { mockTopRatedTVShowsRepository.topRatedTVShows() } returns emptyList()
         runBlocking {
             topRatedTVShowsUseCaseImpl.topTVShows()
         }
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             mockTopRatedTVShowsRepository.topRatedTVShows()
         }
     }
 
     @Test
     fun `when calling use case, if the repo returns an empty list it should map to an empty list`() {
-        every { mockTopRatedTVShowsRepository.topRatedTVShows() } returns flow { emit(emptyList<TVShowData>()) }
+        coEvery { mockTopRatedTVShowsRepository.topRatedTVShows() } returns emptyList<TopRatedTVShowData>()
         runBlocking {
-            topRatedTVShowsUseCaseImpl.topTVShows().collect {
-                it.shouldBeEmpty()
-            }
+            topRatedTVShowsUseCaseImpl.topTVShows().shouldBeEmpty()
         }
     }
 
     @Test
     fun `when calling use case, if the repo returns an filled list it should map it correctly`() {
         val tvShowDataList = (1..3).map { tvShowData(it) }
-        every { mockTopRatedTVShowsRepository.topRatedTVShows() } returns flow {
-            emit(tvShowDataList)
-        }
+        coEvery { mockTopRatedTVShowsRepository.topRatedTVShows() } returns tvShowDataList
         runBlocking {
-            topRatedTVShowsUseCaseImpl.topTVShows().collect { list ->
+            topRatedTVShowsUseCaseImpl.topTVShows().let { list ->
                 list shouldBe (1..3).map {
                     TVShowDomain(
                         id = it.toLong(),
