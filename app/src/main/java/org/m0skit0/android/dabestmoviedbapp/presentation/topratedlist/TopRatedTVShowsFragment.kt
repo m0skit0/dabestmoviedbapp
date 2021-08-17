@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
+import org.m0skit0.android.dabestmoviedbapp.presentation.hasReachedBottom
 
 @AndroidEntryPoint
 class TopRatedTVShowsFragment : Fragment() {
@@ -29,11 +31,31 @@ class TopRatedTVShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
             lifecycleOwner = this@TopRatedTVShowsFragment
+            topRatedRecycler.setupScrollListenerForNextPage()
         }
+        refresh()
+    }
+
+    private fun RecyclerView.setupScrollListenerForNextPage() {
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (hasReachedBottom()) {
+                    refresh()
+                }
+            }
+        })
+    }
+
+    private fun refresh() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.topRatedShows().let {
-                binding.topRatedRecycler.adapter = TopRatedListAdapter(it)
+                binding.topRatedRecycler updateWith it
             }
         }
+    }
+
+    private infix fun RecyclerView.updateWith(list: List<TopRatedTVShowsItem>) {
+        (adapter as? TopRatedListAdapter)?.updateWith(list) ?: run { adapter = TopRatedListAdapter(list) }
     }
 }
