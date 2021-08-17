@@ -1,7 +1,9 @@
-package org.m0skit0.android.dabestmoviedbapp.data
+package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
 import javax.inject.Inject
 
 class TopRatedTVShowsRepositoryImpl

@@ -4,7 +4,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.m0skit0.android.dabestmoviedbapp.data.*
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepository
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepositoryImpl
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepository
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryImpl
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryMock
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapperImpl
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -27,4 +33,9 @@ abstract class RepositoryModuleBinder {
     @Binds
     @Singleton
     abstract fun bindTVGenreMapper(mapper: TVGenreMapperImpl): TVGenreMapper
+
+    // TODO Add mocked repository as well
+    @Binds
+    @Singleton
+    abstract fun bindTVGenreMapper(repository: TVShowDetailsRepositoryImpl): TVShowDetailsRepository
 }

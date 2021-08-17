@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn
-import org.m0skit0.android.dabestmoviedbapp.domain.TopRatedTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
 import javax.inject.Inject
 
 @HiltViewModel

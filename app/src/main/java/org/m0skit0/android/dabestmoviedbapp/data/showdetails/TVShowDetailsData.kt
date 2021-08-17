@@ -1,6 +1,7 @@
-package org.m0skit0.android.dabestmoviedbapp.data
+package org.m0skit0.android.dabestmoviedbapp.data.showdetails
 
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVShowDetailsApi
+import org.m0skit0.android.dabestmoviedbapp.data.toOriginalPosterFullUrl
 
 data class TVShowDetailsData(
     val id: Long,

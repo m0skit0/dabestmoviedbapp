@@ -1,6 +1,6 @@
-package org.m0skit0.android.dabestmoviedbapp.domain
+package org.m0skit0.android.dabestmoviedbapp.domain.toprated
 
-import org.m0skit0.android.dabestmoviedbapp.data.TopRatedTVShowData
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 
 data class TopRatedTVShowDomain(
     val id: Long,
