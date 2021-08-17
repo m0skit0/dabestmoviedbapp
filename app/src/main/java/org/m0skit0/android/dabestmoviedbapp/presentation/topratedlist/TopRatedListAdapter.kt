@@ -9,7 +9,7 @@ import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.ItemTopRatedTvShowBinding
 
 class TopRatedListAdapter(
-    private val topRatedShows: List<TopRatedTVShowsItem>
+    var topRatedShows: List<TopRatedTVShowsItem> = emptyList()
 ) : RecyclerView.Adapter<TopRatedListAdapter.TopRatedTVShowViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopRatedTVShowViewHolder =
@@ -24,6 +24,12 @@ class TopRatedListAdapter(
     }
 
     override fun getItemCount(): Int = topRatedShows.size
+
+    infix fun updateWith(list: List<TopRatedTVShowsItem>) {
+        val positionStartForNewList = topRatedShows.size
+        topRatedShows = list
+        notifyItemRangeInserted(positionStartForNewList, list.size)
+    }
 
     inner class TopRatedTVShowViewHolder(
         private val binding: ItemTopRatedTvShowBinding

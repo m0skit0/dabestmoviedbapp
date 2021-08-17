@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Da Best Movie DB App</string>
+    <string name="error_happened">Sorry, an error has happened</string>
 </resources>

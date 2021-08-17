@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
+import org.m0skit0.android.dabestmoviedbapp.presentation.hasReachedBottom
+import org.m0skit0.android.dabestmoviedbapp.presentation.invisible
+import org.m0skit0.android.dabestmoviedbapp.presentation.toast
+import org.m0skit0.android.dabestmoviedbapp.presentation.visible
 
 @AndroidEntryPoint
 class TopRatedTVShowsFragment : Fragment() {
@@ -30,10 +35,53 @@ class TopRatedTVShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
             lifecycleOwner = this@TopRatedTVShowsFragment
+            topRatedRecycler.setupScrollListenerForNextPage()
         }
+        setupErrorListener()
+        refresh()
+    }
+
+    private fun RecyclerView.setupScrollListenerForNextPage() {
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (hasReachedBottom()) {
+                    refresh()
+                }
+            }
+        })
+    }
+
+    private fun refresh() {
+        loading()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.topRatedShows.collect {
-                binding.topRatedRecycler.adapter = TopRatedListAdapter(it)
+            viewModel.topRatedShows().let {
+                binding.topRatedRecycler updateWith it
+            }
+            loaded()
+        }
+    }
+
+    private fun loading() {
+        with(binding) {
+            loading.visible()
+        }
+    }
+
+    private infix fun RecyclerView.updateWith(list: List<TopRatedTVShowsItem>) {
+        (adapter as? TopRatedListAdapter)?.updateWith(list) ?: run { adapter = TopRatedListAdapter(list) }
+    }
+
+    private fun loaded() {
+        with(binding) {
+            loading.invisible()
+        }
+    }
+
+    private fun setupErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collect {
+                toast(R.string.error_happened)
             }
         }
     }

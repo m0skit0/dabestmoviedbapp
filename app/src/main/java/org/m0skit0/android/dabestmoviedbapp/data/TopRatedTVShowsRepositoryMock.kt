@@ -1,7 +1,5 @@
 package org.m0skit0.android.dabestmoviedbapp.data
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class TopRatedTVShowsRepositoryMock @Inject constructor() : TopRatedTVShowsRepository {
@@ -37,5 +35,5 @@ class TopRatedTVShowsRepositoryMock @Inject constructor() : TopRatedTVShowsRepos
         ),
     )
 
-    override fun topRatedTVShows(): Flow<List<TVShowData>> = flow { emit(mockTVShows) }
+    override suspend fun topRatedTVShows(page: Int): List<TVShowData> = mockTVShows
 }

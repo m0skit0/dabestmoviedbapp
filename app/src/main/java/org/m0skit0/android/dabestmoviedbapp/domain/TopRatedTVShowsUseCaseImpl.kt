@@ -1,7 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.domain
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.TopRatedTVShowsRepository
 import javax.inject.Inject
@@ -13,7 +13,8 @@ class TopRatedTVShowsUseCaseImpl
     private val topRatedTVShowsRepository: TopRatedTVShowsRepository
 ) : TopRatedTVShowsUseCase {
 
-    override fun topTVShows(): Flow<List<TVShowDomain>> =
-        topRatedTVShowsRepository.topRatedTVShows().map { list -> list.map { it.toTVShowDomain() } }
-
+    override suspend fun topTVShows(page: Int): List<TVShowDomain> =
+        withContext(Dispatchers.IO) {
+            topRatedTVShowsRepository.topRatedTVShows(page).map { it.toTVShowDomain() }
+        }
 }
