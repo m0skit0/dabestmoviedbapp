@@ -15,6 +15,6 @@ class TopRatedTVShowsUseCaseImpl
 
     override suspend fun topTVShows(page: Int): List<TVShowDomain> =
         withContext(Dispatchers.IO) {
-            topRatedTVShowsRepository.topRatedTVShows().map { it.toTVShowDomain() }
+            topRatedTVShowsRepository.topRatedTVShows(page).map { it.toTVShowDomain() }
         }
 }

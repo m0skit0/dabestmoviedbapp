@@ -13,7 +13,7 @@ class TopRatedTVShowsRepositoryImpl
 
     override suspend fun topRatedTVShows(page: Int): List<TVShowData> =
         topRatedTVShowsService
-            .topRatedTVShows()
+            .topRatedTVShows(page = page)
             .topRatedTVShows
             .map { tvShow -> tvShow.toTVShow() }
 
