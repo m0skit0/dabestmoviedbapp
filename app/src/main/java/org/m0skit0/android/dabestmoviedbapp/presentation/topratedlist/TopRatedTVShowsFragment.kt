@@ -9,11 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.hasReachedBottom
 import org.m0skit0.android.dabestmoviedbapp.presentation.invisible
+import org.m0skit0.android.dabestmoviedbapp.presentation.toast
 import org.m0skit0.android.dabestmoviedbapp.presentation.visible
 
 @AndroidEntryPoint
@@ -35,6 +37,7 @@ class TopRatedTVShowsFragment : Fragment() {
             lifecycleOwner = this@TopRatedTVShowsFragment
             topRatedRecycler.setupScrollListenerForNextPage()
         }
+        setupErrorListener()
         refresh()
     }
 
@@ -61,7 +64,6 @@ class TopRatedTVShowsFragment : Fragment() {
 
     private fun loading() {
         with(binding) {
-//            topRatedRecycler.invisible()
             loading.visible()
         }
     }
@@ -73,7 +75,14 @@ class TopRatedTVShowsFragment : Fragment() {
     private fun loaded() {
         with(binding) {
             loading.invisible()
-//            topRatedRecycler.visible()
+        }
+    }
+
+    private fun setupErrorListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collect {
+                toast(R.string.error_happened)
+            }
         }
     }
 }
