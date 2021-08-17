@@ -1,9 +1,5 @@
 package org.m0skit0.android.dabestmoviedbapp.data
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
@@ -15,14 +11,11 @@ class TopRatedTVShowsRepositoryImpl
     private val tvGenreMapper: TVGenreMapper
 ) : TopRatedTVShowsRepository {
 
-    override fun topRatedTVShows(): Flow<List<TVShowData>> = flow {
-        emit(
-            topRatedTVShowsService
-                .topRatedTVShows()
-                .topRatedTVShows
-                .map { tvShow -> tvShow.toTVShow() }
-        )
-    }.flowOn(Dispatchers.IO)
+    override suspend fun topRatedTVShows(page: Int): List<TVShowData> =
+        topRatedTVShowsService
+            .topRatedTVShows()
+            .topRatedTVShows
+            .map { tvShow -> tvShow.toTVShow() }
 
     private suspend fun TopRatedTVShowApi.toTVShow(): TVShowData = TVShowData(
         id = id,
