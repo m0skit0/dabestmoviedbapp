@@ -1,4 +1,4 @@
-package org.m0skit0.android.dabestmoviedbapp.domain
+package org.m0skit0.android.dabestmoviedbapp.domain.toprated
 
 import io.kotlintest.matchers.collections.shouldBeEmpty
 import io.kotlintest.shouldBe
@@ -11,8 +11,6 @@ import org.junit.Before
 import org.junit.Test
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepository
-import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowDomain
-import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCaseImpl
 
 class TestTopRatedTVShowsUseCaseImpl {
 
