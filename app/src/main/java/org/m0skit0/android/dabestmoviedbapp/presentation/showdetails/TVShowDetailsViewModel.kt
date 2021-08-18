@@ -19,9 +19,12 @@ class TVShowDetailsViewModel @Inject constructor(
 
     private var currentId: Long = -1
 
-    private var nextSimilarShow: Long = -1
+    private var similarShows: List<Long> = emptyList()
 
     private var _error = MutableStateFlow(false)
+
+    val similarShowsSize: Int
+        get() = similarShows.size
 
     init {
         setMutableFlow(_error)
@@ -43,6 +46,10 @@ class TVShowDetailsViewModel @Inject constructor(
     }
 
     private suspend fun loadSimilarShows(id: Long) {
-        nextSimilarShow = similarTVShowUseCase.similarTVShows(id).first().id
+        if (similarShows.isEmpty()) {
+            similarShows = similarTVShowUseCase.similarTVShows(id).map { it.id }
+        }
     }
+
+    fun nextSimilarShow(position: Int): Long = similarShows.getOrElse(position) { currentId }
 }
