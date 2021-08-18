@@ -13,10 +13,6 @@
             app:destination="@id/tvShowDetailsPagerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/tvShowDetailsFragment"
-        android:name="org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsFragment"
-        android:label="TVShowDetailsFragment" />
-    <fragment
         android:id="@+id/tvShowDetailsPagerFragment"
         android:name="org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment"
         android:label="TVShowDetailsPagerFragment" />
