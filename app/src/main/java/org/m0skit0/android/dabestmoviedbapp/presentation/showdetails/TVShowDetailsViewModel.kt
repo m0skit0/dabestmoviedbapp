@@ -31,10 +31,14 @@ class TVShowDetailsViewModel @Inject constructor(
         setViewModelScope(viewModelScope)
     }
 
+    suspend fun setInitialId(id: Long) {
+        currentId = id
+        loadSimilarShows(id)
+    }
+
     suspend fun tvShowDetails(id: Long): TVShowDetailsPresentation = run {
         currentId = id
         try {
-            loadSimilarShows(id)
             tvShowDetailsUseCase.tvShowDetails(id).toTVShowDetailsPresentation().apply {
                 _error.value = false
             }
@@ -46,9 +50,7 @@ class TVShowDetailsViewModel @Inject constructor(
     }
 
     private suspend fun loadSimilarShows(id: Long) {
-        if (similarShows.isEmpty()) {
-            similarShows = similarTVShowUseCase.similarTVShows(id).map { it.id }
-        }
+        similarShows = similarTVShowUseCase.similarTVShows(id).map { it.id }
     }
 
     fun nextSimilarShow(position: Int): Long = similarShows.getOrElse(position) { currentId }
