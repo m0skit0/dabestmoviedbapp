@@ -6,21 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragmentImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 
 @AndroidEntryPoint
-class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked, LoadingFragment by LoadingFragmentImpl() {
+class TopRatedTVShowsFragment :
+    Fragment(),
+    OnTVShowClicked,
+    RefreshFragment by RefreshFragmentImpl(),
+    ErrorFragment by ErrorFragmentImpl()
+{
 
     private val viewModel: TopRatedTVShowsViewModel by viewModels()
 
@@ -39,7 +40,7 @@ class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked, LoadingFragment by 
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }
-        setupErrorListener()
+        setupErrorListener(this, viewModel)
         refresh()
     }
 
@@ -54,21 +55,11 @@ class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked, LoadingFragment by 
         })
     }
 
-    private fun setupErrorListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.error.collect { isError ->
-                if (isError) toast(R.string.error_happened)
-            }
-        }
-    }
-
     private fun refresh() {
-        loading()
-        viewLifecycleOwner.lifecycleScope.launch {
+        refresh(viewLifecycleOwner) {
             viewModel.topRatedShows().let {
                 binding.topRatedRecycler updateWith it
             }
-            loaded()
         }
     }
 

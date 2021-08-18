@@ -7,18 +7,21 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragmentImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragmentImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.RefreshFragment
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.RefreshFragmentImpl
 
 @AndroidEntryPoint
-class TVShowDetailsFragment : Fragment(), LoadingFragment by LoadingFragmentImpl() {
+class TVShowDetailsFragment :
+    Fragment(),
+    RefreshFragment by RefreshFragmentImpl(),
+    ErrorFragment by ErrorFragmentImpl()
+{
 
     private val viewModel: TVShowDetailsViewModel by viewModels()
 
@@ -36,27 +39,17 @@ class TVShowDetailsFragment : Fragment(), LoadingFragment by LoadingFragmentImpl
             lifecycleOwner = this@TVShowDetailsFragment
             setLoadingView(loading)
         }
-        setupErrorListener()
+        setupErrorListener(this, viewModel)
         refresh()
     }
 
-    private fun setupErrorListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.error.collect { isError ->
-                if (isError) toast(R.string.error_happened)
-            }
-        }
-    }
-
     private fun refresh() {
-        loading()
-        viewLifecycleOwner.lifecycleScope.launch {
+        refresh(viewLifecycleOwner) {
             arguments?.getLong(KEY_ID)?.let { id ->
                 viewModel.tvShowDetails(id).let {
                     binding.tvShowDetails = it
                 }
             } ?: toast(R.string.error_happened)
-            loaded()
         }
     }
 
