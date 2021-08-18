@@ -1,0 +1,6 @@
+ext {
+    baseUrl = 'https://api.themoviedb.org/3/'
+    imageBaseUrl = 'https://image.tmdb.org/t/p/'
+    previewPosterSize = 'w92/'
+    originalPosterSize = 'original/'
+}
