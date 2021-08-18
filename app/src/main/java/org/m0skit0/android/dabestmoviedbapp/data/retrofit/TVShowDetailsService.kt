@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface TVShowDetailsService {
     @GET("tv/{id}")
     suspend fun tvShowDetails(
-        @Path("page") id: Long,
+        @Path("id") id: Long,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
     ): TVShowDetailsApi
 }
