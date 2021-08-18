@@ -28,7 +28,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.1"
+                app:layout_constraintVertical_bias="0.05"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
@@ -40,11 +40,10 @@
                 android:text="@{tvShowDetails.title}"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/voteAverage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/poster"
-                app:layout_constraintVertical_bias="0.05"
                 tools:text="Some very very very very very very very very long title" />
 
             <TextView
@@ -52,12 +51,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{tvShowDetails.voteAverage}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/genres"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintHorizontal_bias="0.45"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintVertical_bias="0.05"
                 tools:text="9.54" />
 
             <TextView
@@ -65,12 +63,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{tvShowDetails.voteCount}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/genres"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.01"
                 app:layout_constraintStart_toEndOf="@id/voteAverage"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintVertical_bias="0.05"
                 tools:text="(200)" />
 
             <TextView
@@ -78,13 +75,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{tvShowDetails.genres}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center"
+                app:layout_constraintBottom_toTopOf="@id/overview"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.3"
-                app:layout_constraintStart_toEndOf="@id/voteCount"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintVertical_bias="0.05"
-                tools:text="Sci-fi, Family" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/voteAverage"
+                tools:text="Sci-fi, Family, And, Many, More, Genres, To check, What happens, When this, Field, Is Too Long" />
 
             <!-- TODO Text justification (only for API 26+) -->
             <TextView
@@ -95,8 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/voteAverage"
-                app:layout_constraintVertical_bias="0.2"
+                app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
