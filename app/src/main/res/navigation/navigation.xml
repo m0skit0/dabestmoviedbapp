@@ -9,11 +9,15 @@
         android:name="org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopRatedTVShowsFragment"
         android:label="TopRatedTVShowsFragment" >
         <action
-            android:id="@+id/action_topRatedTVShowsFragment_to_TVShowDetailsFragment"
-            app:destination="@id/tvShowDetailsFragment" />
+            android:id="@+id/action_topRatedTVShowsFragment_to_tvShowDetailsPagerFragment"
+            app:destination="@id/tvShowDetailsPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/tvShowDetailsFragment"
         android:name="org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsFragment"
         android:label="TVShowDetailsFragment" />
+    <fragment
+        android:id="@+id/tvShowDetailsPagerFragment"
+        android:name="org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment"
+        android:label="TVShowDetailsPagerFragment" />
 </navigation>

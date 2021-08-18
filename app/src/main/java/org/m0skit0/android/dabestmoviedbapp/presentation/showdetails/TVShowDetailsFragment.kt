@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import org.m0skit0.android.dabestmoviedbapp.R
@@ -25,7 +25,7 @@ class TVShowDetailsFragment :
     ErrorFragment by ErrorFragmentImpl()
 {
 
-    private val viewModel: TVShowDetailsViewModel by viewModels()
+    private val viewModel: TVShowDetailsViewModel by activityViewModels()
 
     private lateinit var binding: FragmentTvShowDetailsBinding
 

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
-import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsFragment
+import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 
@@ -72,8 +72,8 @@ class TopRatedTVShowsFragment :
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
         findNavController().navigate(
-            R.id.tvShowDetailsFragment,
-            TVShowDetailsFragment.bundle(tvShow.id)
+            R.id.tvShowDetailsPagerFragment,
+            TVShowDetailsPagerFragment.bundle(tvShow.id)
         )
     }
 }

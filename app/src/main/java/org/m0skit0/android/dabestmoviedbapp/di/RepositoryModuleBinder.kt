@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepositoryImpl
+import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsRepository
+import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsRepositoryImpl
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryImpl
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryMock
@@ -38,4 +40,9 @@ abstract class RepositoryModuleBinder {
     @Binds
     @Singleton
     abstract fun bindTVShowDetailsRepository(repository: TVShowDetailsRepositoryImpl): TVShowDetailsRepository
+
+    // TODO Add mocked repository as well
+    @Binds
+    @Singleton
+    abstract fun bindSimilarTVShowsRepository(repository: SimilarTVShowsRepositoryImpl): SimilarTVShowsRepository
 }

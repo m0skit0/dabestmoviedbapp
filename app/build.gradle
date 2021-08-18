@@ -6,6 +6,7 @@ plugins {
 }
 
 apply from: 'themoviedb.gradle'
+apply from: 'themoviedb.secret.gradle'
 
 android {
     compileSdk 30

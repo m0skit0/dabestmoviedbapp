@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
+import org.m0skit0.android.dabestmoviedbapp.data.retrofit.SimilarTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVShowDetailsService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
@@ -51,4 +52,9 @@ class RetrofitModuleProvider {
     @Singleton
     fun provideTVShowDetailsService(retrofit: Retrofit): TVShowDetailsService =
         retrofit.create(TVShowDetailsService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSimilarTVShowsService(retrofit: Retrofit): SimilarTVShowsService =
+        retrofit.create(SimilarTVShowsService::class.java)
 }

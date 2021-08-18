@@ -51,7 +51,7 @@ data class TVShowDetailsApi(
     @JsonProperty("production_countries")
     val productionCountries: List<ProductionCountry> = listOf(),
     @JsonProperty("seasons")
-    val seasons: List<Season> = listOf(),
+    val seasons: List<Season>? = listOf(),
     @JsonProperty("spoken_languages")
     val spokenLanguages: List<SpokenLanguage> = listOf(),
     @JsonProperty("status")
@@ -75,7 +75,7 @@ data class Genre(
 
 data class LastEpisodeToAir(
     @JsonProperty("air_date")
-    val airDate: String = "",
+    val airDate: String? = "",
     @JsonProperty("episode_number")
     val episodeNumber: Int = 0,
     @JsonProperty("id")
@@ -127,7 +127,7 @@ data class ProductionCountry(
 
 data class Season(
     @JsonProperty("air_date")
-    val airDate: String = "",
+    val airDate: String? = "",
     @JsonProperty("episode_count")
     val episodeCount: Int = 0,
     @JsonProperty("id")
