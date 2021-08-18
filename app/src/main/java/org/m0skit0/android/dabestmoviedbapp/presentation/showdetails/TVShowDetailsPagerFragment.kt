@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentPagerTvShowDetailsBinding
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.toast
 
 @AndroidEntryPoint
@@ -39,11 +40,14 @@ class TVShowDetailsPagerFragment : Fragment() {
     }
 
     private fun FragmentPagerTvShowDetailsBinding.initializePager() {
-        pager.adapter = TVShowDetailsPagerAdapter(
-            viewModel,
-            childFragmentManager,
-            lifecycle
-        )
+        with (pager) {
+            adapter = TVShowDetailsPagerAdapter(
+                viewModel,
+                childFragmentManager,
+                lifecycle
+            )
+            setPageTransformer(ZoomOutPageTransformer())
+        }
     }
 
     companion object {
