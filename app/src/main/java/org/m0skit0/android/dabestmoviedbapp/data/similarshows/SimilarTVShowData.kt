@@ -2,8 +2,8 @@ package org.m0skit0.android.dabestmoviedbapp.data.similarshows
 
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.SimilarTVShowApi
 
-data class SimilarTVShowsData(
+data class SimilarTVShowData(
     val id: Long
 )
 
-fun SimilarTVShowApi.toSimilarTVShowsData() = SimilarTVShowsData(id = id.toLong())
+fun SimilarTVShowApi.toSimilarTVShowsData() = SimilarTVShowData(id = id.toLong())

@@ -6,7 +6,7 @@ import javax.inject.Inject
 class SimilarTVShowsRepositoryImpl @Inject constructor(
     private val similarTVShowsService: SimilarTVShowsService
 ): SimilarTVShowsRepository {
-    override suspend fun similarTVShows(id: Long): List<SimilarTVShowsData> =
+    override suspend fun similarTVShows(id: Long): List<SimilarTVShowData> =
         similarTVShowsService
             .similarTVShows(id = id)
             .results
