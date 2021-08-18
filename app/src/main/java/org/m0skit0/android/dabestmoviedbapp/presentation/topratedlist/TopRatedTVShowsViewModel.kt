@@ -21,16 +21,21 @@ class TopRatedTVShowsViewModel
 
     private var currentTVShowList: List<TopRatedTVShowsItem> = emptyList()
 
-    val error: Flow<Boolean> = MutableStateFlow(false).shareIn(
+    private var _error = MutableStateFlow(false)
+
+    val error: Flow<Boolean> = _error.shareIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(3000),
     )
 
     suspend fun topRatedShows(): List<TopRatedTVShowsItem> =
         try {
-            topRatedTVShowsUseCase.topTVShows(currentPage)
+            topRatedTVShowsUseCase.topTVShows(currentPage).apply {
+                _error.value = false
+            }
         } catch (e: Exception) {
             Log.e("topRatedShows", "Error", e)
+            _error.value = true
             emptyList()
         }.apply {
             if (isNotEmpty()) currentPage++
