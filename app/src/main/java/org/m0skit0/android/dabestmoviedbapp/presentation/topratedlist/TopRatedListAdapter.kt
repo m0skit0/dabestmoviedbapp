@@ -40,14 +40,14 @@ class TopRatedListAdapter(
             binding.run {
                 tvShowData = tvShowItem
                 executePendingBindings()
-                tvShowItem.loadPoster(root.context, binding)
+                tvShowItem.loadPoster(root.context)
                 root.setOnClickListener {
                     onTVShowClicked.onClicked(tvShowItem)
                 }
             }
         }
 
-        private fun TopRatedTVShowsItem.loadPoster(context: Context, binding: ItemTopRatedTvShowBinding) {
+        private fun TopRatedTVShowsItem.loadPoster(context: Context) {
             Glide.with(context)
                 .load(poster)
                 .thumbnail(0.5f)
