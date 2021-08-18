@@ -5,7 +5,7 @@ data class TVShowDetailsApi(
     @JsonProperty("backdrop_path")
     val backdropPath: String? = "",
     @JsonProperty("created_by")
-    val createdBy: List<String>? = listOf(), // TODO Fix with actual data
+    val createdBy: List<Any>? = listOf(), // TODO Fix with actual data
     @JsonProperty("episode_run_time")
     val episodeRunTime: List<Int> = listOf(),
     @JsonProperty("first_air_date")
@@ -29,7 +29,7 @@ data class TVShowDetailsApi(
     @JsonProperty("networks")
     val networks: List<Network> = listOf(),
     @JsonProperty("next_episode_to_air")
-    val nextEpisodeToAir: String? = "",
+    val nextEpisodeToAir: Any? = Any(),
     @JsonProperty("number_of_episodes")
     val numberOfEpisodes: Int = 0,
     @JsonProperty("number_of_seasons")
@@ -100,7 +100,7 @@ data class Network(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("logo_path")
-    val logoPath: String = "",
+    val logoPath: String? = "",
     @JsonProperty("name")
     val name: String = "",
     @JsonProperty("origin_country")
@@ -111,7 +111,7 @@ data class ProductionCompany(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("logo_path")
-    val logoPath: String = "",
+    val logoPath: String? = "",
     @JsonProperty("name")
     val name: String = "",
     @JsonProperty("origin_country")
