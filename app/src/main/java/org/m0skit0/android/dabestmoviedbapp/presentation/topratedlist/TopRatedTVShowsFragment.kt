@@ -16,6 +16,8 @@ import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragment
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragmentImpl
 
 @AndroidEntryPoint
 class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked, LoadingFragment by LoadingFragmentImpl() {

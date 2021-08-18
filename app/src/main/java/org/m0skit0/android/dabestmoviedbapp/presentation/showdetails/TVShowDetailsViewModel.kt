@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ErrorViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ErrorViewModelImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
 import javax.inject.Inject
 
 @HiltViewModel

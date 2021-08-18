@@ -1,4 +1,4 @@
-package org.m0skit0.android.dabestmoviedbapp.presentation.utils
+package org.m0skit0.android.dabestmoviedbapp.presentation.utils.common
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow

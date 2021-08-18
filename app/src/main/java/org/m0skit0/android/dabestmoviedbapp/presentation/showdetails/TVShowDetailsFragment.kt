@@ -14,6 +14,8 @@ import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragment
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.LoadingFragmentImpl
 
 @AndroidEntryPoint
 class TVShowDetailsFragment : Fragment(), LoadingFragment by LoadingFragmentImpl() {
