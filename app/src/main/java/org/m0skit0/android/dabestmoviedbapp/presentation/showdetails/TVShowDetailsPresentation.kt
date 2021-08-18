@@ -17,7 +17,7 @@ fun TVShowDetailsDomain.toTVShowDetailsPresentation() = TVShowDetailsPresentatio
     poster = posterPath,
     title = name,
     voteAverage = voteAverage,
-    voteCount = voteCount,
+    voteCount = "($voteCount)",
     genres = genres.joinToString(", "),
     overview = overview,
 )
