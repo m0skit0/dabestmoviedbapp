@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
 import javax.inject.Inject
 
@@ -23,9 +23,10 @@ class TopRatedTVShowsViewModel
 
     private var _error = MutableStateFlow(false)
 
-    val error: Flow<Boolean> = _error.shareIn(
+    val error: StateFlow<Boolean> = _error.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(3000),
+        false,
     )
 
     suspend fun topRatedShows(): List<TopRatedTVShowsItem> =
