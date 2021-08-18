@@ -30,7 +30,7 @@ class TVShowDetailsPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewLifecycleOwner.lifecycleScope.launch {
             arguments?.getLong(KEY_ID)?.let {
-                viewModel.setInitialId(it)
+                viewModel.initialId(it)
                 FragmentPagerTvShowDetailsBinding.bind(view).apply {
                     initializePager()
                 }

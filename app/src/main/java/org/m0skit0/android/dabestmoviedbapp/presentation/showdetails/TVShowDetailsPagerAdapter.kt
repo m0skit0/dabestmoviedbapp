@@ -15,6 +15,6 @@ class TVShowDetailsPagerAdapter(
 
     override fun createFragment(position: Int): Fragment =
         TVShowDetailsFragment().apply {
-            arguments = TVShowDetailsFragment.bundle(viewModel.nextSimilarShow(position))
+            arguments = TVShowDetailsFragment.bundle(viewModel.getShowInPosition(position))
         }
 }

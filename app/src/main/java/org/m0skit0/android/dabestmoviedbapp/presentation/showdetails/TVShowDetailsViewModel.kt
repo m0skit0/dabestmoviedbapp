@@ -19,21 +19,21 @@ class TVShowDetailsViewModel @Inject constructor(
 
     private var currentId: Long = -1
 
-    private var similarShows: List<Long> = emptyList()
+    private var shows: List<Long> = emptyList()
 
     private var _error = MutableStateFlow(false)
 
     val similarShowsSize: Int
-        get() = similarShows.size
+        get() = shows.size
 
     init {
         setMutableFlow(_error)
         setViewModelScope(viewModelScope)
     }
 
-    suspend fun setInitialId(id: Long) {
+    suspend fun initialId(id: Long) {
         currentId = id
-        loadSimilarShows(id)
+        loadShows(id)
     }
 
     suspend fun tvShowDetails(id: Long): TVShowDetailsPresentation = run {
@@ -49,9 +49,9 @@ class TVShowDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadSimilarShows(id: Long) {
-        similarShows = similarTVShowUseCase.similarTVShows(id).map { it.id }
+    private suspend fun loadShows(id: Long) {
+        shows = listOf(currentId) + similarTVShowUseCase.similarTVShows(id).map { it.id }
     }
 
-    fun nextSimilarShow(position: Int): Long = similarShows.getOrElse(position) { currentId }
+    fun getShowInPosition(position: Int): Long = shows.getOrElse(position) { currentId }
 }
