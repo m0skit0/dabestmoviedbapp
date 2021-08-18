@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
@@ -19,7 +21,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    RefreshFragment by RefreshFragmentImpl(),
+    CollectFragment<List<TopRatedTVShowsItem>> by CollectFragmentImpl(),
     ErrorFragment by ErrorFragmentImpl()
 {
 
@@ -41,7 +43,7 @@ class TopRatedTVShowsFragment :
             setLoadingView(loading)
         }
         setupErrorListener(this, viewModel)
-        refresh()
+        collect()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
@@ -49,17 +51,17 @@ class TopRatedTVShowsFragment :
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (hasReachedBottom()) {
-                    refresh()
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewModel.nextPage()
+                    }
                 }
             }
         })
     }
 
-    private fun refresh() {
-        refresh(viewLifecycleOwner) {
-            viewModel.topRatedShows().let {
-                binding.topRatedRecycler updateWith it
-            }
+    private fun collect() {
+        viewModel.tvShowList.collect(viewLifecycleOwner) {
+            binding.topRatedRecycler updateWith it
         }
     }
 
