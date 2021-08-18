@@ -13,12 +13,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.invisible
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.toast
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.visible
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 
 @AndroidEntryPoint
-class TVShowDetailsFragment : Fragment() {
+class TVShowDetailsFragment : Fragment(), LoadingFragment by LoadingFragmentImpl() {
 
     private val viewModel: TVShowDetailsViewModel by viewModels()
 
@@ -34,6 +32,7 @@ class TVShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTvShowDetailsBinding.bind(view).apply {
             lifecycleOwner = this@TVShowDetailsFragment
+            setLoadingView(loading)
         }
         setupErrorListener()
         refresh()
@@ -56,18 +55,6 @@ class TVShowDetailsFragment : Fragment() {
                 }
             } ?: toast(R.string.error_happened)
             loaded()
-        }
-    }
-
-    private fun loading() {
-        with(binding) {
-            loading.visible()
-        }
-    }
-
-    private fun loaded() {
-        with(binding) {
-            loading.invisible()
         }
     }
 

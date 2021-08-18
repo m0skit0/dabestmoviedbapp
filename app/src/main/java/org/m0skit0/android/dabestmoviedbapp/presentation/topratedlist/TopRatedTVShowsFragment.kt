@@ -15,13 +15,10 @@ import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.hasReachedBottom
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.invisible
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.toast
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.visible
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 
 @AndroidEntryPoint
-class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked {
+class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked, LoadingFragment by LoadingFragmentImpl() {
 
     private val viewModel: TopRatedTVShowsViewModel by viewModels()
 
@@ -38,6 +35,7 @@ class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked {
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
             lifecycleOwner = this@TopRatedTVShowsFragment
             topRatedRecycler.setupScrollListenerForNextPage()
+            setLoadingView(loading)
         }
         setupErrorListener()
         refresh()
@@ -72,23 +70,11 @@ class TopRatedTVShowsFragment : Fragment(), OnTVShowClicked {
         }
     }
 
-    private fun loading() {
-        with(binding) {
-            loading.visible()
-        }
-    }
-
     private infix fun RecyclerView.updateWith(list: List<TopRatedTVShowsItem>) {
         (adapter as? TopRatedListAdapter)?.updateWith(list)
             ?: run {
                 adapter = TopRatedListAdapter(list, this@TopRatedTVShowsFragment)
             }
-    }
-
-    private fun loaded() {
-        with(binding) {
-            loading.invisible()
-        }
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {

@@ -5,17 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ErrorViewModel
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ErrorViewModelImpl
 import javax.inject.Inject
 
 @HiltViewModel
 class TopRatedTVShowsViewModel
 @Inject constructor(
     private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase
-) : ViewModel() {
+) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
 
     private var currentPage = 1
 
@@ -23,11 +22,10 @@ class TopRatedTVShowsViewModel
 
     private var _error = MutableStateFlow(false)
 
-    val error: StateFlow<Boolean> = _error.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(3000),
-        false,
-    )
+    init {
+        setMutableFlow(_error)
+        setViewModelScope(viewModelScope)
+    }
 
     suspend fun topRatedShows(): List<TopRatedTVShowsItem> =
         try {
