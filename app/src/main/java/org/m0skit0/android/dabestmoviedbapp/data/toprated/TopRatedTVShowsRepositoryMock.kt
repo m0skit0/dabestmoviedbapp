@@ -1,11 +1,11 @@
-package org.m0skit0.android.dabestmoviedbapp.data
+package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
 import javax.inject.Inject
 
 class TopRatedTVShowsRepositoryMock @Inject constructor() : TopRatedTVShowsRepository {
 
     private val mockTVShows = listOf(
-        TVShowData(
+        TopRatedTVShowData(
             1,
             "somepath",
             "The Expanse",
@@ -19,7 +19,7 @@ class TopRatedTVShowsRepositoryMock @Inject constructor() : TopRatedTVShowsRepos
             10.0,
             1,
         ),
-        TVShowData(
+        TopRatedTVShowData(
             2,
             "anotherpath",
             "Breaking Bad",
@@ -35,5 +35,5 @@ class TopRatedTVShowsRepositoryMock @Inject constructor() : TopRatedTVShowsRepos
         ),
     )
 
-    override suspend fun topRatedTVShows(page: Int): List<TVShowData> = mockTVShows
+    override suspend fun topRatedTVShows(page: Int): List<TopRatedTVShowData> = mockTVShows
 }

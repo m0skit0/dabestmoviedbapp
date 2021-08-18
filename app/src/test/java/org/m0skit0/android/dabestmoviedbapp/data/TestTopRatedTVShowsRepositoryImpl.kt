@@ -13,6 +13,8 @@ import org.junit.Test
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryImpl
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
 
 class TestTopRatedTVShowsRepositoryImpl {
 

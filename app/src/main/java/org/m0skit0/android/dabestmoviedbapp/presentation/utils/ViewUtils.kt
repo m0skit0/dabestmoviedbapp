@@ -1,4 +1,4 @@
-package org.m0skit0.android.dabestmoviedbapp.presentation
+package org.m0skit0.android.dabestmoviedbapp.presentation.utils
 
 import android.view.View
 

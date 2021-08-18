@@ -1,8 +1,9 @@
-package org.m0skit0.android.dabestmoviedbapp.data
+package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
-import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
 import javax.inject.Inject
 
 class TopRatedTVShowsRepositoryImpl
@@ -11,13 +12,13 @@ class TopRatedTVShowsRepositoryImpl
     private val tvGenreMapper: TVGenreMapper
 ) : TopRatedTVShowsRepository {
 
-    override suspend fun topRatedTVShows(page: Int): List<TVShowData> =
+    override suspend fun topRatedTVShows(page: Int): List<TopRatedTVShowData> =
         topRatedTVShowsService
             .topRatedTVShows(page = page)
             .topRatedTVShows
             .map { tvShow -> tvShow.toTVShow() }
 
-    private suspend fun TopRatedTVShowApi.toTVShow(): TVShowData = TVShowData(
+    private suspend fun TopRatedTVShowApi.toTVShow(): TopRatedTVShowData = TopRatedTVShowData(
         id = id,
         imagePath = posterPath?.toPreviewPosterFullUrl() ?: "",
         name = name,
@@ -31,7 +32,4 @@ class TopRatedTVShowsRepositoryImpl
         popularity = popularity,
         voteCount = voteCount,
     )
-
-    private fun String.toPreviewPosterFullUrl(): String =
-        "${BuildConfig.IMAGE_BASE_URL}${BuildConfig.PREVIEW_POSTER_SIZE}$this"
 }

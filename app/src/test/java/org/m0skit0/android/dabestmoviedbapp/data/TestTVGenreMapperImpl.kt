@@ -12,6 +12,7 @@ import org.junit.Test
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenresApi
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapperImpl
 
 class TestTVGenreMapperImpl {
 

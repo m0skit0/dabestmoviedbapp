@@ -4,33 +4,37 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
-import org.m0skit0.android.dabestmoviedbapp.domain.TopRatedTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
 import javax.inject.Inject
 
 @HiltViewModel
 class TopRatedTVShowsViewModel
 @Inject constructor(
     private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase
-) : ViewModel() {
+) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
 
     private var currentPage = 1
 
     private var currentTVShowList: List<TopRatedTVShowsItem> = emptyList()
 
-    val error: Flow<Boolean> = MutableStateFlow(false).shareIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(3000),
-    )
+    private var _error = MutableStateFlow(false)
+
+    init {
+        setMutableFlow(_error)
+        setViewModelScope(viewModelScope)
+    }
 
     suspend fun topRatedShows(): List<TopRatedTVShowsItem> =
         try {
-            topRatedTVShowsUseCase.topTVShows(currentPage)
+            topRatedTVShowsUseCase.topTVShows(currentPage).apply {
+                _error.value = false
+            }
         } catch (e: Exception) {
             Log.e("topRatedShows", "Error", e)
+            _error.value = true
             emptyList()
         }.apply {
             if (isNotEmpty()) currentPage++

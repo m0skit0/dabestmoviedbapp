@@ -9,7 +9,8 @@ import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.ItemTopRatedTvShowBinding
 
 class TopRatedListAdapter(
-    var topRatedShows: List<TopRatedTVShowsItem> = emptyList()
+    var topRatedShows: List<TopRatedTVShowsItem> = emptyList(),
+    private val onTVShowClicked: OnTVShowClicked
 ) : RecyclerView.Adapter<TopRatedListAdapter.TopRatedTVShowViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopRatedTVShowViewHolder =
@@ -39,11 +40,14 @@ class TopRatedListAdapter(
             binding.run {
                 tvShowData = tvShowItem
                 executePendingBindings()
-                tvShowItem.loadPoster(root.context, binding)
+                tvShowItem.loadPoster(root.context)
+                root.setOnClickListener {
+                    onTVShowClicked.onClicked(tvShowItem)
+                }
             }
         }
 
-        private fun TopRatedTVShowsItem.loadPoster(context: Context, binding: ItemTopRatedTvShowBinding) {
+        private fun TopRatedTVShowsItem.loadPoster(context: Context) {
             Glide.with(context)
                 .load(poster)
                 .thumbnail(0.5f)

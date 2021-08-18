@@ -1,4 +1,4 @@
-package org.m0skit0.android.dabestmoviedbapp.data
+package org.m0skit0.android.dabestmoviedbapp.data.tvgenres
 
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenresApi
