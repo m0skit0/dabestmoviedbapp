@@ -1,5 +1,6 @@
 package org.m0skit0.android.dabestmoviedbapp.presentation.showdetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
@@ -47,10 +49,21 @@ class TVShowDetailsFragment :
         refresh(viewLifecycleOwner) {
             arguments?.getLong(KEY_ID)?.let { id ->
                 viewModel.tvShowDetails(id).let {
-                    binding.tvShowDetails = it
+                    with(binding) {
+                        tvShowDetails = it
+                        it.loadPoster(this@TVShowDetailsFragment.requireActivity(), )
+                    }
+
                 }
             } ?: toast(R.string.error_happened)
         }
+    }
+
+    private fun TVShowDetailsPresentation.loadPoster(context: Context) {
+        Glide.with(context)
+            .load(poster)
+            .error(R.drawable.image_error)
+            .into(binding.poster)
     }
 
     companion object {
