@@ -20,8 +20,6 @@ class TVShowDetailsPagerFragment : Fragment() {
 
     private val viewModel: TVShowDetailsViewModel by activityViewModels()
 
-    private lateinit var binding: FragmentPagerTvShowDetailsBinding
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
