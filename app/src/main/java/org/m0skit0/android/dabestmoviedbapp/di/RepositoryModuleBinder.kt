@@ -37,5 +37,5 @@ abstract class RepositoryModuleBinder {
     // TODO Add mocked repository as well
     @Binds
     @Singleton
-    abstract fun bindTVGenreMapper(repository: TVShowDetailsRepositoryImpl): TVShowDetailsRepository
+    abstract fun bindTVShowDetailsRepository(repository: TVShowDetailsRepositoryImpl): TVShowDetailsRepository
 }
