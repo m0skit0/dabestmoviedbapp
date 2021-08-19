@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentPagerTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.toast
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
 
 @AndroidEntryPoint
 class TVShowDetailsPagerFragment : Fragment() {
@@ -28,12 +28,10 @@ class TVShowDetailsPagerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewLifecycleOwner.lifecycleScope.launch {
-            arguments?.getLong(KEY_ID)?.let {
-                viewModel.initialId(it)
-                FragmentPagerTvShowDetailsBinding.bind(view).apply {
-                    initializePager()
-                }
-            } ?: toast(R.string.error_happened)
+            showId()?.let {
+                viewModel.loadShows(it)
+                FragmentPagerTvShowDetailsBinding.bind(view).initializePager()
+            } ?: errorToast()
         }
     }
 
@@ -51,5 +49,6 @@ class TVShowDetailsPagerFragment : Fragment() {
     companion object {
         private const val KEY_ID = "id"
         fun bundle(id: Long) = bundleOf(KEY_ID to id)
+        private fun TVShowDetailsPagerFragment.showId(): Long? = arguments?.getLong(KEY_ID)
     }
 }

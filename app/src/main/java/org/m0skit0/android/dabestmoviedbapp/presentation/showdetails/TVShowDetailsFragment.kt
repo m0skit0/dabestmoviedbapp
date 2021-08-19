@@ -8,22 +8,20 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragmentImpl
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.RefreshFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.RefreshFragmentImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 
 @AndroidEntryPoint
 class TVShowDetailsFragment :
     Fragment(),
-    RefreshFragment by RefreshFragmentImpl(),
-    ErrorFragment by ErrorFragmentImpl()
-{
+    CollectFragment<TVShowDetailsPresentation> by CollectFragmentImpl(),
+    ErrorFragment by ErrorFragmentImpl() {
 
     private val viewModel: TVShowDetailsViewModel by activityViewModels()
 
@@ -42,20 +40,24 @@ class TVShowDetailsFragment :
             setLoadingView(loading)
         }
         setupErrorListener(this, viewModel)
-        refresh()
+        setupCollection()
     }
 
-    private fun refresh() {
-        refresh(viewLifecycleOwner) {
-            arguments?.getLong(KEY_ID)?.let { id ->
-                viewModel.tvShowDetails(id).let {
-                    with(binding) {
-                        tvShowDetails = it
-                        it.loadPoster(this@TVShowDetailsFragment.requireActivity(), )
-                    }
+    private fun setupCollection() {
+        showId()?.let { id ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.tvShowDetails(id)
+                collect()
+            }
+        } ?: errorToast()
+    }
 
-                }
-            } ?: toast(R.string.error_happened)
+    private fun collect() {
+        viewModel.tvShowDetails.collect(viewLifecycleOwner) { details ->
+            with(binding) {
+                tvShowDetails = details
+                details.loadPoster(requireActivity())
+            }
         }
     }
 
@@ -69,5 +71,6 @@ class TVShowDetailsFragment :
     companion object {
         private const val KEY_ID = "id"
         fun bundle(id: Long) = bundleOf(KEY_ID to id)
+        private fun TVShowDetailsFragment.showId(): Long? = arguments?.getLong(KEY_ID)
     }
 }
