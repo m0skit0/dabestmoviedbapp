@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
 import javax.inject.Inject
 
 @HiltViewModel
 class TVShowDetailsViewModel @Inject constructor(
     private val tvShowDetailsUseCase: TVShowDetailsUseCase,
-) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
+    errorViewModel: ErrorViewModel,
+) : ViewModel(), ErrorViewModel by errorViewModel {
 
     private var _error = MutableStateFlow(false)
 

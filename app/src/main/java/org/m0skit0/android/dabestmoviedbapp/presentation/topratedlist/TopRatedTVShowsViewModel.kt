@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
 import javax.inject.Inject
 
 @HiltViewModel
 class TopRatedTVShowsViewModel
 @Inject constructor(
-    private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase
-) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
+    private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase,
+    errorViewModel: ErrorViewModel,
+) : ViewModel(), ErrorViewModel by errorViewModel {
 
     private var nextPage = 1
 
