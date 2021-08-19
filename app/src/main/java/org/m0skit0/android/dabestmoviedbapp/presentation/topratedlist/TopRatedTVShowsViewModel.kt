@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,9 +19,22 @@ class TopRatedTVShowsViewModel
     private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase
 ) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
 
-    private var currentPage = 1
+    private var nextPage = 1
 
     private var currentTVShowList: List<TopRatedTVShowsItem> = emptyList()
+
+    private val _tvShowList: MutableStateFlow<List<TopRatedTVShowsItem>> by lazy { MutableStateFlow(emptyList()) }
+
+    val tvShowList: StateFlow<List<TopRatedTVShowsItem>> by lazy {
+        _tvShowList.stateInWhileSubscribed(
+            viewModelScope,
+            emptyList()
+        ).apply {
+            viewModelScope.launch {
+                nextPage()
+            }
+        }
+    }
 
     private var _error = MutableStateFlow(false)
 
@@ -27,9 +43,9 @@ class TopRatedTVShowsViewModel
         setViewModelScope(viewModelScope)
     }
 
-    suspend fun topRatedShows(): List<TopRatedTVShowsItem> =
+    suspend fun nextPage() {
         try {
-            topRatedTVShowsUseCase.topTVShows(currentPage).apply {
+            topRatedTVShowsUseCase.topTVShows(nextPage).apply {
                 _error.value = false
             }
         } catch (e: Exception) {
@@ -37,11 +53,12 @@ class TopRatedTVShowsViewModel
             _error.value = true
             emptyList()
         }.apply {
-            if (isNotEmpty()) currentPage++
+            if (isNotEmpty()) nextPage++
         }.map {
             it.toTopRatedListingItem()
         }.let { nextPage ->
             currentTVShowList = currentTVShowList + nextPage
-            currentTVShowList
+            _tvShowList.value = currentTVShowList
         }
+    }
 }
