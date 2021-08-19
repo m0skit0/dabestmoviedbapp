@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+// TODO Unit test
 class ErrorViewModelImpl @Inject constructor() : ErrorViewModel {
 
     private lateinit var _error: MutableStateFlow<Boolean>

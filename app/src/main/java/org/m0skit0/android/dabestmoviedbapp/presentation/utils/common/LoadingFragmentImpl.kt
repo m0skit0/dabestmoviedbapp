@@ -4,6 +4,7 @@ import android.view.View
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.invisible
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.visible
 
+// TODO Unit test
 class LoadingFragmentImpl : LoadingFragment {
 
     private lateinit var loadingView: View

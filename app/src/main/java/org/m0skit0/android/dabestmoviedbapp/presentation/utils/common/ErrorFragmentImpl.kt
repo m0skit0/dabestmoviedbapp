@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
 
+// TODO Unit test
 class ErrorFragmentImpl : ErrorFragment {
     override fun setupErrorListener(fragment: Fragment, viewModel: ErrorViewModel) {
         with(fragment) {
