@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
@@ -21,9 +19,10 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 class TVShowDetailsFragment :
     Fragment(),
     CollectFragment<TVShowDetailsPresentation> by CollectFragmentImpl(),
-    ErrorFragment by ErrorFragmentImpl() {
+    ErrorFragment by ErrorFragmentImpl()
+{
 
-    private val viewModel: TVShowDetailsViewModel by activityViewModels()
+    private val viewModel: TVShowDetailsViewModel by viewModels()
 
     private lateinit var binding: FragmentTvShowDetailsBinding
 
@@ -40,25 +39,22 @@ class TVShowDetailsFragment :
             setLoadingView(loading)
         }
         setupErrorListener(this, viewModel)
-        setupCollection()
-    }
-
-    private fun setupCollection() {
-        showId()?.let { id ->
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.tvShowDetails(id)
-                collect()
-            }
-        } ?: errorToast()
+        collect()
     }
 
     private fun collect() {
-        viewModel.tvShowDetails.collect(viewLifecycleOwner) { details ->
-            with(binding) {
-                tvShowDetails = details
-                details.loadPoster(requireActivity())
+        showId()?.let { id ->
+            viewModel.tvShowDetails(id).collect(viewLifecycleOwner) { details ->
+                details.isEmpty().not().also { isNotEmpty ->
+                    if (isNotEmpty) {
+                        with(binding) {
+                            tvShowDetails = details
+                            details.loadPoster(requireActivity())
+                        }
+                    }
+                }
             }
-        }
+        } ?: errorToast()
     }
 
     private fun TVShowDetailsPresentation.loadPoster(context: Context) {

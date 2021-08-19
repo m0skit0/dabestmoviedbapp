@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class TVShowDetailsPagerAdapter(
-    private val viewModel: TVShowDetailsViewModel,
+    private val viewModel: TVShowDetailsPagerViewModel,
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {

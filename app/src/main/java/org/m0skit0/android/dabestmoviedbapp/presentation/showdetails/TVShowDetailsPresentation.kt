@@ -21,3 +21,5 @@ fun TVShowDetailsDomain.toTVShowDetailsPresentation() = TVShowDetailsPresentatio
     genres = genres.joinToString(", "),
     overview = overview,
 )
+
+fun TVShowDetailsPresentation.isEmpty() = id == -1L
