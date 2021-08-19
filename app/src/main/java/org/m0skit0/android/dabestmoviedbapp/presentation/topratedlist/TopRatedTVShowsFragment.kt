@@ -62,6 +62,7 @@ class TopRatedTVShowsFragment :
     private fun collect() {
         viewModel.tvShowList.collect(viewLifecycleOwner) {
             binding.topRatedRecycler updateWith it
+            true
         }
     }
 

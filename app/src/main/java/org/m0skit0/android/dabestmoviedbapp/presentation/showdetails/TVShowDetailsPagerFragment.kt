@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
 @AndroidEntryPoint
 class TVShowDetailsPagerFragment : Fragment() {
 
-    private val viewModel: TVShowDetailsViewModel by activityViewModels()
+    private val viewModel: TVShowDetailsPagerViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

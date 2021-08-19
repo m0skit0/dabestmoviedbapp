@@ -10,13 +10,14 @@ class CollectFragmentImpl<T> : CollectFragment<T>, LoadingFragment by LoadingFra
 
     override fun StateFlow<T>.collect(
         lifecycleOwner: LifecycleOwner,
-        onCollect: suspend (T) -> Unit
+        onCollect: suspend (T) -> Boolean
     ) {
         loading()
         lifecycleOwner.lifecycleScope.launch {
             collect {
-                onCollect(it)
-                loaded()
+                onCollect(it).let { isOk ->
+                    if (isOk) loaded()
+                }
             }
         }
     }
