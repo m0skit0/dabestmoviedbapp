@@ -9,6 +9,7 @@ android {
             buildConfigField 'String', 'ORIGINAL_POSTER_SIZE', '""'
             buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_MOCK"'
             buildConfigField 'String', 'NAMED_SHOW_DETAILS_REPOSITORY', '"NAMED_SHOW_DETAILS_REPOSITORY_MOCK"'
+            buildConfigField 'String', 'NAMED_SIMILAR_TV_SHOWS_REPOSITORY', '"NAMED_SIMILAR_TV_SHOWS_REPOSITORY_MOCK"'
         }
         prod {
             buildConfigField 'String', 'BASE_URL', "\"$baseUrl\""
@@ -18,6 +19,7 @@ android {
             buildConfigField 'String', 'ORIGINAL_POSTER_SIZE', "\"$originalPosterSize\""
             buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_REAL"'
             buildConfigField 'String', 'NAMED_SHOW_DETAILS_REPOSITORY', '"NAMED_SHOW_DETAILS_REPOSITORY_REAL"'
+            buildConfigField 'String', 'NAMED_SIMILAR_TV_SHOWS_REPOSITORY', '"NAMED_SIMILAR_TV_SHOWS_REPOSITORY_REAL"'
         }
     }
 }
