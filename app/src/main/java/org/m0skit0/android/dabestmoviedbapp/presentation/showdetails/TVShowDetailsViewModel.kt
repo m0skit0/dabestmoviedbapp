@@ -18,7 +18,7 @@ class TVShowDetailsViewModel @Inject constructor(
     errorViewModel: ErrorViewModel,
 ) : ViewModel(), ErrorViewModel by errorViewModel {
 
-    private val _error = MutableStateFlow(false)
+    private val _error by lazy { MutableStateFlow(false) }
 
     private val _tvShowDetails by lazy { MutableStateFlow(TVShowDetailsPresentation()) }
 

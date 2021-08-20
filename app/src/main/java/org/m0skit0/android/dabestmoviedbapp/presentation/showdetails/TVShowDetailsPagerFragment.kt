@@ -13,14 +13,19 @@ import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentPagerTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragmentImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
 
 @AndroidEntryPoint
-class TVShowDetailsPagerFragment : Fragment(), ErrorFragment by ErrorFragmentImpl() {
+class TVShowDetailsPagerFragment :
+    Fragment(),
+    ErrorFragment by ErrorFragmentImpl(),
+    CollectFragment<List<Long>> by CollectFragmentImpl(EmptyLoadingFragment())
+{
 
     private val viewModel: TVShowDetailsPagerViewModel by viewModels()
+
+    private lateinit var binding: FragmentPagerTvShowDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,19 +34,32 @@ class TVShowDetailsPagerFragment : Fragment(), ErrorFragment by ErrorFragmentImp
     ): View = inflater.inflate(R.layout.fragment_pager_tv_show_details, null)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding = FragmentPagerTvShowDetailsBinding.bind(view)
         viewLifecycleOwner.lifecycleScope.launch {
             showId()?.let {
-                viewModel.loadShows(it)
-                FragmentPagerTvShowDetailsBinding.bind(view).initializePager()
+                startCollecting(it)
                 setupErrorListener(this@TVShowDetailsPagerFragment, viewModel)
             } ?: errorToast()
         }
     }
 
-    private fun FragmentPagerTvShowDetailsBinding.initializePager() {
-        with (pager) {
+    private suspend fun startCollecting(id: Long) {
+        collect()
+        viewModel.loadShows(id)
+    }
+
+    private suspend fun collect() {
+        viewModel.shows.collect(viewLifecycleOwner) { list ->
+            list.isEmpty().not().apply {
+                initializePager(list)
+            }
+        }
+    }
+
+    private fun initializePager(list: List<Long>) {
+        with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
-                viewModel,
+                list,
                 childFragmentManager,
                 lifecycle
             )

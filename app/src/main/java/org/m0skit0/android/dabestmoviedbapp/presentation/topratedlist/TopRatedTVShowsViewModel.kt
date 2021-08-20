@@ -23,7 +23,11 @@ class TopRatedTVShowsViewModel
 
     private var currentTVShowList: List<TopRatedTVShowsItem> = emptyList()
 
-    private val _tvShowList: MutableStateFlow<List<TopRatedTVShowsItem>> by lazy { MutableStateFlow(emptyList()) }
+    private val _tvShowList: MutableStateFlow<List<TopRatedTVShowsItem>> by lazy {
+        MutableStateFlow(
+            emptyList()
+        )
+    }
 
     val tvShowList: StateFlow<List<TopRatedTVShowsItem>> by lazy {
         _tvShowList.stateInWhileSubscribed(
@@ -36,7 +40,7 @@ class TopRatedTVShowsViewModel
         }
     }
 
-    private val _error = MutableStateFlow(false)
+    private val _error by lazy { MutableStateFlow(false) }
 
     init {
         setMutableFlow(_error)
