@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,12 +17,13 @@ class TVShowDetailsPagerViewModel @Inject constructor(
     private val similarTVShowUseCase: SimilarTVShowUseCase,
 ) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
 
-    private val _error = MutableStateFlow(false)
+    private val _error by lazy { MutableStateFlow(false) }
 
-    private var shows: List<Long> = emptyList()
+    private val _shows: MutableStateFlow<List<Long>> by lazy { MutableStateFlow(emptyList()) }
 
-    val similarShowsSize: Int
-        get() = shows.size
+    val shows: StateFlow<List<Long>> by lazy {
+        _shows.stateInWhileSubscribed(viewModelScope, emptyList())
+    }
 
     init {
         setMutableFlow(_error)
@@ -28,7 +31,7 @@ class TVShowDetailsPagerViewModel @Inject constructor(
     }
 
     suspend fun loadShows(id: Long) {
-        shows = listOf(id) + try {
+        _shows.value = listOf(id) + try {
             similarTVShowUseCase.similarTVShows(id).map { it.id }.apply {
                 _error.value = false
             }
@@ -38,6 +41,4 @@ class TVShowDetailsPagerViewModel @Inject constructor(
             emptyList()
         }
     }
-
-    fun getShowInPosition(position: Int): Long = shows.getOrElse(position) { -1 }
 }

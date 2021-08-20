@@ -6,15 +6,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class TVShowDetailsPagerAdapter(
-    private val viewModel: TVShowDetailsPagerViewModel,
+    private val list: List<Long>,
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItemCount(): Int = viewModel.similarShowsSize
+    override fun getItemCount(): Int = list.size
 
     override fun createFragment(position: Int): Fragment =
         TVShowDetailsFragment().apply {
-            arguments = TVShowDetailsFragment.bundle(viewModel.getShowInPosition(position))
+            arguments = TVShowDetailsFragment.bundle(list.getOrDefault(position))
         }
+
+    private fun List<Long>.getOrDefault(position: Int) = getOrElse(position) { -1 }
 }
