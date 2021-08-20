@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 // TODO Unit test
-class CollectFragmentImpl<T> : CollectFragment<T>, LoadingFragment by LoadingFragmentImpl() {
+class CollectFragmentImpl<T>(
+    loadingFragment: LoadingFragment = LoadingFragmentImpl()
+) : CollectFragment<T>, LoadingFragment by loadingFragment {
 
     override fun StateFlow<T>.collect(
         lifecycleOwner: LifecycleOwner,

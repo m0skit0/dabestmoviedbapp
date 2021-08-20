@@ -13,17 +13,14 @@ import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentPagerTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.CollectFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.CollectFragmentImpl
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragmentImpl
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
 
 @AndroidEntryPoint
 class TVShowDetailsPagerFragment :
     Fragment(),
     ErrorFragment by ErrorFragmentImpl(),
-    CollectFragment<List<Long>> by CollectFragmentImpl()
+    CollectFragment<List<Long>> by CollectFragmentImpl(EmptyLoadingFragment())
 {
 
     private val viewModel: TVShowDetailsPagerViewModel by viewModels()
