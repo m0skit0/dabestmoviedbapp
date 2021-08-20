@@ -15,7 +15,7 @@ class TVShowDetailsPagerViewModel @Inject constructor(
     private val similarTVShowUseCase: SimilarTVShowUseCase,
 ) : ViewModel(), ErrorViewModel by ErrorViewModelImpl() {
 
-    private var _error = MutableStateFlow(false)
+    private val _error = MutableStateFlow(false)
 
     private var shows: List<Long> = emptyList()
 

@@ -36,7 +36,7 @@ class TopRatedTVShowsViewModel
         }
     }
 
-    private var _error = MutableStateFlow(false)
+    private val _error = MutableStateFlow(false)
 
     init {
         setMutableFlow(_error)
