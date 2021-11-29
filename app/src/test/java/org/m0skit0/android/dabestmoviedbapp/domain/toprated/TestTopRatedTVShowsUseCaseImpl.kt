@@ -10,7 +10,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
-import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepository
 
 class TestTopRatedTVShowsUseCaseImpl {
 

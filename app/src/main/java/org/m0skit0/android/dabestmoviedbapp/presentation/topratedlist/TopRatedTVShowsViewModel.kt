@@ -3,19 +3,17 @@ package org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopRatedTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
+import org.m0skit0.android.dabestmoviedbapp.domain.toprated.topTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
-import javax.inject.Inject
 
-@HiltViewModel
 class TopRatedTVShowsViewModel
-@Inject constructor(
-    private val topRatedTVShowsUseCase: TopRatedTVShowsUseCase,
+constructor(
+    private val topRatedTVShowsUseCase: suspend (page: Int) -> List<TopRatedTVShowData> = { page -> topTVShowsUseCase(page) },
     errorViewModel: ErrorViewModel,
 ) : ViewModel(), ErrorViewModel by errorViewModel {
 
@@ -49,7 +47,7 @@ class TopRatedTVShowsViewModel
 
     suspend fun nextPage() {
         try {
-            topRatedTVShowsUseCase.topTVShows(nextPage).apply {
+            topRatedTVShowsUseCase(nextPage).apply {
                 _error.value = false
             }
         } catch (e: Exception) {

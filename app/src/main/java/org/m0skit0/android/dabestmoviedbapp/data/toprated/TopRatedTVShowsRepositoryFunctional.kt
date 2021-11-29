@@ -1,24 +1,26 @@
 package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
+import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
-import javax.inject.Inject
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapperImpl
+import retrofit2.Retrofit
 
-class TopRatedTVShowsRepositoryImpl
-@Inject constructor(
-    private val topRatedTVShowsService: TopRatedTVShowsService,
-    private val tvGenreMapper: TVGenreMapper
-) : TopRatedTVShowsRepository {
+suspend fun topRatedTVShowsRepository(
+    retrofit: Retrofit,
+    topRatedTVShowsService: TopRatedTVShowsService = retrofit.create(TopRatedTVShowsService::class.java),
+    tvGenreMapper: TVGenreMapper = TVGenreMapperImpl(retrofit.create(TVGenreService::class.java)),
+    page: Int
+): List<TopRatedTVShowData> =
+    topRatedTVShowsService
+        .topRatedTVShows(page = page)
+        .topRatedTVShows
+        .map { tvShow -> tvShow.toTVShow(tvGenreMapper) }
 
-    override suspend fun topRatedTVShows(page: Int): List<TopRatedTVShowData> =
-        topRatedTVShowsService
-            .topRatedTVShows(page = page)
-            .topRatedTVShows
-            .map { tvShow -> tvShow.toTVShow() }
-
-    private suspend fun TopRatedTVShowApi.toTVShow(): TopRatedTVShowData = TopRatedTVShowData(
+private suspend fun TopRatedTVShowApi.toTVShow(tvGenreMapper: TVGenreMapper): TopRatedTVShowData =
+    TopRatedTVShowData(
         id = id,
         imagePath = posterPath?.toPreviewPosterFullUrl() ?: "",
         name = name,
@@ -32,4 +34,3 @@ class TopRatedTVShowsRepositoryImpl
         popularity = popularity,
         voteCount = voteCount,
     )
-}
