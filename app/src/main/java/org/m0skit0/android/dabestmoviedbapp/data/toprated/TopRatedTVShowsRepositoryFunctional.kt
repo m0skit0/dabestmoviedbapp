@@ -1,17 +1,14 @@
 package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapperImpl
-import retrofit2.Retrofit
+import org.m0skit0.android.dabestmoviedbapp.di.koin
 
 suspend fun topRatedTVShowsRepository(
-    retrofit: Retrofit,
-    topRatedTVShowsService: TopRatedTVShowsService = retrofit.create(TopRatedTVShowsService::class.java),
-    tvGenreMapper: TVGenreMapper = TVGenreMapperImpl(retrofit.create(TVGenreService::class.java)),
+    topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
+    tvGenreMapper: TVGenreMapper = koin().get(),
     page: Int
 ): List<TopRatedTVShowData> =
     topRatedTVShowsService

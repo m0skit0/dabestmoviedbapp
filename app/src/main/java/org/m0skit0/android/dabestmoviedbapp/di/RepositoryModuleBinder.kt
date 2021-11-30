@@ -10,8 +10,6 @@ import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsReposi
 import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsRepositoryImpl
 import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsRepositoryMock
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapperImpl
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -24,10 +22,6 @@ const val NAMED_SIMILAR_TV_SHOWS_REPOSITORY_REAL = "NAMED_SIMILAR_TV_SHOWS_REPOS
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModuleBinder {
-
-    @Binds
-    @Singleton
-    abstract fun bindTVGenreMapper(mapper: TVGenreMapperImpl): TVGenreMapper
 
     @Binds
     @Singleton

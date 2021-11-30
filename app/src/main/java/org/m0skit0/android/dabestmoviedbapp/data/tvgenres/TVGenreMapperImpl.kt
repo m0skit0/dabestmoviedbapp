@@ -2,10 +2,9 @@ package org.m0skit0.android.dabestmoviedbapp.data.tvgenres
 
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenresApi
-import javax.inject.Inject
 
 class TVGenreMapperImpl
-@Inject constructor(
+constructor(
     private val tvGenreService: TVGenreService
 ) : TVGenreMapper {
 

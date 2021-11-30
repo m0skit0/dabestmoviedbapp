@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
-import org.m0skit0.android.dabestmoviedbapp.domain.toprated.topTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
 
 class TopRatedTVShowsViewModel
 constructor(
-    private val topRatedTVShowsUseCase: suspend (page: Int) -> List<TopRatedTVShowData> = { page -> topTVShowsUseCase(page) },
+    private val topRatedTVShowsUseCase: suspend (page: Int) -> List<TopRatedTVShowData> = koin().get(),
     errorViewModel: ErrorViewModel,
 ) : ViewModel(), ErrorViewModel by errorViewModel {
 

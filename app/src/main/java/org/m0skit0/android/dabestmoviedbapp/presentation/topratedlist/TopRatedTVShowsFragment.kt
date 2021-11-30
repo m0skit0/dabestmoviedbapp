@@ -5,27 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 
-@AndroidEntryPoint
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
     CollectFragment<List<TopRatedTVShowsItem>> by CollectFragmentImpl(),
-    ErrorFragment by ErrorFragmentImpl()
-{
+    ErrorFragment by ErrorFragmentImpl(),
+    KoinComponent {
 
-    private val viewModel: TopRatedTVShowsViewModel by viewModels()
+    private val viewModel: TopRatedTVShowsViewModel by viewModel()
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
