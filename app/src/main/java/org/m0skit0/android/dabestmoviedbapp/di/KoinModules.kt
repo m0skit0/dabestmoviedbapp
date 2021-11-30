@@ -41,7 +41,7 @@ fun Application.startKoin() {
 fun koin(): Koin = koinApplication.koin
 
 private val presentationModule = module {
-    viewModel { TopRatedTVShowsViewModel(get(), get()) }
+    viewModel { TopRatedTVShowsViewModel(get(NAMED_TOP_RATED_TV_SHOWS_USECASE), get()) }
     factory<ErrorViewModel> { ErrorViewModelImpl() }
 }
 
