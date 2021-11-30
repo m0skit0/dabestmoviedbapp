@@ -3,12 +3,11 @@ package org.m0skit0.android.dabestmoviedbapp.data.toprated
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 
 suspend fun topRatedTVShowsRepository(
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
-    tvGenreMapper: TVGenreMapper = koin().get(),
+    tvGenreMapper: suspend (ids: List<Int>) -> List<String> = koin().get(),
     page: Int
 ): List<TopRatedTVShowData> =
     topRatedTVShowsService
@@ -16,7 +15,7 @@ suspend fun topRatedTVShowsRepository(
         .topRatedTVShows
         .map { tvShow -> tvShow.toTVShow(tvGenreMapper) }
 
-private suspend fun TopRatedTVShowApi.toTVShow(tvGenreMapper: TVGenreMapper): TopRatedTVShowData =
+private suspend fun TopRatedTVShowApi.toTVShow(tvGenreMapper: suspend (ids: List<Int>) -> List<String>): TopRatedTVShowData =
     TopRatedTVShowData(
         id = id,
         imagePath = posterPath?.toPreviewPosterFullUrl() ?: "",
@@ -24,7 +23,7 @@ private suspend fun TopRatedTVShowApi.toTVShow(tvGenreMapper: TVGenreMapper): To
         voteAverage = voteAverage,
         originalName = originalName,
         overview = overview,
-        genres = tvGenreMapper.mapGenres(genreIds),
+        genres = tvGenreMapper(genreIds),
         firstAirDate = firstAirDate,
         originCountry = originCountry,
         originalLanguage = originalLanguage,

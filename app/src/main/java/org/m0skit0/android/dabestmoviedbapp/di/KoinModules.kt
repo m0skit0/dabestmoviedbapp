@@ -14,8 +14,7 @@ import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowsRepository
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapperImpl
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.mapGenres
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.topTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopRatedTVShowsViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
@@ -61,12 +60,14 @@ private val retrofitModule = module {
     }
     single<TopRatedTVShowsService> { get<Retrofit>().create(TopRatedTVShowsService::class.java) }
     single<TVGenreService> { get<Retrofit>().create(TVGenreService::class.java) }
-    single<TVGenreMapper> { TVGenreMapperImpl(get()) }
 }
 
 val NAMED_TOP_RATED_TV_SHOWS_REPOSITORY = named("NAMED_TOP_RATED_TV_SHOWS_REPOSITORY")
 private val repositoryModule = module {
     single<suspend (Int) -> List<TopRatedTVShowData>>(NAMED_TOP_RATED_TV_SHOWS_REPOSITORY) {
-        { page -> topRatedTVShowsRepository(page = page)}
+        { page -> topRatedTVShowsRepository(page = page) }
+    }
+    single<suspend (ids: List<Int>) -> List<String>> {
+        { ids -> mapGenres(ids = ids) }
     }
 }

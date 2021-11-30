@@ -1,9 +1,5 @@
 package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
-import io.kotlintest.matchers.collections.shouldBeEmpty
-import io.kotlintest.matchers.numerics.shouldBeZero
-import io.kotlintest.matchers.string.shouldBeEmpty
-import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -13,7 +9,6 @@ import org.junit.Test
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreMapper
 
 class TestTopRatedTVShowsRepositoryImpl {
 
