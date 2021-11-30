@@ -8,12 +8,9 @@ private var genreMappingCache: Map<Int, String> = mapOf()
 
 suspend fun mapGenres(
     ids: List<Int>,
-    tvGenreService: TVGenreService = koin().get(),
     genreMapping: Map<Int, String> = genreMappingCache,
 ): List<String> = run {
-    if (genreMapping.isEmpty()) {
-        genreMappingCache = tvGenreService.tvGenres().toMap()
-    }
+    if (genreMapping.isEmpty()) cacheTVGenres()
     ids.mapFromCache()
 }
 
@@ -23,4 +20,10 @@ private fun List<Int>.mapFromCache(
     genreMapping: Map<Int, String> = genreMappingCache
 ): List<String> = mapNotNull {
     genreMapping.getOrDefault(it, null)
+}
+
+private suspend fun cacheTVGenres(
+    tvGenreService: TVGenreService = koin().get(),
+) {
+    genreMappingCache = tvGenreService.tvGenres().toMap()
 }
