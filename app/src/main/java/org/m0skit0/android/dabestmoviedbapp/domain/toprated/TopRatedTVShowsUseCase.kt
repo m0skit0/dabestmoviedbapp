@@ -10,7 +10,4 @@ import org.m0skit0.android.dabestmoviedbapp.di.koin
 suspend fun topTVShowsUseCase(
     page: Int,
     repository: suspend (page: Int) -> Either<Throwable, List<TopRatedTVShowData>> = koin().get(NAMED_TOP_RATED_TV_SHOWS_REPOSITORY)
-): Either<Throwable, List<TopRatedTVShowData>> =
-    withContext(Dispatchers.IO) {
-        repository(page)
-    }
+): Either<Throwable, List<TopRatedTVShowData>> = withContext(Dispatchers.IO) { repository(page) }
