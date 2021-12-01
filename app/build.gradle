@@ -76,9 +76,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
-    def koinVersion= "3.1.4"
+    def koinVersion = "3.1.4"
     implementation "io.insert-koin:koin-core:$koinVersion"
     implementation "io.insert-koin:koin-android:$koinVersion"
+
+    def arrowVersion = "1.0.1"
+    implementation "io.arrow-kt:arrow-core:$arrowVersion"
 
     testImplementation 'junit:junit:4.+'
     testImplementation "io.mockk:mockk:1.12.0"

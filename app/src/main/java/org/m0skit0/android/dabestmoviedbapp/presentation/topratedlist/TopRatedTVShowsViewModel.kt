@@ -3,6 +3,7 @@ package org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -12,7 +13,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubsc
 
 class TopRatedTVShowsViewModel
 constructor(
-    private val topRatedTVShowsUseCase: suspend (page: Int) -> List<TopRatedTVShowData>,
+    private val topRatedTVShowsUseCase: suspend (page: Int) -> Either<Throwable, List<TopRatedTVShowData>>,
     errorViewModel: ErrorViewModel,
 ) : ViewModel(), ErrorViewModel by errorViewModel {
 
@@ -21,9 +22,7 @@ constructor(
     private var currentTVShowList: List<TopRatedTVShowsItem> = emptyList()
 
     private val _tvShowList: MutableStateFlow<List<TopRatedTVShowsItem>> by lazy {
-        MutableStateFlow(
-            emptyList()
-        )
+        MutableStateFlow(emptyList())
     }
 
     val tvShowList: StateFlow<List<TopRatedTVShowsItem>> by lazy {
@@ -45,21 +44,18 @@ constructor(
     }
 
     suspend fun nextPage() {
-        try {
-            topRatedTVShowsUseCase(nextPage).apply {
-                _error.value = false
-            }
-        } catch (e: Exception) {
-            Log.e("topRatedShows", "Error", e)
+        topRatedTVShowsUseCase(nextPage).fold({
+            Log.e("topRatedShows", "Error", it)
             _error.value = true
-            emptyList()
-        }.apply {
-            if (isNotEmpty()) nextPage++
-        }.map {
-            it.toTopRatedListingItem()
-        }.let { nextPage ->
-            currentTVShowList = currentTVShowList + nextPage
-            _tvShowList.value = currentTVShowList
+            emptyList<TopRatedTVShowsItem>()
+        }) { list ->
+            list
+                .map {
+                    it.toTopRatedListingItem()
+                }.let { nextPage ->
+                    currentTVShowList = currentTVShowList + nextPage
+                    _tvShowList.value = currentTVShowList
+                }
         }
     }
 }

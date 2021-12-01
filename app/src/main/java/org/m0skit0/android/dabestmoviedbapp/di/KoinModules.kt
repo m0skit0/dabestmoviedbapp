@@ -1,6 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.di
 
 import android.app.Application
+import arrow.core.Either
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -46,7 +47,7 @@ private val presentationModule = module {
 
 val NAMED_TOP_RATED_TV_SHOWS_USECASE = named("NAMED_TOP_RATED_TV_SHOWS_USECASE")
 private val domainModule = module {
-    single<suspend (Int) -> List<TopRatedTVShowData>>(NAMED_TOP_RATED_TV_SHOWS_USECASE) {
+    single<suspend (Int) -> Either<Throwable, List<TopRatedTVShowData>>>(NAMED_TOP_RATED_TV_SHOWS_USECASE) {
         { page -> topTVShowsUseCase(page) }
     }
 }
@@ -64,7 +65,7 @@ private val retrofitModule = module {
 
 val NAMED_TOP_RATED_TV_SHOWS_REPOSITORY = named("NAMED_TOP_RATED_TV_SHOWS_REPOSITORY")
 private val repositoryModule = module {
-    single<suspend (Int) -> List<TopRatedTVShowData>>(NAMED_TOP_RATED_TV_SHOWS_REPOSITORY) {
+    single<suspend (Int) -> Either<Throwable, List<TopRatedTVShowData>>>(NAMED_TOP_RATED_TV_SHOWS_REPOSITORY) {
         { page -> topRatedTVShowsRepository(page = page) }
     }
     single<suspend (ids: List<Int>) -> List<String>> {

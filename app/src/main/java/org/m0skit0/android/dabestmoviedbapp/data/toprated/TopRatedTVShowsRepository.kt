@@ -1,5 +1,6 @@
 package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
+import arrow.core.Either
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
@@ -9,11 +10,13 @@ suspend fun topRatedTVShowsRepository(
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
     tvGenreMapper: suspend (ids: List<Int>) -> List<String> = koin().get(),
     page: Int
-): List<TopRatedTVShowData> =
-    topRatedTVShowsService
-        .topRatedTVShows(page = page)
-        .topRatedTVShows
-        .map { tvShow -> tvShow.toTVShow(tvGenreMapper) }
+): Either<Throwable, List<TopRatedTVShowData>> =
+    Either.catch {
+        topRatedTVShowsService
+            .topRatedTVShows(page = page)
+            .topRatedTVShows
+            .map { tvShow -> tvShow.toTVShow(tvGenreMapper) }
+    }
 
 private suspend fun TopRatedTVShowApi.toTVShow(tvGenreMapper: suspend (ids: List<Int>) -> List<String>): TopRatedTVShowData =
     TopRatedTVShowData(
