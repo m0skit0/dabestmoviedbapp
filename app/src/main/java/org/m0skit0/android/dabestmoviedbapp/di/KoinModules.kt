@@ -14,7 +14,8 @@ import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowsRepository
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.mapGenres
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.cacheTVGenres
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.mapTVGenres
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.topTVShowsUseCase
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -63,6 +64,9 @@ private val repositoryModule = module {
         { page -> topRatedTVShowsRepository(page = page) }
     }
     single<suspend (ids: List<Int>) -> List<String>> {
-        { ids -> mapGenres(ids = ids) }
+        { ids ->
+            cacheTVGenres()
+            mapTVGenres(ids = ids)
+        }
     }
 }

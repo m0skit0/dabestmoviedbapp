@@ -1,7 +1,5 @@
 package org.m0skit0.android.dabestmoviedbapp.data.tvgenres
 
-import io.kotlintest.matchers.collections.shouldBeEmpty
-import io.kotlintest.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -112,7 +110,7 @@ class TestTVGenreMapperImpl {
         runBlocking {
             tvGenreMapperImpl.run {
                 repeat(5) {
-                    mapGenres(emptyList())
+                    mapTVGenres(emptyList())
                 }
             }
         }
@@ -132,7 +130,7 @@ class TestTVGenreMapperImpl {
         runBlocking {
             tvGenreMapperImpl.run {
                 repeat(5) {
-                    mapGenres(emptyList())
+                    mapTVGenres(emptyList())
                 }
             }
         }
