@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import arrow.core.Either
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_RATED_TV_SHOWS_USECASE
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
@@ -20,13 +20,14 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    CollectFragment<List<TopRatedTVShowsItem>> by CollectFragmentImpl(),
-    ErrorFragment by ErrorFragmentImpl(),
+    FetchFragment<List<TopRatedTVShowsItem>> by FetchFragmentImpl(),
     KoinComponent {
 
-    private val viewModel: TopRatedTVShowsViewModel by viewModel()
+    private val topRatedTVShowsUseCase: suspend (Int) -> Either<Throwable, List<TopRatedTVShowsItem>> by inject(NAMED_TOP_RATED_TV_SHOWS_USECASE)
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
+
+    private var currentPage = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,27 +42,22 @@ class TopRatedTVShowsFragment :
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }
-        setupErrorListener(this, viewModel)
-        collect()
+        nextPage()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (hasReachedBottom()) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.nextPage()
-                    }
-                }
+                if (hasReachedBottom()) nextPage()
             }
         })
     }
 
-    private fun collect() {
-        viewModel.tvShowList.collect(viewLifecycleOwner) {
+    private fun nextPage() {
+        fetch({ topRatedTVShowsUseCase(currentPage) }) {
+            currentPage++
             binding.topRatedRecycler updateWith it
-            true
         }
     }
 
