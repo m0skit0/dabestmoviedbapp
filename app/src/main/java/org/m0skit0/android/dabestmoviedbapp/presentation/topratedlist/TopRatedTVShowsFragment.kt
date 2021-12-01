@@ -11,6 +11,7 @@ import arrow.core.Either
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_RATED_TV_SHOWS_USECASE
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
@@ -20,10 +21,10 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    FetchFragment<List<TopRatedTVShowsItem>> by FetchFragmentImpl(),
+    FetchFragment<List<TopRatedTVShowData>> by FetchFragmentImpl(),
     KoinComponent {
 
-    private val topRatedTVShowsUseCase: suspend (Int) -> Either<Throwable, List<TopRatedTVShowsItem>> by inject(NAMED_TOP_RATED_TV_SHOWS_USECASE)
+    private val topRatedTVShowsUseCase: suspend (Int) -> Either<Throwable, List<TopRatedTVShowData>> by inject(NAMED_TOP_RATED_TV_SHOWS_USECASE)
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
@@ -55,9 +56,9 @@ class TopRatedTVShowsFragment :
     }
 
     private fun nextPage() {
-        fetch({ topRatedTVShowsUseCase(currentPage) }) {
+        fetch({ topRatedTVShowsUseCase(currentPage) }) { tvShowsData ->
             currentPage++
-            binding.topRatedRecycler updateWith it
+            binding.topRatedRecycler updateWith tvShowsData.map { it.toTopRatedListingItem() }
         }
     }
 
