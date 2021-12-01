@@ -4,7 +4,6 @@ import android.app.Application
 import arrow.core.Either
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -17,9 +16,6 @@ import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.mapGenres
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.topTVShowsUseCase
-import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopRatedTVShowsViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModelImpl
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
@@ -41,8 +37,6 @@ fun Application.startKoin() {
 fun koin(): Koin = koinApplication.koin
 
 private val presentationModule = module {
-    viewModel { TopRatedTVShowsViewModel(get(NAMED_TOP_RATED_TV_SHOWS_USECASE), get()) }
-    factory<ErrorViewModel> { ErrorViewModelImpl() }
 }
 
 val NAMED_TOP_RATED_TV_SHOWS_USECASE = named("NAMED_TOP_RATED_TV_SHOWS_USECASE")
