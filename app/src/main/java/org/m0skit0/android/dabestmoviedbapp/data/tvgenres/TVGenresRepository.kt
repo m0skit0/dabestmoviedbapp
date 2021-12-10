@@ -4,6 +4,8 @@ import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenresApi
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 
+typealias TVGenresRepository = suspend (ids: List<Int>) -> List<String>
+
 private var genreMappingCache: Map<Int, String> = mapOf()
 
 fun mapTVGenres(

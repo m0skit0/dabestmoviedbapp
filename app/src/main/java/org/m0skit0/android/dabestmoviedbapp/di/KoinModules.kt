@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
@@ -15,6 +16,7 @@ import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsReposi
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.tvShowDetails
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowsRepository
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenresRepository
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.cacheTVGenres
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.mapTVGenres
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
@@ -50,9 +52,11 @@ private val presentationModule = module {
     factory<ErrorFragment> { ErrorFragmentImpl() }
 }
 
+val NAMED_TOP_TV_SHOWS_USE_CASE = named("NAMED_TOP_TV_SHOWS_USE_CASE")
+val NAMED_TV_SHOW_DETAILS_USE_CASE = named("NAMED_TV_SHOW_DETAILS_USE_CASE")
 private val domainModule = module {
-    single<TopTVShowsUseCase> { { page -> topTVShowsUseCase(page) } }
-    single<TVShowDetailsUseCase> { { id -> tvShowDetailsUseCase(id = id) } }
+    single<TopTVShowsUseCase>(NAMED_TOP_TV_SHOWS_USE_CASE) { { page -> topTVShowsUseCase(page) } }
+    single<TVShowDetailsUseCase>(NAMED_TV_SHOW_DETAILS_USE_CASE) { { id -> tvShowDetailsUseCase(id = id) } }
 }
 
 private val retrofitModule = module {
@@ -67,17 +71,19 @@ private val retrofitModule = module {
     single<TVShowDetailsService> { get<Retrofit>().create(TVShowDetailsService::class.java) }
 }
 
+val NAMED_TOP_TV_SHOWS_REPOSITORY = named("NAMED_TOP_TV_SHOWS_REPOSITORY")
+val NAMED_TV_SHOW_DETAILS_REPOSITORY = named("NAMED_TV_SHOW_DETAILS_REPOSITORY")
 private val repositoryModule = module {
-    single<TopRatedTVShowsRepository> {
+    single<TopRatedTVShowsRepository>(NAMED_TOP_TV_SHOWS_REPOSITORY) {
         { page -> topRatedTVShowsRepository(page = page) }
     }
-    single<suspend (ids: List<Int>) -> List<String>> {
+    single<TVGenresRepository> {
         { ids ->
             cacheTVGenres()
             mapTVGenres(ids = ids)
         }
     }
-    single<TVShowDetailsRepository>  {
+    single<TVShowDetailsRepository>(NAMED_TV_SHOW_DETAILS_REPOSITORY) {
         { id -> tvShowDetails(id = id) }
     }
 }

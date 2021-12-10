@@ -12,6 +12,7 @@ import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
@@ -24,7 +25,7 @@ class TopRatedTVShowsFragment :
     FetchFragment<List<TopRatedTVShowData>> by koin().get(),
     KoinComponent {
 
-    private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject()
+    private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
