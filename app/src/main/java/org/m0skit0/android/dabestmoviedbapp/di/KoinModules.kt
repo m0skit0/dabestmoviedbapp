@@ -11,8 +11,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
+import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVShowDetailsService
 import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepository
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.tvShowDetails
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowsRepository
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.cacheTVGenres
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.mapTVGenres
@@ -56,11 +60,11 @@ private val retrofitModule = module {
     }
     single<TopRatedTVShowsService> { get<Retrofit>().create(TopRatedTVShowsService::class.java) }
     single<TVGenreService> { get<Retrofit>().create(TVGenreService::class.java) }
+    single<TVShowDetailsService> { get<Retrofit>().create(TVShowDetailsService::class.java) }
 }
 
-val NAMED_TOP_RATED_TV_SHOWS_REPOSITORY = named("NAMED_TOP_RATED_TV_SHOWS_REPOSITORY")
 private val repositoryModule = module {
-    single<suspend (Int) -> Either<Throwable, List<TopRatedTVShowData>>>(NAMED_TOP_RATED_TV_SHOWS_REPOSITORY) {
+    single<TopRatedTVShowsRepository> {
         { page -> topRatedTVShowsRepository(page = page) }
     }
     single<suspend (ids: List<Int>) -> List<String>> {
@@ -68,5 +72,8 @@ private val repositoryModule = module {
             cacheTVGenres()
             mapTVGenres(ids = ids)
         }
+    }
+    single<TVShowDetailsRepository> {
+        { id -> tvShowDetails(id = id) }
     }
 }

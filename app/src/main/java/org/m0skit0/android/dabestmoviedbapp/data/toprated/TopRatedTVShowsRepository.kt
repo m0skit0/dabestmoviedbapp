@@ -6,6 +6,8 @@ import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 
+typealias TopRatedTVShowsRepository = suspend (page: Int) -> Either<Throwable, List<TopRatedTVShowData>>
+
 suspend fun topRatedTVShowsRepository(
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
     tvGenreMapper: suspend (ids: List<Int>) -> List<String> = koin().get(),
