@@ -6,6 +6,8 @@ import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsReposit
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.withUseCaseContext
 
+typealias TopTVShowsUseCase = suspend (page: Int) -> Either<Throwable, List<TopRatedTVShowData>>
+
 suspend fun topTVShowsUseCase(
     page: Int,
     repository: TopRatedTVShowsRepository = koin().get()

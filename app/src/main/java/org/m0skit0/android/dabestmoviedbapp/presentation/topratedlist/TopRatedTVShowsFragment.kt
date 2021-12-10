@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import arrow.core.Either
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
-import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_RATED_TV_SHOWS_USECASE
+import org.m0skit0.android.dabestmoviedbapp.di.koin
+import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
@@ -21,10 +21,10 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    FetchFragment<List<TopRatedTVShowData>> by FetchFragmentImpl(),
+    FetchFragment<List<TopRatedTVShowData>> by koin().get(),
     KoinComponent {
 
-    private val topRatedTVShowsUseCase: suspend (Int) -> Either<Throwable, List<TopRatedTVShowData>> by inject(NAMED_TOP_RATED_TV_SHOWS_USECASE)
+    private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject()
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 

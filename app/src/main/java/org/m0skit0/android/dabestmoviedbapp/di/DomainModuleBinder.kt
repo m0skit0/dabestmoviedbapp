@@ -14,9 +14,5 @@ abstract class DomainModuleBinder {
 
     @Binds
     @Singleton
-    abstract fun bindTVShowDetailsUseCase(useCase: TVShowDetailsUseCaseImpl): TVShowDetailsUseCase
-
-    @Binds
-    @Singleton
     abstract fun bindSimilarTVShowUseCase(useCase: SimilarTVShowUseCaseImpl): SimilarTVShowUseCase
 }

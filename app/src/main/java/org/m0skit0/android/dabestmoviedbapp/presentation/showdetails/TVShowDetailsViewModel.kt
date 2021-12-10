@@ -7,8 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.stateInWhileSubscribed
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +38,7 @@ class TVShowDetailsViewModel @Inject constructor(
 
     private suspend fun postTVShowDetails(id: Long) {
         try {
-            tvShowDetailsUseCase.tvShowDetails(id).toTVShowDetailsPresentation().apply {
+            tvShowDetailsUseCase(id).toTVShowDetailsPresentation().apply {
                 _error.value = false
             }
         } catch (e: Exception) {
