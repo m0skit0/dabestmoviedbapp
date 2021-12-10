@@ -7,7 +7,7 @@
 
         <variable
             name="tvShowDetails"
-            type="org.m0skit0.android.dabestmoviedbapp.presentati " />
+            type="org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPresentation" />
     </data>
 
     <FrameLayout

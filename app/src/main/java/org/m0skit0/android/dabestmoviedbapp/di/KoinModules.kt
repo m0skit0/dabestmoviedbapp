@@ -21,6 +21,8 @@ import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseC
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.tvShowDetailsUseCase
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.domain.toprated.topTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragmentImpl
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragmentImpl
 import retrofit2.Retrofit
@@ -45,6 +47,7 @@ fun koin(): Koin = koinApplication.koin
 
 private val presentationModule = module {
     factory<FetchFragment<out Any>> { FetchFragmentImpl() }
+    factory<ErrorFragment> { ErrorFragmentImpl() }
 }
 
 private val domainModule = module {

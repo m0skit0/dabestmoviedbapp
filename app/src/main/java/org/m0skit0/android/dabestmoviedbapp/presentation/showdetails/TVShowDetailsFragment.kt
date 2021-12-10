@@ -9,7 +9,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
@@ -24,7 +23,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 class TVShowDetailsFragment :
     Fragment(),
     FetchFragment<TVShowDetailsData> by koin().get(),
-    ErrorFragment by ErrorFragmentImpl()
+    ErrorFragment by koin().get()
 {
 
     private val tvShowDetails: TVShowDetailsUseCase by inject()
@@ -43,26 +42,23 @@ class TVShowDetailsFragment :
             lifecycleOwner = this@TVShowDetailsFragment
             setLoadingView(loading)
         }
-        setupErrorListener(this, viewModel)
         lifecycleScope.launch { fetchShowDetails() }
     }
 
-    private suspend fun CoroutineScope.fetchShowDetails() {
+    private suspend fun fetchShowDetails() {
         showId()?.let { id ->
-            tvShowDetails(id).fold({}) { details ->
+            fetch({ tvShowDetails(id) }) { details ->
                 details.isEmpty().not().also { isNotEmpty ->
                     if (isNotEmpty) {
                         with(binding) {
-                            tvShowDetails = details
+                            tvShowDetails = details.toTVShowDetailsPresentation()
                             details.loadPoster(requireActivity())
                         }
                     }
                 }
             }
-        } ?: errorToast()
+        }
     }
-
-    fun TVShowDetailsData.isEmpty() = id == -1L
 
     private fun TVShowDetailsData.loadPoster(context: Context) {
         Glide.with(context)
@@ -72,6 +68,8 @@ class TVShowDetailsFragment :
     }
 
     private fun showId(): Long? = arguments?.getLong(KEY_ID)
+
+    private fun TVShowDetailsData.isEmpty() = id == -1L
 
     companion object {
         private const val KEY_ID = "id"
