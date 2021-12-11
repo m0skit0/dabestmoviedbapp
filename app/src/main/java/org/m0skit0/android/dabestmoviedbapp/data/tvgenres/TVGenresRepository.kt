@@ -8,6 +8,11 @@ typealias TVGenresRepository = suspend (ids: List<Int>) -> List<String>
 
 private var genreMappingCache: Map<Int, String> = mapOf()
 
+suspend fun cacheAndMapTVGenres(ids: List<Int>): List<String> = run {
+    cacheTVGenres()
+    mapTVGenres(ids)
+}
+
 fun mapTVGenres(
     ids: List<Int>,
     genreMapping: Map<Int, String> = genreMappingCache

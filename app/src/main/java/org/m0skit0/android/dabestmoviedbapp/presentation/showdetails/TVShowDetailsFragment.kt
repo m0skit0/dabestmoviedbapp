@@ -43,18 +43,18 @@ class TVShowDetailsFragment :
             lifecycleOwner = this@TVShowDetailsFragment
             setLoadingView(loading)
         }
-        lifecycleScope.launch { fetchShowDetails() }
+        lifecycleScope.launch {
+            showId()?.let { fetchShowDetails(it) } ?: errorToast()
+        }
     }
 
-    private suspend fun fetchShowDetails() {
-        showId()?.let { id ->
-            fetch({ tvShowDetails(id) }) { details ->
-                details.isEmpty().not().also { isNotEmpty ->
-                    if (isNotEmpty) {
-                        with(binding) {
-                            tvShowDetails = details.toTVShowDetailsPresentation()
-                            details.loadPoster(requireActivity())
-                        }
+    private suspend fun fetchShowDetails(id: Long) {
+        fetch({ tvShowDetails(id) }) { details ->
+            details.isEmpty().not().also { isNotEmpty ->
+                if (isNotEmpty) {
+                    with(binding) {
+                        tvShowDetails = details.toTVShowDetailsPresentation()
+                        details.loadPoster(requireActivity())
                     }
                 }
             }
