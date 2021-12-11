@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentPagerTvShowDetailsBinding
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_NO_LOADING
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
@@ -20,11 +20,10 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragm
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
 
-@AndroidEntryPoint
 class TVShowDetailsPagerFragment :
     Fragment(),
     ErrorFragment by koin().get(),
-    FetchFragment<List<Long>> by koin().get()
+    FetchFragment<List<Long>> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
 {
 
     private val similarTVShowsUseCase: SimilarTVShowsUseCase by inject(NAMED_SIMILAR_TV_SHOWS_USE_CASE)

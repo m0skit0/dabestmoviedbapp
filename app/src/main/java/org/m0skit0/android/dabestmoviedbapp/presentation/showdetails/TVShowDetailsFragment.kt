@@ -15,6 +15,7 @@ import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
 import org.m0skit0.android.dabestmoviedbapp.data.toOriginalPosterFullUrl
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
@@ -23,7 +24,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 
 class TVShowDetailsFragment :
     Fragment(),
-    FetchFragment<TVShowDetailsData> by koin().get(),
+    FetchFragment<TVShowDetailsData> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     ErrorFragment by koin().get()
 {
 
