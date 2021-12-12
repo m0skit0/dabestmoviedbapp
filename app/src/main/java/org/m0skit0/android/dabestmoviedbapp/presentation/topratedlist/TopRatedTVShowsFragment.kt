@@ -47,7 +47,7 @@ class TopRatedTVShowsFragment :
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }
-        loadTopTVShowsState()
+        loadTopTVShows()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
@@ -59,25 +59,25 @@ class TopRatedTVShowsFragment :
         })
     }
 
-    private fun loadTopTVShowsState() {
-        topRatedTVShowsAdapter?.run {
-            setAdapterToRecyclerView()
-            loaded()
-        } ?: run {
-            nextPage()
-        }
+    private fun loadTopTVShows() {
+        topRatedTVShowsAdapter?.run { setAdapterToRecyclerView() } ?: nextPage()
+        loaded()
     }
 
     private fun nextPage() {
         fetch({ topRatedTVShowsUseCase(currentPage) }) { tvShowsData ->
             tvShowsData.map { it.toTopRatedListingItem() }.let { newPage ->
                 topRatedTVShowsAdapter?.updateWith(newPage) ?: run {
-                    topRatedTVShowsAdapter = TopRatedListAdapter(newPage, this)
+                    createNewAdapterWith(newPage)
                     setAdapterToRecyclerView()
                 }
             }
             currentPage++
         }
+    }
+
+    private fun createNewAdapterWith(items: List<TopRatedTVShowsItem>) {
+        topRatedTVShowsAdapter = TopRatedListAdapter(items, this)
     }
 
     private fun setAdapterToRecyclerView() {
