@@ -45,7 +45,7 @@ class TVShowDetailsPagerFragment :
 
     private suspend fun fetchSimilarShows(id: Long) {
         fetch({ similarTVShowsUseCase(id) }) {
-            initializePager(it)
+            initializePager(listOf(id) + it)
         }
     }
 
