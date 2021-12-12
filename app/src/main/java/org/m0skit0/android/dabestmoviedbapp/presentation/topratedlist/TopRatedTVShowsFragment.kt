@@ -28,6 +28,8 @@ class TopRatedTVShowsFragment :
 
     private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)
 
+    private var topRatedTVShowsAdapter: TopRatedListAdapter? = null
+
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
     private var currentPage = 1
@@ -45,7 +47,7 @@ class TopRatedTVShowsFragment :
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }
-        nextPage()
+        loadTopTVShowsState()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
@@ -57,18 +59,29 @@ class TopRatedTVShowsFragment :
         })
     }
 
-    private fun nextPage() {
-        fetch({ topRatedTVShowsUseCase(currentPage) }) { tvShowsData ->
-            currentPage++
-            binding.topRatedRecycler updateWith tvShowsData.map { it.toTopRatedListingItem() }
+    private fun loadTopTVShowsState() {
+        topRatedTVShowsAdapter?.run {
+            setAdapterToRecyclerView()
+            loaded()
+        } ?: run {
+            nextPage()
         }
     }
 
-    private infix fun RecyclerView.updateWith(list: List<TopRatedTVShowsItem>) {
-        (adapter as? TopRatedListAdapter)?.updateWith(list)
-            ?: run {
-                adapter = TopRatedListAdapter(list, this@TopRatedTVShowsFragment)
+    private fun nextPage() {
+        fetch({ topRatedTVShowsUseCase(currentPage) }) { tvShowsData ->
+            tvShowsData.map { it.toTopRatedListingItem() }.let { newPage ->
+                topRatedTVShowsAdapter?.updateWith(newPage) ?: run {
+                    topRatedTVShowsAdapter = TopRatedListAdapter(newPage, this)
+                    setAdapterToRecyclerView()
+                }
             }
+            currentPage++
+        }
+    }
+
+    private fun setAdapterToRecyclerView() {
+        binding.topRatedRecycler.adapter = topRatedTVShowsAdapter
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
