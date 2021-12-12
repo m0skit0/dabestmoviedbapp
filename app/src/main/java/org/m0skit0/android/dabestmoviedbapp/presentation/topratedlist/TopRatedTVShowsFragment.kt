@@ -61,7 +61,6 @@ class TopRatedTVShowsFragment :
 
     private fun loadTopTVShows() {
         topRatedTVShowsAdapter?.run { setAdapterToRecyclerView() } ?: nextPage()
-        loaded()
     }
 
     private fun nextPage() {
@@ -82,6 +81,7 @@ class TopRatedTVShowsFragment :
 
     private fun setAdapterToRecyclerView() {
         binding.topRatedRecycler.adapter = topRatedTVShowsAdapter
+        loaded()
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
