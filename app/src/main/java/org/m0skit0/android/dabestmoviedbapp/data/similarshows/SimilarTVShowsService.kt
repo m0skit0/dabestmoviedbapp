@@ -1,4 +1,4 @@
-package org.m0skit0.android.dabestmoviedbapp.data.retrofit
+package org.m0skit0.android.dabestmoviedbapp.data.similarshows
 
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import retrofit2.http.GET

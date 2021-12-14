@@ -1,9 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
 import arrow.core.Either
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
-import org.m0skit0.android.dabestmoviedbapp.data.toPreviewPosterFullUrl
+import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenresRepository
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 
@@ -36,3 +34,6 @@ private suspend fun TopRatedTVShowApi.toTVShow(tvGenreMapper: suspend (ids: List
         popularity = popularity,
         voteCount = voteCount,
     )
+
+private fun String.toPreviewPosterFullUrl(): String =
+    "${BuildConfig.IMAGE_BASE_URL}${BuildConfig.PREVIEW_POSTER_SIZE}$this"

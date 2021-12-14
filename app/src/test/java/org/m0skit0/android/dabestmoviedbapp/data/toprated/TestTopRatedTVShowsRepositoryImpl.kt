@@ -10,9 +10,6 @@ import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowApi
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsApi
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
 
 class TestTopRatedTVShowsRepositoryImpl {
 
@@ -88,7 +85,7 @@ class TestTopRatedTVShowsRepositoryImpl {
 
     @Test
     fun `when top rated tv shows has actual objects with valid genres, repo should correctly map genres`() {
-        val genresList = listOf("org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1", "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2", "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 3")
+        val genresList = listOf("org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1", "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2", "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 3")
         val topRatedTVShows = (0..3).map {
             TopRatedTVShowApi(
                 genreIds = listOf(1, 2, 3)

@@ -7,9 +7,9 @@
 //import kotlinx.coroutines.runBlocking
 //import org.junit.Before
 //import org.junit.Test
-//import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreApi
-//import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
-//import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenresApi
+//import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreApi
+//import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreService
+//import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenresApi
 //
 //class TestTVGenreMapperImpl {
 //
@@ -43,7 +43,7 @@
 //    @Test
 //    fun `when mapping a empty list of genres against a non-empty genre API, mapping should also return an empty list`() {
 //        coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi(
-//            tVGenres = listOf(TVGenreApi(name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"), TVGenreApi(name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2"))
+//            tVGenres = listOf(TVGenreApi(name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1"), TVGenreApi(name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2"))
 //        )
 //        runBlocking {
 //            tvGenreMapperImpl.mapGenres(emptyList()).shouldBeEmpty()
@@ -55,13 +55,13 @@
 //        coEvery { mockTvGenreService.tvGenres() } returns
 //                TVGenresApi(
 //                    tVGenres = listOf(
-//                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
-//                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2"),
-//                        TVGenreApi(id = 3, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 3"),
+//                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1"),
+//                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2"),
+//                        TVGenreApi(id = 3, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 3"),
 //                    )
 //                )
 //        runBlocking {
-//            tvGenreMapperImpl.mapGenres(listOf(1, 2)) shouldBe listOf("org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1", "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
+//            tvGenreMapperImpl.mapGenres(listOf(1, 2)) shouldBe listOf("org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1", "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2")
 //        }
 //    }
 //
@@ -70,12 +70,12 @@
 //        coEvery { mockTvGenreService.tvGenres() } returns
 //                TVGenresApi(
 //                    tVGenres = listOf(
-//                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
-//                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
+//                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1"),
+//                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2")
 //                    )
 //                )
 //        runBlocking {
-//            tvGenreMapperImpl.mapGenres(listOf(2, 4)) shouldBe listOf("org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
+//            tvGenreMapperImpl.mapGenres(listOf(2, 4)) shouldBe listOf("org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2")
 //        }
 //    }
 //
@@ -84,8 +84,8 @@
 //        coEvery { mockTvGenreService.tvGenres() } returns
 //                TVGenresApi(
 //                    tVGenres = listOf(
-//                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
-//                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
+//                        TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1"),
+//                        TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2")
 //                    )
 //                )
 //        runBlocking {
@@ -123,8 +123,8 @@
 //    fun `when mapping, it should only call API on the first call if genres were resolved`() {
 //        coEvery { mockTvGenreService.tvGenres() } returns TVGenresApi(
 //            tVGenres = listOf(
-//                TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 1"),
-//                TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.retrofit.Genre 2")
+//                TVGenreApi(id = 1, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 1"),
+//                TVGenreApi(id = 2, name = "org.m0skit0.android.dabestmoviedbapp.data.showdetails.Genre 2")
 //            )
 //        )
 //        runBlocking {

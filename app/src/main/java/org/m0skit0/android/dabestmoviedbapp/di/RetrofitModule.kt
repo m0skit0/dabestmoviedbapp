@@ -2,10 +2,10 @@ package org.m0skit0.android.dabestmoviedbapp.di
 
 import org.koin.dsl.module
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.SimilarTVShowsService
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVGenreService
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVShowDetailsService
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TopRatedTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsService
+import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreService
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
