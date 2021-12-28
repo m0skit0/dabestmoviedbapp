@@ -15,6 +15,6 @@ val NAMED_SIMILAR_TV_SHOWS_USE_CASE = named("NAMED_SIMILAR_TV_SHOWS_USE_CASE")
 
 val domainModule = module {
     single<TopTVShowsUseCase>(NAMED_TOP_TV_SHOWS_USE_CASE) { { page -> topTVShowsUseCase(page) } }
-    single<TVShowDetailsUseCase>(NAMED_TV_SHOW_DETAILS_USE_CASE) { { id -> tvShowDetailsUseCase(id = id) } }
+    single<TVShowDetailsUseCase>(NAMED_TV_SHOW_DETAILS_USE_CASE) { { state -> tvShowDetailsUseCase(state = state) } }
     single<SimilarTVShowsUseCase>(NAMED_SIMILAR_TV_SHOWS_USE_CASE) { { state -> similarTVShowsUseCase(state = state) } }
 }

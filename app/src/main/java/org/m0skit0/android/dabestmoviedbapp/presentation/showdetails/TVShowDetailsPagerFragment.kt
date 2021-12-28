@@ -49,14 +49,15 @@ class TVShowDetailsPagerFragment :
 
     private suspend fun fetchSimilarShows(state: ApplicationState) {
         fetch({ similarTVShowsUseCase(state) }) { newState ->
-            initializePager(listOf(newState.first.currentShowId) + newState.second)
+            initializePager(newState)
         }
     }
 
-    private fun initializePager(list: List<Long>) {
+    private fun initializePager(state: SimilarTVShowsUseCaseState) {
         with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
-                list,
+                state.first,
+                listOf(state.first.currentShowId) + state.second,
                 childFragmentManager,
                 lifecycle
             )

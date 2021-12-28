@@ -4,18 +4,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsPagerAdapter(
+    val state: ApplicationState,
     private val list: List<Long>,
     fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
+    lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int = list.size
 
     override fun createFragment(position: Int): Fragment =
         TVShowDetailsFragment().apply {
-            arguments = TVShowDetailsFragment.bundle(list.getOrDefault(position))
+            arguments = TVShowDetailsFragment.bundle(state.copy(currentShowId = list.getOrDefault(position)))
         }
 
     private fun List<Long>.getOrDefault(position: Int) = getOrElse(position) { -1 }

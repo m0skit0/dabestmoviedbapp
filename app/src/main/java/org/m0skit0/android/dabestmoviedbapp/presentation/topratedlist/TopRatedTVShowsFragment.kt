@@ -88,7 +88,7 @@ class TopRatedTVShowsFragment :
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
         findNavController().navigate(
             R.id.tvShowDetailsPagerFragment,
-            TVShowDetailsPagerFragment.bundle(tvShow.id)
+            TVShowDetailsPagerFragment.bundle(state.copy(currentShowId = tvShow.id))
         )
     }
 }
