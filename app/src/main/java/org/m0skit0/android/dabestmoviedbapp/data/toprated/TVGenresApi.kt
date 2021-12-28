@@ -1,4 +1,4 @@
-package org.m0skit0.android.dabestmoviedbapp.data.tvgenres
+package org.m0skit0.android.dabestmoviedbapp.data.toprated
 import com.fasterxml.jackson.annotation.JsonProperty
 
 

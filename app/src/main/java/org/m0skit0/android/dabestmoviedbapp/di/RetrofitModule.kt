@@ -4,8 +4,8 @@ import org.koin.dsl.module
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsService
 import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsService
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TVGenreService
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsService
-import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreService
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 

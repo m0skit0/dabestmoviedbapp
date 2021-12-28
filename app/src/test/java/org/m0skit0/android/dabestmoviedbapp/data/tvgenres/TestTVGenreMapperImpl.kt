@@ -7,9 +7,9 @@
 //import kotlinx.coroutines.runBlocking
 //import org.junit.Before
 //import org.junit.Test
-//import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreApi
-//import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenreService
-//import org.m0skit0.android.dabestmoviedbapp.data.tvgenres.TVGenresApi
+//import org.m0skit0.android.dabestmoviedbapp.data.toprated.TVGenreApi
+//import org.m0skit0.android.dabestmoviedbapp.data.toprated.TVGenreService
+//import org.m0skit0.android.dabestmoviedbapp.data.toprated.TVGenresApi
 //
 //class TestTVGenreMapperImpl {
 //
