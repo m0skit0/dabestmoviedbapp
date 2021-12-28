@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class ApplicationState(
     val currentPage: Int = 1,
-    val currentSeries: Long? = null,
+    val currentShowId: Long = -1L,
     val genreMappingCache: Map<Int, String> = mapOf(),
 ) : Serializable

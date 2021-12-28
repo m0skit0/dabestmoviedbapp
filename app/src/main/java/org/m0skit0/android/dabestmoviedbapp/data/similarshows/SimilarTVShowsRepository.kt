@@ -11,9 +11,9 @@ suspend fun similarTVShows(
     state: ApplicationState,
     similarTVShowsService: SimilarTVShowsService = koin().get()
 ): Either<Throwable, SimilarTVShowsState> = Either.catch {
-    state to (state.currentSeries?.let { seriesId ->
+    state to (state.currentShowId.let { seriesId ->
         similarTVShowsService.similarTVShows(id = seriesId)
             .results
             .map { it.toSimilarTVShowsData() }
-    } ?: emptyList())
+    })
 }
