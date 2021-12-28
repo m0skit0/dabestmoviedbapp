@@ -31,6 +31,9 @@ class TVShowDetailsPagerFragment :
 
     private lateinit var binding: FragmentPagerTvShowDetailsBinding
 
+    private val state: ApplicationState
+        get() = arguments?.getSerializable(KEY_STATE) as? ApplicationState ?: ApplicationState()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +43,7 @@ class TVShowDetailsPagerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPagerTvShowDetailsBinding.bind(view)
         lifecycleScope.launch {
-            fetchSimilarShows(state())
+            fetchSimilarShows(state)
         }
     }
 
@@ -60,8 +63,6 @@ class TVShowDetailsPagerFragment :
             setPageTransformer(ZoomOutPageTransformer())
         }
     }
-
-    private fun state(): ApplicationState = arguments?.getSerializable(KEY_STATE) as? ApplicationState ?: ApplicationState()
 
     companion object {
         private const val KEY_STATE = "state"

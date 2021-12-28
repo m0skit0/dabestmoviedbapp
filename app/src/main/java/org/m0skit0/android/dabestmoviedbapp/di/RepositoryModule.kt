@@ -23,7 +23,7 @@ val repositoryModule = module {
         { state, ids -> mapTVGenres(state = state, ids = ids) }
     }
     single<TVShowDetailsRepository>(NAMED_TV_SHOW_DETAILS_REPOSITORY) {
-        { id -> tvShowDetails(id = id) }
+        { state -> tvShowDetails(state = state) }
     }
     single<SimilarTVShowsRepository>(NAMED_SIMILAR_TV_SHOWS_REPOSITORY) {
         { state -> similarTVShows(state = state) }

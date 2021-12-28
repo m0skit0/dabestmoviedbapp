@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsState
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
@@ -20,16 +21,20 @@ import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsFragment :
     Fragment(),
-    FetchFragment<TVShowDetailsData> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<TVShowDetailsState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     ErrorFragment by koin().get()
 {
 
     private val tvShowDetails: TVShowDetailsUseCase by inject(NAMED_TV_SHOW_DETAILS_USE_CASE)
 
     private lateinit var binding: FragmentTvShowDetailsBinding
+
+    private val state: ApplicationState
+        get() = arguments?.getSerializable(KEY_STATE) as? ApplicationState ?: ApplicationState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,18 +49,16 @@ class TVShowDetailsFragment :
             setLoadingView(loading)
         }
         lifecycleScope.launch {
-            showId()?.let { fetchShowDetails(it) } ?: errorToast()
+            fetchShowDetails(state)
         }
     }
 
-    private suspend fun fetchShowDetails(id: Long) {
-        fetch({ tvShowDetails(id) }) { details ->
-            details.isEmpty().not().also { isNotEmpty ->
-                if (isNotEmpty) {
-                    with(binding) {
-                        tvShowDetails = details.toTVShowDetailsPresentation()
-                        details.loadPoster(requireActivity())
-                    }
+    private suspend fun fetchShowDetails(state: ApplicationState) {
+        fetch({ tvShowDetails(state) }) { newState ->
+            newState.second.run {
+                if (!isEmpty()) {
+                    binding.tvShowDetails = toTVShowDetailsPresentation()
+                    loadPoster(requireActivity())
                 }
             }
         }
@@ -68,12 +71,10 @@ class TVShowDetailsFragment :
             .into(binding.poster)
     }
 
-    private fun showId(): Long? = arguments?.getLong(KEY_ID)
-
     private fun TVShowDetailsData.isEmpty() = id == -1L
 
     companion object {
-        private const val KEY_ID = "id"
-        fun bundle(id: Long) = bundleOf(KEY_ID to id)
+        private const val KEY_STATE = "state"
+        fun bundle(state: ApplicationState) = bundleOf(KEY_STATE to state)
     }
 }
