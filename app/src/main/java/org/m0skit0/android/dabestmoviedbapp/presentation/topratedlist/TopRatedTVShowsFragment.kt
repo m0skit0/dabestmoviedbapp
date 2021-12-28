@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
-import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsState
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
@@ -19,11 +19,12 @@ import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    FetchFragment<List<TopRatedTVShowData>> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<TopRatedTVShowsState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     KoinComponent {
 
     private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)
@@ -32,7 +33,7 @@ class TopRatedTVShowsFragment :
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
-    private var currentPage = 1
+    private var state = ApplicationState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,14 +65,14 @@ class TopRatedTVShowsFragment :
     }
 
     private fun nextPage() {
-        fetch({ topRatedTVShowsUseCase(currentPage) }) { tvShowsData ->
-            tvShowsData.map { it.toTopRatedListingItem() }.let { newPage ->
+        fetch({ topRatedTVShowsUseCase(state) }) { topRatedState ->
+            topRatedState.second.map { it.toTopRatedListingItem() }.let { newPage ->
                 topRatedTVShowsAdapter?.updateWith(newPage) ?: run {
                     createNewAdapterWith(newPage)
                     setAdapterToRecyclerView()
                 }
             }
-            currentPage++
+            state = topRatedState.first.copy(currentPage = topRatedState.first.currentPage + 1)
         }
     }
 

@@ -1,28 +1,23 @@
 package org.m0skit0.android.dabestmoviedbapp.data.tvgenres
 
 import org.m0skit0.android.dabestmoviedbapp.di.koin
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
-typealias TVGenresRepository = suspend (ids: List<Int>) -> List<String>
-
-private var genreMappingCache: Map<Int, String> = mapOf()
-
-suspend fun cacheAndMapTVGenres(ids: List<Int>): List<String> = run {
-    cacheTVGenres()
-    mapTVGenres(ids)
-}
+typealias TVGenresRepository = suspend (state: ApplicationState, ids: List<Int>) -> List<String>
 
 fun mapTVGenres(
+    state: ApplicationState,
     ids: List<Int>,
-    genreMapping: Map<Int, String> = genreMappingCache
-): List<String> = ids.mapNotNull { genreMapping.getOrDefault(it, null) }
+): List<String> = ids.mapNotNull { state.genreMappingCache.getOrDefault(it, null) }
 
 suspend fun cacheTVGenres(
-    tvGenreService: TVGenreService = koin().get(),
-    genreMapping: Map<Int, String> = genreMappingCache,
-) {
-    if (genreMapping.isEmpty()) {
-        genreMappingCache = tvGenreService.tvGenres().toMap()
-    }
-}
+    state: ApplicationState,
+    tvGenreService: () -> TVGenreService = { koin().get() },
+): ApplicationState =
+    if (state.genreMappingCache.isEmpty())
+        tvGenreService().tvGenres().toMap().let {
+            state.copy(genreMappingCache = it)
+        }
+    else state
 
 private fun TVGenresApi.toMap(): Map<Int, String> = tVGenres.associate { it.id to it.name }

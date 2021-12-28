@@ -5,10 +5,14 @@ import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowsRepo
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_REPOSITORY
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.withUseCaseContext
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
-typealias SimilarTVShowsUseCase = suspend (id: Long) -> Either<Throwable, List<Long>>
+typealias SimilarTVShowsUseCase = suspend (state: ApplicationState) -> Either<Throwable, SimilarTVShowsUseCaseState>
+typealias SimilarTVShowsUseCaseState = Pair<ApplicationState, List<Long>>
 
 suspend fun similarTVShowsUseCase(
-    id: Long,
+    state: ApplicationState,
     repository: SimilarTVShowsRepository = koin().get(NAMED_SIMILAR_TV_SHOWS_REPOSITORY)
-): Either<Throwable, List<Long>> = withUseCaseContext { repository(id).map { list -> list.map { it.id } } }
+): Either<Throwable, SimilarTVShowsUseCaseState> = withUseCaseContext {
+    repository(state).map { state -> state.first to (state.second.map { it.id }) }
+}

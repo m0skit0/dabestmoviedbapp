@@ -15,15 +15,16 @@ import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_NO_LOADING
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
+import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCaseState
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsPagerFragment :
     Fragment(),
     ErrorFragment by koin().get(),
-    FetchFragment<List<Long>> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
+    FetchFragment<SimilarTVShowsUseCaseState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
 {
 
     private val similarTVShowsUseCase: SimilarTVShowsUseCase by inject(NAMED_SIMILAR_TV_SHOWS_USE_CASE)
@@ -39,13 +40,13 @@ class TVShowDetailsPagerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPagerTvShowDetailsBinding.bind(view)
         lifecycleScope.launch {
-            showId()?.let { fetchSimilarShows(it) } ?: errorToast()
+            fetchSimilarShows(state())
         }
     }
 
-    private suspend fun fetchSimilarShows(id: Long) {
-        fetch({ similarTVShowsUseCase(id) }) {
-            initializePager(listOf(id) + it)
+    private suspend fun fetchSimilarShows(state: ApplicationState) {
+        fetch({ similarTVShowsUseCase(state) }) { newState ->
+            initializePager(listOf(newState.first.currentSeries ?: 0L) + newState.second)
         }
     }
 
@@ -60,10 +61,10 @@ class TVShowDetailsPagerFragment :
         }
     }
 
-    private fun showId(): Long? = arguments?.getLong(KEY_ID)
+    private fun state(): ApplicationState = arguments?.getSerializable(KEY_STATE) as? ApplicationState ?: ApplicationState()
 
     companion object {
-        private const val KEY_ID = "id"
-        fun bundle(id: Long) = bundleOf(KEY_ID to id)
+        private const val KEY_STATE = "state"
+        fun bundle(state: ApplicationState) = bundleOf(KEY_STATE to state)
     }
 }
