@@ -1,21 +1,28 @@
 package org.m0skit0.android.dabestmoviedbapp.state
 
-import arrow.optics.optics
 import java.io.Serializable
 
-@optics
 data class ApplicationState(
-    val topRatedState: TopRatedState,
-    val showDetailsState: ShowDetailsState
-) : Serializable { companion object }
+    val topRatedState: TopRatedState = TopRatedState(),
+    val showDetailsState: ShowDetailsState = ShowDetailsState()
+) : Serializable
 
-@optics
 data class TopRatedState(
     val currentPage: Int = 1,
     val genreMappingCache: Map<Int, String> = mapOf(),
-) : Serializable { companion object }
+) : Serializable
 
-@optics
 data class ShowDetailsState(
     val currentShowId: Long = -1L,
-) : Serializable { companion object }
+) : Serializable
+
+infix fun ApplicationState.updateGenreMappingCacheWith(newMap: Map<Int, String>): ApplicationState =
+    copy(topRatedState = topRatedState.copy(genreMappingCache = newMap))
+
+infix fun ApplicationState.updateCurrentPageWith(newPage: Int): ApplicationState =
+    copy(topRatedState = topRatedState.copy(currentPage = newPage))
+
+fun ApplicationState.updateWithNextPage(): ApplicationState = updateCurrentPageWith(topRatedState.currentPage + 1)
+
+infix fun ApplicationState.updateCurrentShowIdWith(newShowId: Long): ApplicationState =
+    copy(showDetailsState = showDetailsState.copy(currentShowId = newShowId))

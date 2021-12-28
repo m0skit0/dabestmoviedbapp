@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
-import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsState
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryState
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
@@ -24,7 +24,7 @@ import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    FetchFragment<TopRatedTVShowsState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<TopRatedTVShowsRepositoryState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     KoinComponent {
 
     private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)

@@ -4,17 +4,18 @@ import arrow.core.Either
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
+import org.m0skit0.android.dabestmoviedbapp.state.updateGenreMappingCacheWith
 
-typealias TopRatedTVShowsRepository = suspend (state: ApplicationState) -> Either<Throwable, TopRatedTVShowsState>
-typealias TopRatedTVShowsState = Pair<ApplicationState, List<TopRatedTVShowData>>
+typealias TopRatedTVShowsRepository = suspend (state: ApplicationState) -> Either<Throwable, TopRatedTVShowsRepositoryState>
+typealias TopRatedTVShowsRepositoryState = Pair<ApplicationState, List<TopRatedTVShowData>>
 
 suspend fun topRatedTVShowsRepository(
     state: ApplicationState,
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
-): Either<Throwable, TopRatedTVShowsState> =
+): Either<Throwable, TopRatedTVShowsRepositoryState> =
     Either.catch {
         topRatedTVShowsService
-            .topRatedTVShows(page = state.currentPage)
+            .topRatedTVShows(page = state.topRatedState.currentPage)
             .topRatedTVShows
             .toTVShows(state)
     }
@@ -44,7 +45,7 @@ private suspend fun List<TopRatedTVShowApi>.toTVShows(
 
 private fun List<Int>.mapTVGenres(
     state: ApplicationState,
-): List<String> = mapNotNull { state.genreMappingCache.getOrDefault(it, null) }
+): List<String> = mapNotNull { state.topRatedState.genreMappingCache.getOrDefault(it, null) }
 
 private fun String.toPreviewPosterFullUrl(): String =
     "${BuildConfig.IMAGE_BASE_URL}${BuildConfig.PREVIEW_POSTER_SIZE}$this"
@@ -53,9 +54,9 @@ private suspend fun cacheTVGenres(
     state: ApplicationState,
     tvGenreService: () -> TVGenreService = { koin().get() },
 ): ApplicationState =
-    if (state.genreMappingCache.isEmpty())
+    if (state.topRatedState.genreMappingCache.isEmpty())
         tvGenreService().tvGenres().toMap().let {
-            state.copy(genreMappingCache = it)
+            state updateGenreMappingCacheWith it
         }
     else state
 

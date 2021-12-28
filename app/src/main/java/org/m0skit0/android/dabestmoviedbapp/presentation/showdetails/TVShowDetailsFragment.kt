@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
-import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsState
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepositoryState
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
@@ -25,7 +25,7 @@ import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsFragment :
     Fragment(),
-    FetchFragment<TVShowDetailsState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<TVShowDetailsRepositoryState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     ErrorFragment by koin().get()
 {
 
