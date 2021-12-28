@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id("com.google.devtools.ksp") version "1.6.0-1.0.2"
 }
 
 apply from: 'themoviedb.gradle'
@@ -72,8 +71,6 @@ dependencies {
 
     def arrowVersion = "1.0.1"
     implementation "io.arrow-kt:arrow-core:$arrowVersion"
-    implementation("io.arrow-kt:arrow-optics:$arrowVersion")
-//    ksp("io.arrow-kt:arrow-optics-ksp-plugin:1.0.1")
 
     testImplementation 'junit:junit:4.+'
     testImplementation "io.mockk:mockk:1.12.0"
