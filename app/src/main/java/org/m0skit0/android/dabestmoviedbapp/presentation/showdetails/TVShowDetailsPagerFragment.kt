@@ -62,7 +62,7 @@ class TVShowDetailsPagerFragment :
         }
     }
 
-    private fun ApplicationState.mapSimilarShowsToIds() = showDetailsState.similarShowsIds.map { it.id }
+    private fun ApplicationState.mapSimilarShowsToIds(): List<Long> = similarShowsState.similarShows.map { it.id }
 
     companion object {
         private const val KEY_STATE = "state"

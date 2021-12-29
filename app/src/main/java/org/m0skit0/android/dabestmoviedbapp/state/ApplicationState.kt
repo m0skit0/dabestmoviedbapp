@@ -7,19 +7,8 @@ import java.io.Serializable
 
 data class ApplicationState(
     val topRatedState: TopRatedState = TopRatedState(),
-    val showDetailsState: ShowDetailsState = ShowDetailsState()
-) : Serializable
-
-data class TopRatedState(
-    val currentPage: Int = 1,
-    val topRatedShows: List<TopRatedTVShowData> = emptyList(),
-    val genreMappingCache: Map<Int, String> = mapOf(),
-) : Serializable
-
-data class ShowDetailsState(
-    val currentShowId: Long = -1L,
-    val tvShowDetails: TVShowDetailsData? = null,
-    val similarShowsIds: List<SimilarTVShowData> = emptyList()
+    val showDetailsState: ShowDetailsState = ShowDetailsState(),
+    val similarShowsState: SimilarShowsState = SimilarShowsState()
 ) : Serializable
 
 infix fun ApplicationState.updateGenreMappingCacheWith(newMap: Map<Int, String>): ApplicationState =
@@ -40,4 +29,4 @@ infix fun ApplicationState.updateTvShowDetailsWith(newShow: TVShowDetailsData): 
     copy(showDetailsState = showDetailsState.copy(tvShowDetails = newShow))
 
 infix fun ApplicationState.updateSimilarShowsWith(newList: List<SimilarTVShowData>): ApplicationState =
-    copy(showDetailsState = showDetailsState.copy(similarShowsIds = newList))
+    copy(similarShowsState = similarShowsState.copy(similarShows = newList))
