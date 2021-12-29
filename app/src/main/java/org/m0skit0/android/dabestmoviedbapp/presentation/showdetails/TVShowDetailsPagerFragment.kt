@@ -16,13 +16,11 @@ import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
 import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsPagerFragment :
     Fragment(),
-    ErrorFragment by koin().get(),
     FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
 {
 

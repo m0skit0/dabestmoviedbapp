@@ -7,11 +7,12 @@ import arrow.core.Either
 import kotlinx.coroutines.launch
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
+import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
-class FetchFragmentImpl<T>(
+class FetchFragmentImpl(
     loadingFragment: LoadingFragment = koin().get()
-) : FetchFragment<T>, LoadingFragment by loadingFragment {
-    override fun Fragment.fetch(fetch: suspend () -> Either<Throwable, T>, success: (T) -> Unit) {
+) : FetchFragment<ApplicationState>, LoadingFragment by loadingFragment {
+    override fun Fragment.fetch(fetch: suspend () -> Either<Throwable, ApplicationState>, success: (ApplicationState) -> Unit) {
         loading()
         lifecycleScope.launch {
             fetch().fold({

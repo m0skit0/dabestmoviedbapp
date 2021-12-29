@@ -24,8 +24,7 @@ import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsFragment :
     Fragment(),
-    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
-    ErrorFragment by koin().get()
+    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT)
 {
 
     private val tvShowDetails: TVShowDetailsUseCase by inject(NAMED_TV_SHOW_DETAILS_USE_CASE)
