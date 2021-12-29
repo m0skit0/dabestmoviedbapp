@@ -45,7 +45,6 @@ class TopRatedTVShowsFragment :
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
             lifecycleOwner = this@TopRatedTVShowsFragment
             topRatedRecycler.setupScrollListenerForNextPage()
-            topRatedRecycler.adapter = TopRatedListAdapter(emptyList(), this@TopRatedTVShowsFragment)
             setLoadingView(loading)
         }
         nextPage()
@@ -62,11 +61,16 @@ class TopRatedTVShowsFragment :
 
     private fun nextPage() {
         fetch({ topRatedTVShowsUseCase(state) }) { newState ->
-            newState.topRatedState.topRatedShows.map { it.toTopRatedListingItem() }.let { newList ->
-                (binding.topRatedRecycler.adapter as TopRatedListAdapter) updateWith newList
-            }
+            newState.topRatedState.topRatedShows.map { it.toTopRatedListingItem() }.setIntoAdapter()
             state = newState.updateWithNextPage()
         }
+    }
+
+    private fun List<TopRatedTVShowsItem>.setIntoAdapter() {
+        (binding.topRatedRecycler.adapter as? TopRatedListAdapter)?.updateWith(this)
+            ?: TopRatedListAdapter(this, this@TopRatedTVShowsFragment).let {
+                binding.topRatedRecycler.adapter = it
+            }
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
