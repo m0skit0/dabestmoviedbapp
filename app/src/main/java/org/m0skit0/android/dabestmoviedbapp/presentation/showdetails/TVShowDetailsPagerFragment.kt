@@ -15,9 +15,6 @@ import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_NO_LOADING
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
-import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCaseState
-import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.applicationState
-import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.similarTVShowIds
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
@@ -26,7 +23,7 @@ import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 class TVShowDetailsPagerFragment :
     Fragment(),
     ErrorFragment by koin().get(),
-    FetchFragment<SimilarTVShowsUseCaseState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
+    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
 {
 
     private val similarTVShowsUseCase: SimilarTVShowsUseCase by inject(NAMED_SIMILAR_TV_SHOWS_USE_CASE)
@@ -55,17 +52,19 @@ class TVShowDetailsPagerFragment :
         }
     }
 
-    private fun initializePager(state: SimilarTVShowsUseCaseState) {
+    private fun initializePager(state: ApplicationState) {
         with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
-                state.applicationState,
-                listOf(state.applicationState.showDetailsState.currentShowId) + state.similarTVShowIds,
+                state,
+                listOf(state.showDetailsState.currentShowId) + state.mapSimilarShowsToIds(),
                 childFragmentManager,
                 lifecycle
             )
             setPageTransformer(ZoomOutPageTransformer())
         }
     }
+
+    private fun ApplicationState.mapSimilarShowsToIds() = showDetailsState.similarShowsIds.map { it.id }
 
     companion object {
         private const val KEY_STATE = "state"

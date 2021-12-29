@@ -13,8 +13,6 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
-import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsRepositoryState
-import org.m0skit0.android.dabestmoviedbapp.data.showdetails.tVShowDetailsData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
@@ -26,7 +24,7 @@ import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsFragment :
     Fragment(),
-    FetchFragment<TVShowDetailsRepositoryState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     ErrorFragment by koin().get()
 {
 
@@ -49,14 +47,12 @@ class TVShowDetailsFragment :
             lifecycleOwner = this@TVShowDetailsFragment
             setLoadingView(loading)
         }
-        lifecycleScope.launch {
-            fetchShowDetails(state)
-        }
+        lifecycleScope.launch { fetchShowDetails(state) }
     }
 
     private suspend fun fetchShowDetails(state: ApplicationState) {
         fetch({ tvShowDetails(state) }) { newState ->
-            newState.tVShowDetailsData.run {
+            newState.showDetailsState.tvShowDetails?.run {
                 if (!isEmpty()) {
                     binding.tvShowDetails = toTVShowDetailsPresentation()
                     loadPoster(requireActivity())

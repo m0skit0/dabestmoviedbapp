@@ -1,5 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.state
 
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
+import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import java.io.Serializable
 
@@ -16,6 +18,8 @@ data class TopRatedState(
 
 data class ShowDetailsState(
     val currentShowId: Long = -1L,
+    val tvShowDetails: TVShowDetailsData? = null,
+    val similarShowsIds: List<SimilarTVShowData> = emptyList()
 ) : Serializable
 
 infix fun ApplicationState.updateGenreMappingCacheWith(newMap: Map<Int, String>): ApplicationState =
@@ -31,3 +35,9 @@ infix fun ApplicationState.updateCurrentShowIdWith(newShowId: Long): Application
 
 infix fun ApplicationState.updateTopRatedShowsWith(newList: List<TopRatedTVShowData>): ApplicationState =
     copy(topRatedState = topRatedState.copy(topRatedShows = topRatedState.topRatedShows + newList))
+
+infix fun ApplicationState.updateTvShowDetailsWith(newShow: TVShowDetailsData): ApplicationState =
+    copy(showDetailsState = showDetailsState.copy(tvShowDetails = newShow))
+
+infix fun ApplicationState.updateSimilarShowsWith(newList: List<SimilarTVShowData>): ApplicationState =
+    copy(showDetailsState = showDetailsState.copy(similarShowsIds = newList))
