@@ -20,6 +20,8 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetai
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
+import org.m0skit0.android.dabestmoviedbapp.state.updateCurrentShowIdWith
+import org.m0skit0.android.dabestmoviedbapp.state.updateWithNextPage
 
 class TopRatedTVShowsFragment :
     Fragment(),
@@ -72,7 +74,7 @@ class TopRatedTVShowsFragment :
                     setAdapterToRecyclerView()
                 }
             }
-            state = topRatedState.first.copy(currentPage = topRatedState.first.currentPage + 1)
+            state = topRatedState.first.updateWithNextPage()
         }
     }
 
@@ -88,7 +90,7 @@ class TopRatedTVShowsFragment :
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
         findNavController().navigate(
             R.id.tvShowDetailsPagerFragment,
-            TVShowDetailsPagerFragment.bundle(state.copy(currentShowId = tvShow.id))
+            TVShowDetailsPagerFragment.bundle(state updateCurrentShowIdWith tvShow.id)
         )
     }
 }

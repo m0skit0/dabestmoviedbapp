@@ -57,7 +57,7 @@ class TVShowDetailsPagerFragment :
         with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
                 state.first,
-                listOf(state.first.currentShowId) + state.second,
+                listOf(state.first.showDetailsState.currentShowId) + state.second,
                 childFragmentManager,
                 lifecycle
             )
