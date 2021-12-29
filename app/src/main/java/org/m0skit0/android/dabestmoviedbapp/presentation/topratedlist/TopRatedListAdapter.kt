@@ -9,7 +9,7 @@ import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.ItemTopRatedTvShowBinding
 
 class TopRatedListAdapter(
-    var topRatedShows: List<TopRatedTVShowsItem> = emptyList(),
+    private var topRatedShows: List<TopRatedTVShowsItem> = emptyList(),
     private val onTVShowClicked: OnTVShowClicked
 ) : RecyclerView.Adapter<TopRatedListAdapter.TopRatedTVShowViewHolder>() {
 

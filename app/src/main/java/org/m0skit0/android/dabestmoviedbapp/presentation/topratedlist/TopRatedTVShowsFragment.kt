@@ -20,6 +20,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 import org.m0skit0.android.dabestmoviedbapp.state.updateCurrentShowIdWith
+import org.m0skit0.android.dabestmoviedbapp.state.updateWithNextPage
 
 class TopRatedTVShowsFragment :
     Fragment(),
@@ -61,10 +62,10 @@ class TopRatedTVShowsFragment :
 
     private fun nextPage() {
         fetch({ topRatedTVShowsUseCase(state) }) { newState ->
-            state = newState
             newState.topRatedState.topRatedShows.map { it.toTopRatedListingItem() }.let { newList ->
                 (binding.topRatedRecycler.adapter as TopRatedListAdapter) updateWith newList
             }
+            state = newState.updateWithNextPage()
         }
     }
 
