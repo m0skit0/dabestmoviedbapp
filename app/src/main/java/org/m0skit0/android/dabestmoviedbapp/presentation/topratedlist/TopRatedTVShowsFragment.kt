@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
-import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryState
-import org.m0skit0.android.dabestmoviedbapp.data.toprated.applicationState
-import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
@@ -23,17 +20,14 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
 import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 import org.m0skit0.android.dabestmoviedbapp.state.updateCurrentShowIdWith
-import org.m0skit0.android.dabestmoviedbapp.state.updateWithNextPage
 
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    FetchFragment<TopRatedTVShowsRepositoryState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     KoinComponent {
 
     private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)
-
-    private var topRatedTVShowsAdapter: TopRatedListAdapter? = null
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
@@ -50,9 +44,10 @@ class TopRatedTVShowsFragment :
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
             lifecycleOwner = this@TopRatedTVShowsFragment
             topRatedRecycler.setupScrollListenerForNextPage()
+            topRatedRecycler.adapter = TopRatedListAdapter(emptyList(), this@TopRatedTVShowsFragment)
             setLoadingView(loading)
         }
-        loadTopTVShows()
+        nextPage()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
@@ -64,31 +59,13 @@ class TopRatedTVShowsFragment :
         })
     }
 
-    private fun loadTopTVShows() {
-        topRatedTVShowsAdapter?.run { setAdapterToRecyclerView() } ?: nextPage()
-    }
-
     private fun nextPage() {
-        fetch({ topRatedTVShowsUseCase(state) }) { topRatedState ->
-            with(topRatedState) {
-                topRatedTVShowData.map { it.toTopRatedListingItem() }.let { newPage ->
-                    topRatedTVShowsAdapter?.updateWith(newPage) ?: run {
-                        createNewAdapterWith(newPage)
-                        setAdapterToRecyclerView()
-                    }
-                }
-                state = applicationState.updateWithNextPage()
+        fetch({ topRatedTVShowsUseCase(state) }) { newState ->
+            state = newState
+            newState.topRatedState.topRatedShows.map { it.toTopRatedListingItem() }.let { newList ->
+                (binding.topRatedRecycler.adapter as TopRatedListAdapter) updateWith newList
             }
         }
-    }
-
-    private fun createNewAdapterWith(items: List<TopRatedTVShowsItem>) {
-        topRatedTVShowsAdapter = TopRatedListAdapter(items, this)
-    }
-
-    private fun setAdapterToRecyclerView() {
-        binding.topRatedRecycler.adapter = topRatedTVShowsAdapter
-        loaded()
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {

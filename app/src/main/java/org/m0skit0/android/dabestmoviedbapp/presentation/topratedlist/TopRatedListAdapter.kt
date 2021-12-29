@@ -28,7 +28,7 @@ class TopRatedListAdapter(
 
     infix fun updateWith(list: List<TopRatedTVShowsItem>) {
         val positionStartForNewList = topRatedShows.size
-        topRatedShows = topRatedShows + list
+        topRatedShows = list
         notifyItemRangeInserted(positionStartForNewList, list.size)
     }
 
