@@ -7,6 +7,9 @@ import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 typealias TVShowDetailsRepository = suspend (state: ApplicationState) -> Either<Throwable, TVShowDetailsRepositoryState>
 typealias TVShowDetailsRepositoryState = Pair<ApplicationState, TVShowDetailsData>
 
+val TVShowDetailsRepositoryState.applicationState: ApplicationState get() = first
+val TVShowDetailsRepositoryState.tVShowDetailsData: TVShowDetailsData get() = second
+
 suspend fun tvShowDetails(
     state: ApplicationState,
     tvShowDetailsService: TVShowDetailsService = koin().get(),

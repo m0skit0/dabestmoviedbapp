@@ -16,6 +16,8 @@ import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCaseState
+import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.applicationState
+import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.similarTVShowIds
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.ErrorFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
@@ -56,8 +58,8 @@ class TVShowDetailsPagerFragment :
     private fun initializePager(state: SimilarTVShowsUseCaseState) {
         with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
-                state.first,
-                listOf(state.first.showDetailsState.currentShowId) + state.second,
+                state.applicationState,
+                listOf(state.applicationState.showDetailsState.currentShowId) + state.similarTVShowIds,
                 childFragmentManager,
                 lifecycle
             )

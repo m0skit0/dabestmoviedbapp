@@ -11,6 +11,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsRepositoryState
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.applicationState
+import org.m0skit0.android.dabestmoviedbapp.data.toprated.topRatedTVShowData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
@@ -68,13 +70,15 @@ class TopRatedTVShowsFragment :
 
     private fun nextPage() {
         fetch({ topRatedTVShowsUseCase(state) }) { topRatedState ->
-            topRatedState.second.map { it.toTopRatedListingItem() }.let { newPage ->
-                topRatedTVShowsAdapter?.updateWith(newPage) ?: run {
-                    createNewAdapterWith(newPage)
-                    setAdapterToRecyclerView()
+            with(topRatedState) {
+                topRatedTVShowData.map { it.toTopRatedListingItem() }.let { newPage ->
+                    topRatedTVShowsAdapter?.updateWith(newPage) ?: run {
+                        createNewAdapterWith(newPage)
+                        setAdapterToRecyclerView()
+                    }
                 }
+                state = applicationState.updateWithNextPage()
             }
-            state = topRatedState.first.updateWithNextPage()
         }
     }
 

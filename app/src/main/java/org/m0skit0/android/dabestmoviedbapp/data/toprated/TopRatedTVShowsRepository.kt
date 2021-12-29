@@ -9,6 +9,9 @@ import org.m0skit0.android.dabestmoviedbapp.state.updateGenreMappingCacheWith
 typealias TopRatedTVShowsRepository = suspend (state: ApplicationState) -> Either<Throwable, TopRatedTVShowsRepositoryState>
 typealias TopRatedTVShowsRepositoryState = Pair<ApplicationState, List<TopRatedTVShowData>>
 
+val TopRatedTVShowsRepositoryState.applicationState: ApplicationState get() = first
+val TopRatedTVShowsRepositoryState.topRatedTVShowData: List<TopRatedTVShowData> get() = second
+
 suspend fun topRatedTVShowsRepository(
     state: ApplicationState,
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
