@@ -43,7 +43,7 @@ class TopRatedTVShowsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
-            lifecycleOwner = this@TopRatedTVShowsFragment
+            lifecycleOwner = viewLifecycleOwner
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }

@@ -18,8 +18,7 @@ import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
 import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
 
 class TVShowDetailsFragment :
@@ -43,7 +42,7 @@ class TVShowDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTvShowDetailsBinding.bind(view).apply {
-            lifecycleOwner = this@TVShowDetailsFragment
+            lifecycleOwner = viewLifecycleOwner
             setLoadingView(loading)
         }
         lifecycleScope.launch { fetchShowDetails(state) }
