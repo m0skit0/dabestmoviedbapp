@@ -47,7 +47,7 @@ class TopRatedTVShowsFragment :
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }
-        nextPage()
+        binding.topRatedRecycler.adapter ?: nextPage()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
