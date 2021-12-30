@@ -5,11 +5,11 @@ import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowsReposit
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_REPOSITORY
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.withUseCaseContext
-import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
+import org.m0skit0.android.dabestmoviedbapp.state.TopRatedState
 
-typealias TopTVShowsUseCase = suspend (state: ApplicationState) -> Either<Throwable, ApplicationState>
+typealias TopTVShowsUseCase = suspend (state: TopRatedState) -> Either<Throwable, TopRatedState>
 
 suspend fun topTVShowsUseCase(
-    state: ApplicationState,
+    state: TopRatedState,
     repository: TopRatedTVShowsRepository = koin().get(NAMED_TOP_TV_SHOWS_REPOSITORY)
-): Either<Throwable, ApplicationState> = withUseCaseContext { repository(state) }
+): Either<Throwable, TopRatedState> = withUseCaseContext { repository(state) }

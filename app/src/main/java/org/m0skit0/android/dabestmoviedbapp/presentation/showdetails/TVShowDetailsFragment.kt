@@ -19,19 +19,19 @@ import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
-import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
+import org.m0skit0.android.dabestmoviedbapp.state.ShowDetailsState
 
 class TVShowDetailsFragment :
     Fragment(),
-    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT)
+    FetchFragment<ShowDetailsState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT)
 {
 
     private val tvShowDetails: TVShowDetailsUseCase by inject(NAMED_TV_SHOW_DETAILS_USE_CASE)
 
     private lateinit var binding: FragmentTvShowDetailsBinding
 
-    private val state: ApplicationState
-        get() = arguments?.getSerializable(KEY_STATE) as? ApplicationState ?: ApplicationState()
+    private val state: ShowDetailsState
+        get() = arguments?.getSerializable(KEY_STATE) as? ShowDetailsState ?: ShowDetailsState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,9 +48,9 @@ class TVShowDetailsFragment :
         lifecycleScope.launch { fetchShowDetails(state) }
     }
 
-    private suspend fun fetchShowDetails(state: ApplicationState) {
+    private suspend fun fetchShowDetails(state: ShowDetailsState) {
         fetch({ tvShowDetails(state) }) { newState ->
-            newState.showDetailsState.tvShowDetails?.run {
+            newState.tvShowDetails?.run {
                 if (!isEmpty()) {
                     binding.tvShowDetails = toTVShowDetailsPresentation()
                     loadPoster(requireActivity())
@@ -70,6 +70,6 @@ class TVShowDetailsFragment :
 
     companion object {
         private const val KEY_STATE = "state"
-        fun bundle(state: ApplicationState) = bundleOf(KEY_STATE to state)
+        fun bundle(state: ShowDetailsState) = bundleOf(KEY_STATE to state)
     }
 }

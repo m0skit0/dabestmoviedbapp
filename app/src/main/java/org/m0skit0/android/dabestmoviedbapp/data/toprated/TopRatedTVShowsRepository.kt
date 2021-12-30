@@ -3,28 +3,28 @@ package org.m0skit0.android.dabestmoviedbapp.data.toprated
 import arrow.core.Either
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.di.koin
-import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
+import org.m0skit0.android.dabestmoviedbapp.state.TopRatedState
 import org.m0skit0.android.dabestmoviedbapp.state.updateGenreMappingCacheWith
 import org.m0skit0.android.dabestmoviedbapp.state.updateTopRatedShowsWith
 
-typealias TopRatedTVShowsRepository = suspend (state: ApplicationState) -> Either<Throwable, ApplicationState>
+typealias TopRatedTVShowsRepository = suspend (state: TopRatedState) -> Either<Throwable, TopRatedState>
 
 suspend fun topRatedTVShowsRepository(
-    state: ApplicationState,
+    state: TopRatedState,
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
     tvGenreService: () -> TVGenreService = { koin().get() },
-): Either<Throwable, ApplicationState> =
+): Either<Throwable, TopRatedState> =
     Either.catch {
         topRatedTVShowsService
-            .topRatedTVShows(page = state.topRatedState.currentPage)
+            .topRatedTVShows(page = state.currentPage)
             .topRatedTVShows
             .toTVShows(state, tvGenreService)
     }
 
 private suspend fun List<TopRatedTVShowApi>.toTVShows(
-    state: ApplicationState,
+    state: TopRatedState,
     tvGenreService: () -> TVGenreService,
-): ApplicationState = cacheTVGenres(state, tvGenreService).let { newState ->
+): TopRatedState = cacheTVGenres(state, tvGenreService).let { newState ->
     newState updateTopRatedShowsWith map {
         TopRatedTVShowData(
             id = it.id,
@@ -44,17 +44,17 @@ private suspend fun List<TopRatedTVShowApi>.toTVShows(
 }
 
 private fun List<Int>.mapTVGenres(
-    state: ApplicationState,
-): List<String> = mapNotNull { state.topRatedState.genreMappingCache.getOrDefault(it, null) }
+    state: TopRatedState,
+): List<String> = mapNotNull { state.genreMappingCache.getOrDefault(it, null) }
 
 private fun String.toPreviewPosterFullUrl(): String =
     "${BuildConfig.IMAGE_BASE_URL}${BuildConfig.PREVIEW_POSTER_SIZE}$this"
 
 private suspend fun cacheTVGenres(
-    state: ApplicationState,
+    state: TopRatedState,
     tvGenreService: () -> TVGenreService,
-): ApplicationState =
-    if (state.topRatedState.genreMappingCache.isEmpty())
+): TopRatedState =
+    if (state.genreMappingCache.isEmpty())
         tvGenreService().tvGenres().toMap().let {
             state updateGenreMappingCacheWith it
         }

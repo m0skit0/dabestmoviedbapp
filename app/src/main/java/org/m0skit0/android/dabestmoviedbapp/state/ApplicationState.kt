@@ -5,28 +5,40 @@ import org.m0skit0.android.dabestmoviedbapp.data.similarshows.SimilarTVShowData
 import org.m0skit0.android.dabestmoviedbapp.data.toprated.TopRatedTVShowData
 import java.io.Serializable
 
-data class ApplicationState(
-    val topRatedState: TopRatedState = TopRatedState(),
-    val showDetailsState: ShowDetailsState = ShowDetailsState(),
-    val similarShowsState: SimilarShowsState = SimilarShowsState()
-) : Serializable
+sealed class ApplicationState : Serializable
 
-infix fun ApplicationState.updateGenreMappingCacheWith(newMap: Map<Int, String>): ApplicationState =
-    copy(topRatedState = topRatedState.copy(genreMappingCache = newMap))
+data class ShowDetailsState(
+    val currentShowId: Long = -1L,
+    val tvShowDetails: TVShowDetailsData? = null,
+) : ApplicationState(), Serializable
 
-infix fun ApplicationState.updateCurrentPageWith(newPage: Int): ApplicationState =
-    copy(topRatedState = topRatedState.copy(currentPage = newPage))
+infix fun ShowDetailsState.updateCurrentShowIdWith(newShowId: Long): ShowDetailsState =
+    copy(currentShowId = newShowId)
 
-fun ApplicationState.updateWithNextPage(): ApplicationState = updateCurrentPageWith(topRatedState.currentPage + 1)
+infix fun ShowDetailsState.updateTvShowDetailsWith(newShow: TVShowDetailsData): ShowDetailsState =
+    copy(tvShowDetails = newShow)
 
-infix fun ApplicationState.updateCurrentShowIdWith(newShowId: Long): ApplicationState =
-    copy(showDetailsState = showDetailsState.copy(currentShowId = newShowId))
+data class SimilarShowsState(
+    val currentShowId: Long = -1L,
+    val similarShows: List<SimilarTVShowData> = emptyList()
+) : ApplicationState(), Serializable
 
-infix fun ApplicationState.updateTopRatedShowsWith(newList: List<TopRatedTVShowData>): ApplicationState =
-    copy(topRatedState = topRatedState.copy(topRatedShows = topRatedState.topRatedShows + newList))
+infix fun SimilarShowsState.updateSimilarShowsWith(newList: List<SimilarTVShowData>): SimilarShowsState =
+    copy(similarShows = newList)
 
-infix fun ApplicationState.updateTvShowDetailsWith(newShow: TVShowDetailsData): ApplicationState =
-    copy(showDetailsState = showDetailsState.copy(tvShowDetails = newShow))
+data class TopRatedState(
+    val currentPage: Int = 1,
+    val topRatedShows: List<TopRatedTVShowData> = emptyList(),
+    val genreMappingCache: Map<Int, String> = mapOf(),
+) : ApplicationState(), Serializable
 
-infix fun ApplicationState.updateSimilarShowsWith(newList: List<SimilarTVShowData>): ApplicationState =
-    copy(similarShowsState = similarShowsState.copy(similarShows = newList))
+infix fun TopRatedState.updateGenreMappingCacheWith(newMap: Map<Int, String>): TopRatedState =
+    copy(genreMappingCache = newMap)
+
+infix fun TopRatedState.updateCurrentPageWith(newPage: Int): TopRatedState =
+    copy(currentPage = newPage)
+
+fun TopRatedState.updateWithNextPage(): TopRatedState = updateCurrentPageWith(currentPage.inc())
+
+infix fun TopRatedState.updateTopRatedShowsWith(newList: List<TopRatedTVShowData>): TopRatedState =
+    copy(topRatedShows = topRatedShows + newList)

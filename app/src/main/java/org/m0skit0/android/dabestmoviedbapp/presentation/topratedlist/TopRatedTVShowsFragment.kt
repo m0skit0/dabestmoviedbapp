@@ -18,21 +18,19 @@ import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
-import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
-import org.m0skit0.android.dabestmoviedbapp.state.updateCurrentShowIdWith
-import org.m0skit0.android.dabestmoviedbapp.state.updateWithNextPage
+import org.m0skit0.android.dabestmoviedbapp.state.*
 
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    FetchFragment<TopRatedState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
     KoinComponent {
 
     private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
-    private var state = ApplicationState()
+    private var state: TopRatedState = TopRatedState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +59,7 @@ class TopRatedTVShowsFragment :
 
     private fun nextPage() {
         fetch({ topRatedTVShowsUseCase(state) }) { newState ->
-            newState.topRatedState.topRatedShows.map { it.toTopRatedListingItem() }.setIntoAdapter()
+            newState.topRatedShows.map { it.toTopRatedListingItem() }.setIntoAdapter()
             state = newState.updateWithNextPage()
         }
     }
@@ -74,9 +72,11 @@ class TopRatedTVShowsFragment :
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
-        findNavController().navigate(
-            R.id.tvShowDetailsPagerFragment,
-            TVShowDetailsPagerFragment.bundle(state updateCurrentShowIdWith tvShow.id)
-        )
+        SimilarShowsState(tvShow.id).let { newState ->
+            findNavController().navigate(
+                R.id.tvShowDetailsPagerFragment,
+                TVShowDetailsPagerFragment.bundle(newState)
+            )
+        }
     }
 }

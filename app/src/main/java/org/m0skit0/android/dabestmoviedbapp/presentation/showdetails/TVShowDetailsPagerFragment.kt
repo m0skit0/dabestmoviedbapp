@@ -17,19 +17,19 @@ import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
-import org.m0skit0.android.dabestmoviedbapp.state.ApplicationState
+import org.m0skit0.android.dabestmoviedbapp.state.SimilarShowsState
 
 class TVShowDetailsPagerFragment :
     Fragment(),
-    FetchFragment<ApplicationState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
+    FetchFragment<SimilarShowsState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
 {
 
     private val similarTVShowsUseCase: SimilarTVShowsUseCase by inject(NAMED_SIMILAR_TV_SHOWS_USE_CASE)
 
     private lateinit var binding: FragmentPagerTvShowDetailsBinding
 
-    private val state: ApplicationState
-        get() = arguments?.getSerializable(KEY_STATE) as? ApplicationState ?: ApplicationState()
+    private val state: SimilarShowsState
+        get() = arguments?.getSerializable(KEY_STATE) as? SimilarShowsState ?: SimilarShowsState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,17 +44,17 @@ class TVShowDetailsPagerFragment :
         }
     }
 
-    private suspend fun fetchSimilarShows(state: ApplicationState) {
+    private suspend fun fetchSimilarShows(state: SimilarShowsState) {
         fetch({ similarTVShowsUseCase(state) }) { newState ->
             initializePager(newState)
         }
     }
 
-    private fun initializePager(state: ApplicationState) {
+    private fun initializePager(state: SimilarShowsState) {
         with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
                 state,
-                listOf(state.showDetailsState.currentShowId) + state.mapSimilarShowsToIds(),
+                listOf(state.currentShowId) + state.mapSimilarShowsToIds(),
                 childFragmentManager,
                 lifecycle
             )
@@ -62,10 +62,10 @@ class TVShowDetailsPagerFragment :
         }
     }
 
-    private fun ApplicationState.mapSimilarShowsToIds(): List<Long> = similarShowsState.similarShows.map { it.id }
+    private fun SimilarShowsState.mapSimilarShowsToIds(): List<Long> = similarShows.map { it.id }
 
     companion object {
         private const val KEY_STATE = "state"
-        fun bundle(state: ApplicationState) = bundleOf(KEY_STATE to state)
+        fun bundle(state: SimilarShowsState) = bundleOf(KEY_STATE to state)
     }
 }
