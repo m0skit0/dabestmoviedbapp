@@ -58,9 +58,9 @@ class TopRatedTVShowsFragment :
     }
 
     private fun nextPage() {
-        fetch({ topRatedTVShowsUseCase(stateHolder.topRatedState) }) { newState ->
+        fetch({ topRatedTVShowsUseCase(stateHolder.topRatedState.updateWithNextPage()) }) { newState ->
             newState.topRatedShows.map { it.toTopRatedListingItem() }.setIntoAdapter()
-            stateHolder.topRatedState = newState.updateWithNextPage()
+            stateHolder.topRatedState = newState
         }
     }
 
