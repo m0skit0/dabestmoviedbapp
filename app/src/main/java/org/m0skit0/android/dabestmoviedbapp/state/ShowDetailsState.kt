@@ -8,8 +8,5 @@ data class ShowDetailsState(
     val tvShowDetails: TVShowDetailsData? = null,
 ) : ApplicationState(), Serializable
 
-infix fun ShowDetailsState.updateCurrentShowIdWith(newShowId: Long): ShowDetailsState =
-    copy(currentShowId = newShowId)
-
 infix fun ShowDetailsState.updateTvShowDetailsWith(newShow: TVShowDetailsData): ShowDetailsState =
     copy(tvShowDetails = newShow)
