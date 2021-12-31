@@ -1,6 +1,6 @@
 package org.m0skit0.android.dabestmoviedbapp.presentation.showdetails
 
-import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsDomain
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
 
 data class TVShowDetailsPresentation(
     val id: Long = -1,
@@ -12,7 +12,7 @@ data class TVShowDetailsPresentation(
     val overview: String = "",
 )
 
-fun TVShowDetailsDomain.toTVShowDetailsPresentation() = TVShowDetailsPresentation(
+fun TVShowDetailsData.toTVShowDetailsPresentation() = TVShowDetailsPresentation(
     id = id,
     poster = posterPath,
     title = name,

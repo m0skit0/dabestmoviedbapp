@@ -7,24 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
+import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsData
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTvShowDetailsBinding
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TV_SHOW_DETAILS_USE_CASE
+import org.m0skit0.android.dabestmoviedbapp.di.koin
+import org.m0skit0.android.dabestmoviedbapp.domain.showdetails.TVShowDetailsUseCase
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
+import org.m0skit0.android.dabestmoviedbapp.state.ShowDetailsState
 
-@AndroidEntryPoint
 class TVShowDetailsFragment :
     Fragment(),
-    CollectFragment<TVShowDetailsPresentation> by CollectFragmentImpl(),
-    ErrorFragment by ErrorFragmentImpl()
+    FetchFragment<ShowDetailsState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT)
 {
 
-    private val viewModel: TVShowDetailsViewModel by viewModels()
+    private val tvShowDetails: TVShowDetailsUseCase by inject(NAMED_TV_SHOW_DETAILS_USE_CASE)
 
     private lateinit var binding: FragmentTvShowDetailsBinding
+
+    private val state: ShowDetailsState
+        get() = arguments?.getSerializable(KEY_STATE) as? ShowDetailsState ?: ShowDetailsState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,38 +42,34 @@ class TVShowDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTvShowDetailsBinding.bind(view).apply {
-            lifecycleOwner = this@TVShowDetailsFragment
+            lifecycleOwner = viewLifecycleOwner
             setLoadingView(loading)
         }
-        setupErrorListener(this, viewModel)
-        collect()
+        lifecycleScope.launch { fetchShowDetails(state) }
     }
 
-    private fun collect() {
-        showId()?.let { id ->
-            viewModel.tvShowDetails(id).collect(viewLifecycleOwner) { details ->
-                details.isEmpty().not().also { isNotEmpty ->
-                    if (isNotEmpty) {
-                        with(binding) {
-                            tvShowDetails = details
-                            details.loadPoster(requireActivity())
-                        }
-                    }
+    private suspend fun fetchShowDetails(state: ShowDetailsState) {
+        fetch({ tvShowDetails(state) }) { newState ->
+            newState.tvShowDetails?.run {
+                if (!isEmpty()) {
+                    binding.tvShowDetails = toTVShowDetailsPresentation()
+                    loadPoster(requireActivity())
                 }
             }
-        } ?: errorToast()
+        }
     }
 
-    private fun TVShowDetailsPresentation.loadPoster(context: Context) {
+    private fun TVShowDetailsData.loadPoster(context: Context) {
         Glide.with(context)
-            .load(poster)
+            .load(posterPath)
             .error(R.drawable.image_error)
             .into(binding.poster)
     }
 
+    private fun TVShowDetailsData.isEmpty() = id == -1L
+
     companion object {
-        private const val KEY_ID = "id"
-        fun bundle(id: Long) = bundleOf(KEY_ID to id)
-        private fun TVShowDetailsFragment.showId(): Long? = arguments?.getLong(KEY_ID)
+        private const val KEY_STATE = "state"
+        fun bundle(state: ShowDetailsState) = bundleOf(KEY_STATE to state)
     }
 }

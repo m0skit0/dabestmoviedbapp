@@ -5,29 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentTopRatedTvShowsBinding
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_DEFAULT
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
+import org.m0skit0.android.dabestmoviedbapp.di.koin
+import org.m0skit0.android.dabestmoviedbapp.domain.toprated.TopTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsPagerFragment
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.*
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
+import org.m0skit0.android.dabestmoviedbapp.state.*
 
-@AndroidEntryPoint
 class TopRatedTVShowsFragment :
     Fragment(),
     OnTVShowClicked,
-    CollectFragment<List<TopRatedTVShowsItem>> by CollectFragmentImpl(),
-    ErrorFragment by ErrorFragmentImpl()
-{
+    FetchFragment<TopRatedState> by koin().get(NAMED_FETCH_FRAGMENT_DEFAULT),
+    KoinComponent {
 
-    private val viewModel: TopRatedTVShowsViewModel by viewModels()
+    private val topRatedTVShowsUseCase: TopTVShowsUseCase by inject(NAMED_TOP_TV_SHOWS_USE_CASE)
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
+
+    private val stateHolder: TopRatedStateHolder by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,45 +41,42 @@ class TopRatedTVShowsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTopRatedTvShowsBinding.bind(view).apply {
-            lifecycleOwner = this@TopRatedTVShowsFragment
+            lifecycleOwner = viewLifecycleOwner
             topRatedRecycler.setupScrollListenerForNextPage()
             setLoadingView(loading)
         }
-        setupErrorListener(this, viewModel)
-        collect()
+        binding.topRatedRecycler.adapter ?: nextPage()
     }
 
     private fun RecyclerView.setupScrollListenerForNextPage() {
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (hasReachedBottom()) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.nextPage()
-                    }
-                }
+                if (hasReachedBottom()) nextPage()
             }
         })
     }
 
-    private fun collect() {
-        viewModel.tvShowList.collect(viewLifecycleOwner) {
-            binding.topRatedRecycler updateWith it
-            true
+    private fun nextPage() {
+        fetch({ topRatedTVShowsUseCase(stateHolder.topRatedState.updateWithNextPage()) }) { newState ->
+            newState.topRatedShows.map { it.toTopRatedListingItem() }.setIntoAdapter()
+            stateHolder.topRatedState = newState
         }
     }
 
-    private infix fun RecyclerView.updateWith(list: List<TopRatedTVShowsItem>) {
-        (adapter as? TopRatedListAdapter)?.updateWith(list)
-            ?: run {
-                adapter = TopRatedListAdapter(list, this@TopRatedTVShowsFragment)
+    private fun List<TopRatedTVShowsItem>.setIntoAdapter() {
+        (binding.topRatedRecycler.adapter as? TopRatedListAdapter)?.updateWith(this)
+            ?: TopRatedListAdapter(this, this@TopRatedTVShowsFragment).let {
+                binding.topRatedRecycler.adapter = it
             }
     }
 
     override fun onClicked(tvShow: TopRatedTVShowsItem) {
-        findNavController().navigate(
-            R.id.tvShowDetailsPagerFragment,
-            TVShowDetailsPagerFragment.bundle(tvShow.id)
-        )
+        SimilarShowsState(tvShow.id).let { newState ->
+            findNavController().navigate(
+                R.id.tvShowDetailsPagerFragment,
+                TVShowDetailsPagerFragment.bundle(newState)
+            )
+        }
     }
 }

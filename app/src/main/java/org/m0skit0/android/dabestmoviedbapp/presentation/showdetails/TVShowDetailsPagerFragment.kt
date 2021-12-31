@@ -6,26 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.m0skit0.android.dabestmoviedbapp.R
 import org.m0skit0.android.dabestmoviedbapp.databinding.FragmentPagerTvShowDetailsBinding
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_FETCH_FRAGMENT_NO_LOADING
+import org.m0skit0.android.dabestmoviedbapp.di.NAMED_SIMILAR_TV_SHOWS_USE_CASE
+import org.m0skit0.android.dabestmoviedbapp.di.koin
+import org.m0skit0.android.dabestmoviedbapp.domain.similarshows.SimilarTVShowsUseCase
 import org.m0skit0.android.dabestmoviedbapp.presentation.utils.ZoomOutPageTransformer
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.*
-import org.m0skit0.android.dabestmoviedbapp.presentation.utils.errorToast
+import org.m0skit0.android.dabestmoviedbapp.presentation.utils.common.FetchFragment
+import org.m0skit0.android.dabestmoviedbapp.state.SimilarShowsState
 
-@AndroidEntryPoint
 class TVShowDetailsPagerFragment :
     Fragment(),
-    ErrorFragment by ErrorFragmentImpl(),
-    CollectFragment<List<Long>> by CollectFragmentImpl(EmptyLoadingFragment())
+    FetchFragment<SimilarShowsState> by koin().get(NAMED_FETCH_FRAGMENT_NO_LOADING)
 {
 
-    private val viewModel: TVShowDetailsPagerViewModel by viewModels()
+    private val similarTVShowsUseCase: SimilarTVShowsUseCase by inject(NAMED_SIMILAR_TV_SHOWS_USE_CASE)
 
     private lateinit var binding: FragmentPagerTvShowDetailsBinding
+
+    private val state: SimilarShowsState
+        get() = arguments?.getSerializable(KEY_STATE) as? SimilarShowsState ?: SimilarShowsState()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,31 +39,22 @@ class TVShowDetailsPagerFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPagerTvShowDetailsBinding.bind(view)
-        viewLifecycleOwner.lifecycleScope.launch {
-            showId()?.let {
-                startCollecting(it)
-                setupErrorListener(this@TVShowDetailsPagerFragment, viewModel)
-            } ?: errorToast()
+        lifecycleScope.launch {
+            fetchSimilarShows(state)
         }
     }
 
-    private suspend fun startCollecting(id: Long) {
-        collect()
-        viewModel.loadShows(id)
-    }
-
-    private suspend fun collect() {
-        viewModel.shows.collect(viewLifecycleOwner) { list ->
-            list.isEmpty().not().apply {
-                initializePager(list)
-            }
+    private suspend fun fetchSimilarShows(state: SimilarShowsState) {
+        fetch({ similarTVShowsUseCase(state) }) { newState ->
+            initializePager(newState)
         }
     }
 
-    private fun initializePager(list: List<Long>) {
+    private fun initializePager(state: SimilarShowsState) {
         with(binding.pager) {
             adapter = TVShowDetailsPagerAdapter(
-                list,
+                state,
+                listOf(state.currentShowId) + state.mapSimilarShowsToIds(),
                 childFragmentManager,
                 lifecycle
             )
@@ -67,9 +62,10 @@ class TVShowDetailsPagerFragment :
         }
     }
 
+    private fun SimilarShowsState.mapSimilarShowsToIds(): List<Long> = similarShows.map { it.id }
+
     companion object {
-        private const val KEY_ID = "id"
-        fun bundle(id: Long) = bundleOf(KEY_ID to id)
-        private fun TVShowDetailsPagerFragment.showId(): Long? = arguments?.getLong(KEY_ID)
+        private const val KEY_STATE = "state"
+        fun bundle(state: SimilarShowsState) = bundleOf(KEY_STATE to state)
     }
 }

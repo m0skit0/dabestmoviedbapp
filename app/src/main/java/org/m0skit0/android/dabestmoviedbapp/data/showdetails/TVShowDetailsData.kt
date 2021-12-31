@@ -1,7 +1,6 @@
 package org.m0skit0.android.dabestmoviedbapp.data.showdetails
 
-import org.m0skit0.android.dabestmoviedbapp.data.retrofit.TVShowDetailsApi
-import org.m0skit0.android.dabestmoviedbapp.data.toOriginalPosterFullUrl
+import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 
 data class TVShowDetailsData(
     val id: Long,
@@ -22,3 +21,6 @@ fun TVShowDetailsApi.toTVShowDetailsData() = TVShowDetailsData(
     voteAverage = voteAverage.toString(), // TODO Format correctly
     voteCount = voteCount.toString(),
 )
+
+private fun String.toOriginalPosterFullUrl(): String =
+    "${BuildConfig.IMAGE_BASE_URL}${BuildConfig.ORIGINAL_POSTER_SIZE}$this"
