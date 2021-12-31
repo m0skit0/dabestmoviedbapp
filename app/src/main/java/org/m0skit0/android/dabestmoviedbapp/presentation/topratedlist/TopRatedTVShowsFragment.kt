@@ -30,7 +30,7 @@ class TopRatedTVShowsFragment :
 
     private lateinit var binding: FragmentTopRatedTvShowsBinding
 
-    private var state: TopRatedState = TopRatedState()
+    private val stateHolder: TopRatedStateHolder by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,9 +58,9 @@ class TopRatedTVShowsFragment :
     }
 
     private fun nextPage() {
-        fetch({ topRatedTVShowsUseCase(state) }) { newState ->
+        fetch({ topRatedTVShowsUseCase(stateHolder.topRatedState) }) { newState ->
             newState.topRatedShows.map { it.toTopRatedListingItem() }.setIntoAdapter()
-            state = newState.updateWithNextPage()
+            stateHolder.topRatedState = newState.updateWithNextPage()
         }
     }
 
