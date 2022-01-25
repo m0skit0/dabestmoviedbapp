@@ -3,14 +3,11 @@ package org.m0skit0.android.dabestmoviedbapp.presentation
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.m0skit0.android.dabestmoviedbapp.di.NAMED_TOP_TV_SHOWS_USE_CASE
 import org.m0skit0.android.dabestmoviedbapp.di.koin
@@ -45,12 +42,12 @@ class MainActivity : FragmentActivity() {
 fun MainComposable() {
     NavHost(navController = rememberNavController(), startDestination = PROFILE_NAME_TOP_SHOW_LIST) {
         composable(PROFILE_NAME_TOP_SHOW_LIST) {
-            TopShowList(topShowsListing(koin().get(NAMED_TOP_TV_SHOWS_USE_CASE)).topRatedShows.map { it.toTopRatedListingItem() })
+            TopShowList(topShowsListing().topRatedShows.map { it.toTopRatedListingItem() })
         }
     }
 }
 
-fun topShowsListing(topTVShowsUseCase: TopTVShowsUseCase): TopRatedState =
+fun topShowsListing(topTVShowsUseCase: TopTVShowsUseCase = koin().get(NAMED_TOP_TV_SHOWS_USE_CASE)): TopRatedState =
     runBlocking(Dispatchers.IO) {
         topTVShowsUseCase(TopRatedState().updateWithNextPage()).fold({TopRatedState()}) { it }
     }
