@@ -1,5 +1,8 @@
 package org.m0skit0.android.dabestmoviedbapp.di
 
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.data.showdetails.TVShowDetailsService
@@ -10,10 +13,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 val retrofitModule = module {
+    factory<Interceptor> {
+        HttpLoggingInterceptor()
+    }
+    factory<OkHttpClient> {
+        OkHttpClient()
+            .newBuilder()
+            .apply {
+                if (BuildConfig.LOG_HTTP_CALLS) addInterceptor(get<Interceptor>())
+            }.build()
+    }
     single<Retrofit> {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(JacksonConverterFactory.create())
+            .client(get())
             .build()
     }
     single<TopRatedTVShowsService> { get<Retrofit>().create(TopRatedTVShowsService::class.java) }
