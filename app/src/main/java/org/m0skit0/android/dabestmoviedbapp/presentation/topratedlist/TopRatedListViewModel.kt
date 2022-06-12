@@ -25,6 +25,7 @@ class TopRatedListViewModel(
     private fun load() {
         viewModelScope.launch {
             topRatedUseCase(topRatedState).fold({
+                it.printStackTrace()
                 _viewState.value = Error
             }) { state ->
                 _viewState.value = Result(state.topRatedShows.map { it.toTopRatedListingItem() })

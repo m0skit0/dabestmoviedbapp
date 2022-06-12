@@ -7,7 +7,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopRatedLi
 val presentationModule = module {
     viewModel {
         TopRatedListViewModel(
-            topRatedUseCase = get()
+            topRatedUseCase = get(NAMED_TOP_TV_SHOWS_USE_CASE)
         )
     }
 }
