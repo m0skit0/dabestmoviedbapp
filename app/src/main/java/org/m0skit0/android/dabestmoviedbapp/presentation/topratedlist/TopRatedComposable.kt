@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -39,11 +40,13 @@ fun TopShowList(
     when (viewState.value) {
         is Loading -> Progress()
         is Error -> Error()
-        is Result<*> -> viewState.value.data
-    }
-    LazyColumn {
-        items(topRatedState.value.topRatedShows) { item ->
-            TopRatedTVShowsItem(topRatedTVShowData = item)
+        is Result<*> -> (viewState.value as? Result<List<TopRatedTVShowsItem>>)?.data?.let { items ->
+            LazyColumn {
+                items(items) { item ->
+                    TopRatedTVShowsItem(topRatedTVShowData = item)
+                }
+            }
         }
     }
+
 }
