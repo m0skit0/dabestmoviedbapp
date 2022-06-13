@@ -15,6 +15,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 val retrofitModule = module {
     factory<Interceptor> {
         HttpLoggingInterceptor()
+            .setLevel(HttpLoggingInterceptor.Level.HEADERS)
     }
     factory<OkHttpClient> {
         OkHttpClient()
