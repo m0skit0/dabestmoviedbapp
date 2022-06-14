@@ -28,8 +28,20 @@ class TopRatedListViewModel(
                 it.printStackTrace()
                 _viewState.value = Error
             }) { state ->
+                topRatedState = state
                 _viewState.value = Result(state.topRatedShows.map { it.toTopRatedListingItem() })
             }
         }
+    }
+
+    fun checkAndTriggerNextPageLoading(index: Int) {
+        if (topRatedState.topRatedShows.lastIndex - NEXT_PAGE_INTERVAL == index) {
+            topRatedState = topRatedState.copy(currentPage = topRatedState.currentPage.inc())
+            load()
+        }
+    }
+
+    companion object {
+        private const val NEXT_PAGE_INTERVAL = 5
     }
 }

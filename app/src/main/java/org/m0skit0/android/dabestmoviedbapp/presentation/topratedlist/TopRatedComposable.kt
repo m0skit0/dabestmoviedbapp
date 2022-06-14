@@ -5,7 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -70,9 +70,10 @@ fun TopShowList(
     when (viewState.value) {
         is Loading -> Progress()
         is Error -> Error()
-        is Result<*> -> (viewState.value.asResultTopRatedTVShowsItems())?.data?.let { items ->
+        is Result<*> -> viewState.value.asResultTopRatedTVShowsItems()?.data?.let { items ->
             LazyColumn {
-                items(items) { item ->
+                itemsIndexed(items) { index, item ->
+                    topRatedListViewModel.checkAndTriggerNextPageLoading(index)
                     TopRatedTVShowsItem(topRatedTVShowData = item)
                 }
             }

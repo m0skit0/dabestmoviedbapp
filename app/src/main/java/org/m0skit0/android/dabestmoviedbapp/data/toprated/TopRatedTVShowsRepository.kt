@@ -34,7 +34,7 @@ private suspend fun List<TopRatedTVShowApi>.toTVShows(
             originalName = it.originalName,
             overview = it.overview,
             genres = it.genreIds.mapTVGenres(newState),
-            firstAirDate = it.firstAirDate,
+            firstAirDate = it.firstAirDate ?: "",
             originCountry = it.originCountry,
             originalLanguage = it.originalLanguage,
             popularity = it.popularity,

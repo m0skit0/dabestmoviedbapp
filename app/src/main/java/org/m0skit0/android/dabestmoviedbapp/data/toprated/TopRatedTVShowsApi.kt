@@ -17,7 +17,7 @@ data class TopRatedTVShowApi(
     @JsonProperty("backdrop_path")
     val backdropPath: String? = "",
     @JsonProperty("first_air_date")
-    val firstAirDate: String = "",
+    val firstAirDate: String? = "",
     @JsonProperty("genre_ids")
     val genreIds: List<Int> = emptyList(),
     @JsonProperty("id")
