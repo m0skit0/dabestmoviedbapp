@@ -1,7 +1,7 @@
 package org.m0skit0.android.dabestmoviedbapp.data.showdetails
 
 import com.fasterxml.jackson.annotation.JsonProperty
-data class TVShowDetailsApi(
+data class TVShowDetailsDTO(
     @JsonProperty("backdrop_path")
     val backdropPath: String? = "",
     @JsonProperty("created_by")
@@ -11,7 +11,7 @@ data class TVShowDetailsApi(
     @JsonProperty("first_air_date")
     val firstAirDate: String = "",
     @JsonProperty("genres")
-    val genres: List<Genre> = emptyList(),
+    val genres: List<GenreDTO> = emptyList(),
     @JsonProperty("homepage")
     val homepage: String = "",
     @JsonProperty("id")
@@ -23,11 +23,11 @@ data class TVShowDetailsApi(
     @JsonProperty("last_air_date")
     val lastAirDate: String = "",
     @JsonProperty("last_episode_to_air")
-    val lastEpisodeToAir: LastEpisodeToAir = LastEpisodeToAir(),
+    val lastEpisodeToAir: LastEpisodeToAirDTO = LastEpisodeToAirDTO(),
     @JsonProperty("name")
     val name: String = "",
     @JsonProperty("networks")
-    val networks: List<Network> = emptyList(),
+    val networks: List<NetworkDTO> = emptyList(),
     @JsonProperty("next_episode_to_air")
     val nextEpisodeToAir: Any? = Any(),
     @JsonProperty("number_of_episodes")
@@ -47,13 +47,13 @@ data class TVShowDetailsApi(
     @JsonProperty("poster_path")
     val posterPath: String? = "",
     @JsonProperty("production_companies")
-    val productionCompanies: List<ProductionCompany> = emptyList(),
+    val productionCompanies: List<ProductionCompanyDTO> = emptyList(),
     @JsonProperty("production_countries")
-    val productionCountries: List<ProductionCountry> = emptyList(),
+    val productionCountries: List<ProductionCountryDTO> = emptyList(),
     @JsonProperty("seasons")
-    val seasons: List<Season>? = emptyList(),
+    val seasons: List<SeasonDTO>? = emptyList(),
     @JsonProperty("spoken_languages")
-    val spokenLanguages: List<SpokenLanguage> = emptyList(),
+    val spokenLanguages: List<SpokenLanguageDTO> = emptyList(),
     @JsonProperty("status")
     val status: String = "",
     @JsonProperty("tagline")
@@ -68,14 +68,14 @@ data class TVShowDetailsApi(
     val isAdult: Boolean = false
 )
 
-data class Genre(
+data class GenreDTO(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("name")
     val name: String = ""
 )
 
-data class LastEpisodeToAir(
+data class LastEpisodeToAirDTO(
     @JsonProperty("air_date")
     val airDate: String? = "",
     @JsonProperty("episode_number")
@@ -100,7 +100,7 @@ data class LastEpisodeToAir(
     val runtime: Int = 0
 )
 
-data class Network(
+data class NetworkDTO(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("logo_path")
@@ -110,17 +110,17 @@ data class Network(
     @JsonProperty("origin_country")
     val originCountry: String = "",
     @JsonProperty("logo")
-    val logo: NetworkLogo? = NetworkLogo()
+    val logo: NetworkLogoDTO? = NetworkLogoDTO()
 )
 
-data class NetworkLogo(
+data class NetworkLogoDTO(
     @JsonProperty("path")
     val path: String? = "",
     @JsonProperty("aspect_ratio")
     val aspectRatio: String? = ""
 )
 
-data class ProductionCompany(
+data class ProductionCompanyDTO(
     @JsonProperty("id")
     val id: Int = 0,
     @JsonProperty("logo_path")
@@ -131,14 +131,14 @@ data class ProductionCompany(
     val originCountry: String = ""
 )
 
-data class ProductionCountry(
+data class ProductionCountryDTO(
     @JsonProperty("iso_3166_1")
     val iso31661: String = "",
     @JsonProperty("name")
     val name: String = ""
 )
 
-data class Season(
+data class SeasonDTO(
     @JsonProperty("air_date")
     val airDate: String? = "",
     @JsonProperty("episode_count")
@@ -154,10 +154,10 @@ data class Season(
     @JsonProperty("season_number")
     val seasonNumber: Int = 0,
     @JsonProperty("networks")
-    val networks: List<Network>? = emptyList()
+    val networks: List<NetworkDTO>? = emptyList()
 )
 
-data class SpokenLanguage(
+data class SpokenLanguageDTO(
     @JsonProperty("english_name")
     val englishName: String = "",
     @JsonProperty("iso_639_1")

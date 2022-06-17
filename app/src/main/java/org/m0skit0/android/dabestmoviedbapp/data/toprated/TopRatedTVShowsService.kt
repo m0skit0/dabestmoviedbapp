@@ -9,5 +9,5 @@ interface TopRatedTVShowsService {
     suspend fun topRatedTVShows(
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
         @Query("page") page: Int = 1,
-    ): TopRatedTVShowsApi
+    ): TopRatedTVShowsDTO
 }

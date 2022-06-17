@@ -11,5 +11,5 @@ interface SimilarTVShowsService {
     suspend fun similarTVShows(
         @Path("id") id: Long,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
-    ): SimilarTVShowsApi
+    ): SimilarTVShowsDTO
 }

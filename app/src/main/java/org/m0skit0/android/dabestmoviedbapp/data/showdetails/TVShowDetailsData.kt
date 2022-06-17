@@ -15,7 +15,7 @@ data class TVShowDetailsData(
     val voteCount: String,
 ) : Parcelable
 
-fun TVShowDetailsApi.toTVShowDetailsData() = TVShowDetailsData(
+fun TVShowDetailsDTO.toTVShowDetailsData() = TVShowDetailsData(
     id = id.toLong(),
     name = name,
     posterPath = posterPath?.toOriginalPosterFullUrl() ?: "",
