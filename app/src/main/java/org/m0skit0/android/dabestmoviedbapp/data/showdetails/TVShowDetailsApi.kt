@@ -5,13 +5,13 @@ data class TVShowDetailsApi(
     @JsonProperty("backdrop_path")
     val backdropPath: String? = "",
     @JsonProperty("created_by")
-    val createdBy: List<Any>? = listOf(), // TODO Fix with actual data
+    val createdBy: List<Any>? = emptyList(), // TODO Fix with actual data
     @JsonProperty("episode_run_time")
-    val episodeRunTime: List<Int> = listOf(),
+    val episodeRunTime: List<Int> = emptyList(),
     @JsonProperty("first_air_date")
     val firstAirDate: String = "",
     @JsonProperty("genres")
-    val genres: List<Genre> = listOf(),
+    val genres: List<Genre> = emptyList(),
     @JsonProperty("homepage")
     val homepage: String = "",
     @JsonProperty("id")
@@ -19,7 +19,7 @@ data class TVShowDetailsApi(
     @JsonProperty("in_production")
     val inProduction: Boolean = false,
     @JsonProperty("languages")
-    val languages: List<String> = listOf(),
+    val languages: List<String> = emptyList(),
     @JsonProperty("last_air_date")
     val lastAirDate: String = "",
     @JsonProperty("last_episode_to_air")
@@ -27,7 +27,7 @@ data class TVShowDetailsApi(
     @JsonProperty("name")
     val name: String = "",
     @JsonProperty("networks")
-    val networks: List<Network> = listOf(),
+    val networks: List<Network> = emptyList(),
     @JsonProperty("next_episode_to_air")
     val nextEpisodeToAir: Any? = Any(),
     @JsonProperty("number_of_episodes")
@@ -35,7 +35,7 @@ data class TVShowDetailsApi(
     @JsonProperty("number_of_seasons")
     val numberOfSeasons: Int = 0,
     @JsonProperty("origin_country")
-    val originCountry: List<String> = listOf(),
+    val originCountry: List<String> = emptyList(),
     @JsonProperty("original_language")
     val originalLanguage: String = "",
     @JsonProperty("original_name")
@@ -47,13 +47,13 @@ data class TVShowDetailsApi(
     @JsonProperty("poster_path")
     val posterPath: String? = "",
     @JsonProperty("production_companies")
-    val productionCompanies: List<ProductionCompany> = listOf(),
+    val productionCompanies: List<ProductionCompany> = emptyList(),
     @JsonProperty("production_countries")
-    val productionCountries: List<ProductionCountry> = listOf(),
+    val productionCountries: List<ProductionCountry> = emptyList(),
     @JsonProperty("seasons")
-    val seasons: List<Season>? = listOf(),
+    val seasons: List<Season>? = emptyList(),
     @JsonProperty("spoken_languages")
-    val spokenLanguages: List<SpokenLanguage> = listOf(),
+    val spokenLanguages: List<SpokenLanguage> = emptyList(),
     @JsonProperty("status")
     val status: String = "",
     @JsonProperty("tagline")
@@ -63,7 +63,9 @@ data class TVShowDetailsApi(
     @JsonProperty("vote_average")
     val voteAverage: Double = 0.0,
     @JsonProperty("vote_count")
-    val voteCount: Int = 0
+    val voteCount: Int = 0,
+    @JsonProperty("adult")
+    val isAdult: Boolean = false
 )
 
 data class Genre(
@@ -93,7 +95,9 @@ data class LastEpisodeToAir(
     @JsonProperty("vote_average")
     val voteAverage: Double = 0.0,
     @JsonProperty("vote_count")
-    val voteCount: Int = 0
+    val voteCount: Int = 0,
+    @JsonProperty("runtime")
+    val runtime: Int = 0
 )
 
 data class Network(
@@ -104,7 +108,16 @@ data class Network(
     @JsonProperty("name")
     val name: String = "",
     @JsonProperty("origin_country")
-    val originCountry: String = ""
+    val originCountry: String = "",
+    @JsonProperty("logo")
+    val logo: NetworkLogo? = NetworkLogo()
+)
+
+data class NetworkLogo(
+    @JsonProperty("path")
+    val path: String? = "",
+    @JsonProperty("aspect_ratio")
+    val aspectRatio: String? = ""
 )
 
 data class ProductionCompany(
@@ -139,7 +152,9 @@ data class Season(
     @JsonProperty("poster_path")
     val posterPath: String? = "",
     @JsonProperty("season_number")
-    val seasonNumber: Int = 0
+    val seasonNumber: Int = 0,
+    @JsonProperty("networks")
+    val networks: List<Network>? = emptyList()
 )
 
 data class SpokenLanguage(
