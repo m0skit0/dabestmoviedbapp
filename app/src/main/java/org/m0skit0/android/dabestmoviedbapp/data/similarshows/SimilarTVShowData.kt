@@ -4,4 +4,4 @@ data class SimilarTVShowData(
     val id: Long
 )
 
-fun SimilarTVShowApi.toSimilarTVShowsData() = SimilarTVShowData(id = id.toLong())
+fun SimilarTVShowDTO.toSimilarTVShowsData() = SimilarTVShowData(id = id.toLong())

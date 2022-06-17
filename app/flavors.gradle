@@ -1,16 +1,6 @@
 android {
     flavorDimensions "default"
     productFlavors {
-        mock {
-            buildConfigField 'String', 'BASE_URL', '""'
-            buildConfigField 'String', 'API_KEY', '""'
-            buildConfigField 'String', 'IMAGE_BASE_URL', '""'
-            buildConfigField 'String', 'PREVIEW_POSTER_SIZE', '""'
-            buildConfigField 'String', 'ORIGINAL_POSTER_SIZE', '""'
-            buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_MOCK"'
-            buildConfigField 'String', 'NAMED_SHOW_DETAILS_REPOSITORY', '"NAMED_SHOW_DETAILS_REPOSITORY_MOCK"'
-            buildConfigField 'String', 'NAMED_SIMILAR_TV_SHOWS_REPOSITORY', '"NAMED_SIMILAR_TV_SHOWS_REPOSITORY_MOCK"'
-        }
         prod {
             buildConfigField 'String', 'BASE_URL', "\"$baseUrl\""
             buildConfigField 'String', 'API_KEY', "\"$apiKey\""
@@ -20,6 +10,7 @@ android {
             buildConfigField 'String', 'NAMED_TOP_RATED_TV_SHOWS_REPOSITORY', '"NAMED_TOP_RATED_TV_SHOWS_REPOSITORY_REAL"'
             buildConfigField 'String', 'NAMED_SHOW_DETAILS_REPOSITORY', '"NAMED_SHOW_DETAILS_REPOSITORY_REAL"'
             buildConfigField 'String', 'NAMED_SIMILAR_TV_SHOWS_REPOSITORY', '"NAMED_SIMILAR_TV_SHOWS_REPOSITORY_REAL"'
+            buildConfigField 'Boolean', 'LOG_HTTP_CALLS', 'true'
         }
     }
 }

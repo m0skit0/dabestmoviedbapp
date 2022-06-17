@@ -8,5 +8,5 @@ interface TVGenreService {
     @GET("genre/tv/list")
     suspend fun tvGenres(
         @Query("api_key") apiKey: String = BuildConfig.API_KEY
-    ): TVGenresApi
+    ): TVGenresDTO
 }

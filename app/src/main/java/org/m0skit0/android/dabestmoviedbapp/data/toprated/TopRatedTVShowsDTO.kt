@@ -2,22 +2,22 @@ package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class TopRatedTVShowsApi(
+data class TopRatedTVShowsDTO(
     @JsonProperty("page")
     val page: Int = 0,
     @JsonProperty("results")
-    val topRatedTVShows: List<TopRatedTVShowApi> = emptyList(),
+    val topRatedTVShows: List<TopRatedTVShowDTO> = emptyList(),
     @JsonProperty("total_pages")
     val totalPages: Int = 0,
     @JsonProperty("total_results")
     val totalResults: Int = 0
 )
 
-data class TopRatedTVShowApi(
+data class TopRatedTVShowDTO(
     @JsonProperty("backdrop_path")
     val backdropPath: String? = "",
     @JsonProperty("first_air_date")
-    val firstAirDate: String = "",
+    val firstAirDate: String? = "",
     @JsonProperty("genre_ids")
     val genreIds: List<Int> = emptyList(),
     @JsonProperty("id")

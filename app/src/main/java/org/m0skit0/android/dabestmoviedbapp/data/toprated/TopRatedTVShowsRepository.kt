@@ -21,7 +21,7 @@ suspend fun topRatedTVShowsRepository(
             .toTVShows(state, tvGenreService)
     }
 
-private suspend fun List<TopRatedTVShowApi>.toTVShows(
+private suspend fun List<TopRatedTVShowDTO>.toTVShows(
     state: TopRatedState,
     tvGenreService: () -> TVGenreService,
 ): TopRatedState = cacheTVGenres(state, tvGenreService).let { newState ->
@@ -34,7 +34,7 @@ private suspend fun List<TopRatedTVShowApi>.toTVShows(
             originalName = it.originalName,
             overview = it.overview,
             genres = it.genreIds.mapTVGenres(newState),
-            firstAirDate = it.firstAirDate,
+            firstAirDate = it.firstAirDate ?: "",
             originCountry = it.originCountry,
             originalLanguage = it.originalLanguage,
             popularity = it.popularity,
@@ -60,4 +60,4 @@ private suspend fun cacheTVGenres(
         }
     else state
 
-private fun TVGenresApi.toMap(): Map<Int, String> = tVGenres.associate { it.id to it.name }
+private fun TVGenresDTO.toMap(): Map<Int, String> = tVGenres.associate { it.id to it.name }

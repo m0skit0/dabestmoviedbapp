@@ -2,18 +2,18 @@ package org.m0skit0.android.dabestmoviedbapp.data.similarshows
 import com.fasterxml.jackson.annotation.JsonProperty
 
 
-data class SimilarTVShowsApi(
+data class SimilarTVShowsDTO(
     @JsonProperty("page")
     val page: Int = 0,
     @JsonProperty("results")
-    val results: List<SimilarTVShowApi> = listOf(),
+    val results: List<SimilarTVShowDTO> = listOf(),
     @JsonProperty("total_pages")
     val totalPages: Int = 0,
     @JsonProperty("total_results")
     val totalResults: Int = 0
 )
 
-data class SimilarTVShowApi(
+data class SimilarTVShowDTO(
     @JsonProperty("adult")
     val adult: Boolean = false,
     @JsonProperty("backdrop_path")

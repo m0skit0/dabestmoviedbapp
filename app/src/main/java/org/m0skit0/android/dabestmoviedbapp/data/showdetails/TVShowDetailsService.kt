@@ -10,5 +10,5 @@ interface TVShowDetailsService {
     suspend fun tvShowDetails(
         @Path("id") id: Long,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
-    ): TVShowDetailsApi
+    ): TVShowDetailsDTO
 }

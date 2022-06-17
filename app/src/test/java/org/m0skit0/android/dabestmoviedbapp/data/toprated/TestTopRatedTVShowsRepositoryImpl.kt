@@ -33,8 +33,8 @@ class TestTopRatedTVShowsRepositoryImpl {
                 currentPage = 1
             ),
         )
-        coEvery { mockTopRatedTVShowsService.topRatedTVShows(any(), any()) } returns TopRatedTVShowsApi()
-        coEvery { mockTVGenreService.tvGenres(any()) } returns TVGenresApi()
+        coEvery { mockTopRatedTVShowsService.topRatedTVShows(any(), any()) } returns TopRatedTVShowsDTO()
+        coEvery { mockTVGenreService.tvGenres(any()) } returns TVGenresDTO()
         runBlocking {
             topRatedTVShowsRepository(
                 state = state,
@@ -51,9 +51,9 @@ class TestTopRatedTVShowsRepositoryImpl {
                 currentPage = 1
             ),
         )
-        val topRatedTVShows = (1..3).map { TopRatedTVShowApi() }
-        coEvery { mockTopRatedTVShowsService.topRatedTVShows(any(), any()) } returns TopRatedTVShowsApi(topRatedTVShows = topRatedTVShows)
-        coEvery { mockTVGenreService.tvGenres(any()) } returns TVGenresApi()
+        val topRatedTVShows = (1..3).map { TopRatedTVShowDTO() }
+        coEvery { mockTopRatedTVShowsService.topRatedTVShows(any(), any()) } returns TopRatedTVShowsDTO(topRatedTVShows = topRatedTVShows)
+        coEvery { mockTVGenreService.tvGenres(any()) } returns TVGenresDTO()
         runBlocking {
             topRatedTVShowsRepository(
                 state = state,
