@@ -11,13 +11,13 @@ class TVShowDetailsViewModel(
     private val tvShowDetailsUseCase: TVShowDetailsUseCase,
 ) : ViewModel() {
     suspend fun load(id: Long): ViewState =
-        tvShowDetailsUseCase(ShowDetailsState(currentShowId = id)).fold({
-            it.printStackTrace()
-            Error
-        }) { state ->
+        tvShowDetailsUseCase(ShowDetailsState(currentShowId = id)).fold({state ->
             state.tvShowDetails
                 ?.toTVShowDetailsPresentation()
                 ?.let { Result(it) }
                 ?: Error
+        }) {
+            it.printStackTrace()
+            Error
         }
 }

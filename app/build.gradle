@@ -76,9 +76,6 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koinVersion"
     implementation "io.insert-koin:koin-androidx-compose:$koinVersion"
 
-    def arrowVersion = "1.0.1"
-    implementation "io.arrow-kt:arrow-core:$arrowVersion"
-
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation 'androidx.compose.material:material:1.1.1'
     implementation 'androidx.compose.animation:animation:1.1.1'

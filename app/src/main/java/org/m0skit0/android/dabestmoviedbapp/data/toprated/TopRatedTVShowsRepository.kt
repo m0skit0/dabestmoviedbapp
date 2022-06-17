@@ -1,25 +1,23 @@
 package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
-import arrow.core.Either
 import org.m0skit0.android.dabestmoviedbapp.BuildConfig
 import org.m0skit0.android.dabestmoviedbapp.di.koin
 import org.m0skit0.android.dabestmoviedbapp.state.TopRatedState
 import org.m0skit0.android.dabestmoviedbapp.state.updateGenreMappingCacheWith
 import org.m0skit0.android.dabestmoviedbapp.state.updateTopRatedShowsWith
 
-typealias TopRatedTVShowsRepository = suspend (state: TopRatedState) -> Either<Throwable, TopRatedState>
+typealias TopRatedTVShowsRepository = suspend (state: TopRatedState) -> Result<TopRatedState>
 
 suspend fun topRatedTVShowsRepository(
     state: TopRatedState,
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
     tvGenreService: () -> TVGenreService = { koin().get() },
-): Either<Throwable, TopRatedState> =
-    Either.catch {
-        topRatedTVShowsService
-            .topRatedTVShows(page = state.currentPage)
-            .topRatedTVShows
-            .toTVShows(state, tvGenreService)
-    }
+): Result<TopRatedState> = runCatching {
+    topRatedTVShowsService
+        .topRatedTVShows(page = state.currentPage)
+        .topRatedTVShows
+        .toTVShows(state, tvGenreService)
+}
 
 private suspend fun List<TopRatedTVShowDTO>.toTVShows(
     state: TopRatedState,
