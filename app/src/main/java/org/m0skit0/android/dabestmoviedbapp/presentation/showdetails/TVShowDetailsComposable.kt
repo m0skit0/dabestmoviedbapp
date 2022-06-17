@@ -3,6 +3,8 @@ package org.m0skit0.android.dabestmoviedbapp.presentation.showdetails
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,18 +30,20 @@ fun TVShowDetailItem(
     tvShowDetailsViewModel: TVShowDetailsViewModel = getViewModel(),
 ) {
     val viewState = remember { mutableStateOf<ViewState>(Loading) }
-    LaunchedEffect(key1 = "key", block = {
+    LaunchedEffect(key1 = "key") {
         viewState.value = tvShowDetailsViewModel.load(tvShowId)
-    })
+    }
     viewState.value.process<TVShowDetailsView> { details ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
             TVShowDetailPosterImage(posterUrl = details.poster)
-            TVShowDetailText(tvShowDetail = details)
+            TVShowTitleAndVotingAverage(tvShowDetail = details)
+            TVShowDescriptionText(tvShowDetail = details)
         }
     }
 }
@@ -51,26 +55,36 @@ private fun TVShowDetailPosterImage(posterUrl: String) {
         painter = rememberImagePainter(data = posterUrl),
         contentDescription = null,
         modifier = Modifier
-            .padding(5.dp)
-            .height(250.dp)
+            .padding(20.dp)
+            .height(300.dp)
             .width(200.dp)
             .border(2.dp, Color.Black),
     )
 }
 
 @Composable
-private fun TVShowDetailText(tvShowDetail: TVShowDetailsView) {
+private fun TVShowTitleAndVotingAverage(tvShowDetail: TVShowDetailsView) {
     Text(
         text = tvShowDetail.title,
         textAlign = TextAlign.Center,
-        fontSize = 25.sp
+        fontSize = 25.sp,
+        modifier = Modifier.padding(20.dp)
     )
     Text(
         text = tvShowDetail.voteAverage,
-        fontSize = 15.sp
+        fontSize = 15.sp,
+        modifier = Modifier.padding(20.dp)
     )
+}
+
+@Composable
+private fun TVShowDescriptionText(tvShowDetail: TVShowDetailsView) {
+    val scrollState = rememberScrollState(0)
     Text(
         text = tvShowDetail.overview,
-        fontSize = 10.sp
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(20.dp)
+            .verticalScroll(scrollState)
     )
 }
