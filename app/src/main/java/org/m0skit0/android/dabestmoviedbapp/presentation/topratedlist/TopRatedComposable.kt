@@ -29,7 +29,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.*
 @Composable
 fun TopRatedTVShowsItem(
     navigateToDetails: (id: Long) -> Unit,
-    topRatedTVShowData: TopRatedTVShowsItem
+    topRatedTVShowData: TopRatedTVShowView
 ) {
     TopListItemCard {
         Row(
@@ -52,7 +52,7 @@ fun TopRatedTVShowsItem(
 @Preview
 @Composable
 fun TopRatedTVShowsItemPreview(
-    topRatedTVShowData: TopRatedTVShowsItem = TopRatedTVShowsItem(
+    topRatedTVShowData: TopRatedTVShowView = TopRatedTVShowView(
         id = 0L,
         poster = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_dark_color_272x92dp.png",
         title = "Very very very very long title for a show",
@@ -92,8 +92,8 @@ fun TopShowList(
     }
 }
 
-private fun <T : ViewState> T.asResultTopRatedTVShowsItems(): Result<List<TopRatedTVShowsItem>>? =
-    this as? Result<List<TopRatedTVShowsItem>>
+private fun <T : ViewState> T.asResultTopRatedTVShowsItems(): Result<List<TopRatedTVShowView>>? =
+    this as? Result<List<TopRatedTVShowView>>
 
 @Composable
 private fun TopListItemCard(content: @Composable () -> Unit) {

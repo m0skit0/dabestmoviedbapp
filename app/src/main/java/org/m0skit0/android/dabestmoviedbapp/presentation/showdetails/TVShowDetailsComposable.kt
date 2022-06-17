@@ -42,8 +42,8 @@ fun TVShowDetailItem(
 
 }
 
-private fun <T : ViewState> T.asResultTVShowDetailsPresentation(): Result<TVShowDetailsPresentation>? =
-    this as? Result<TVShowDetailsPresentation>
+private fun <T : ViewState> T.asResultTVShowDetailsPresentation(): Result<TVShowDetailsView>? =
+    this as? Result<TVShowDetailsView>
 
 @ExperimentalCoilApi
 @Composable
@@ -60,7 +60,7 @@ private fun TVShowDetailPosterImage(posterUrl: String) {
 }
 
 @Composable
-private fun TVShowDetailText(tvShowDetail: TVShowDetailsPresentation) {
+private fun TVShowDetailText(tvShowDetail: TVShowDetailsView) {
     Text(
         text = tvShowDetail.title,
         textAlign = TextAlign.Center,
