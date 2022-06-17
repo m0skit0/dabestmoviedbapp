@@ -24,5 +24,7 @@ val presentationModule = module {
 }
 
 @Composable
-fun getTVShowDetailsViewModel(tvShowDetailsState: ShowDetailsState): TVShowDetailsViewModel =
-    getViewModel { parametersOf(tvShowDetailsState) }
+fun getTVShowDetailsViewModel(tvShowId: Long): TVShowDetailsViewModel =
+    ShowDetailsState(
+        currentShowId = tvShowId
+    ).let { getViewModel { parametersOf(it) } }

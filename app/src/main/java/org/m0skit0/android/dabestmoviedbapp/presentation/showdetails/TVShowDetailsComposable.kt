@@ -16,13 +16,12 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import org.m0skit0.android.dabestmoviedbapp.di.getTVShowDetailsViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.*
-import org.m0skit0.android.dabestmoviedbapp.state.ShowDetailsState
 
 @ExperimentalCoilApi
 @Composable
 fun TVShowDetailItem(
-    tvShowDetailsState: ShowDetailsState,
-    tvShowDetailsViewModel: TVShowDetailsViewModel = getTVShowDetailsViewModel(tvShowDetailsState),
+    tvShowId: Long,
+    tvShowDetailsViewModel: TVShowDetailsViewModel = getTVShowDetailsViewModel(tvShowId),
 ) {
     val viewState = remember { tvShowDetailsViewModel.viewState }
     when (viewState.value) {

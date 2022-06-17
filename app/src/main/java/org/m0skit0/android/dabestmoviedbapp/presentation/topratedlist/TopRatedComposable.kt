@@ -3,6 +3,7 @@ package org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,10 +27,18 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.*
 
 @ExperimentalCoilApi
 @Composable
-fun TopRatedTVShowsItem(topRatedTVShowData: TopRatedTVShowsItem) {
+fun TopRatedTVShowsItem(
+    navigateToDetails: (id: Long) -> Unit,
+    topRatedTVShowData: TopRatedTVShowsItem
+) {
     TopListItemCard {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { navigateToDetails(topRatedTVShowData.id) }
+                )
+            }
         ) {
             with(topRatedTVShowData) {
                 TopListItemPosterImage(posterUrl = poster)
@@ -64,7 +74,8 @@ fun TopRatedTVShowsItemPreview(
 @ExperimentalCoilApi
 @Composable
 fun TopShowList(
-    topRatedListViewModel: TopRatedListViewModel = getViewModel()
+    navigateToDetails: (id: Long) -> Unit,
+    topRatedListViewModel: TopRatedListViewModel = getViewModel(),
 ) {
     val viewState = remember { topRatedListViewModel.viewState }
     when (viewState.value) {
@@ -74,7 +85,7 @@ fun TopShowList(
             LazyColumn {
                 itemsIndexed(items) { index, item ->
                     topRatedListViewModel.checkAndTriggerNextPageLoading(index)
-                    TopRatedTVShowsItem(topRatedTVShowData = item)
+                    TopRatedTVShowsItem(navigateToDetails, topRatedTVShowData = item)
                 }
             }
         } ?: Error()
