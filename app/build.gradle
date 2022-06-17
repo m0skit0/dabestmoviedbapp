@@ -11,7 +11,7 @@ apply from: 'themoviedb.secret.gradle'
 android {
 
     namespace 'org.m0skit0.android.dabestmoviedbapp'
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "org.m0skit0.android.dabestmoviedbapp"
