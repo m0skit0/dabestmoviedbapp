@@ -17,6 +17,7 @@ fun Application.startKoin() {
         androidContext(this@startKoin)
         modules(
             retrofitModule,
+            repositoryModule,
         )
     }
 }
