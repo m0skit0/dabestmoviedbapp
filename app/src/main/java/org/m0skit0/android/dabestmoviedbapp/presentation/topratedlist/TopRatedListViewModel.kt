@@ -20,6 +20,13 @@ class TopRatedListViewModel(
     private val _viewState: MutableState<ViewState> by lazy { mutableStateOf(Loading) }
     val viewState: State<ViewState> by lazy { _viewState.apply { load() } }
 
+    fun checkAndTriggerNextPageLoading(index: Int) {
+        if (topRatedState.topRatedShows.lastIndex - NEXT_PAGE_INTERVAL == index) {
+            topRatedState = topRatedState.copy(currentPage = topRatedState.currentPage.inc())
+            load()
+        }
+    }
+
     private fun load() {
         load(
             useCase = { topRatedUseCase(topRatedState) },
@@ -29,13 +36,6 @@ class TopRatedListViewModel(
                 Result(state.topRatedShows.map { it.toTopRatedListingItem() })
             }
         )
-    }
-
-    fun checkAndTriggerNextPageLoading(index: Int) {
-        if (topRatedState.topRatedShows.lastIndex - NEXT_PAGE_INTERVAL == index) {
-            topRatedState = topRatedState.copy(currentPage = topRatedState.currentPage.inc())
-            load()
-        }
     }
 
     companion object {
