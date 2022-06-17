@@ -13,6 +13,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import org.m0skit0.android.dabestmoviedbapp.di.getSimilarTVShowsViewModel
+import org.m0skit0.android.dabestmoviedbapp.presentation.animatePageTransition
 import org.m0skit0.android.dabestmoviedbapp.presentation.process
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailItem
 
@@ -27,7 +28,9 @@ fun SimilarTVShowsPager(
     viewState.value.process<List<Long>> { similarShowsIds ->
         HorizontalPager(count = similarShowsIds.size) { page ->
             Card(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .animatePageTransition(this, page),
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(2.dp, Color.Black),
             ) {
