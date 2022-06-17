@@ -10,7 +10,7 @@ import coil.annotation.ExperimentalCoilApi
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailItem
 import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopShowList
 
-private fun NavHostController.navigateToDetails(): (Long) -> Unit = { id -> navigate("tvShowDetail/$id") }
+private fun NavHostController.navigateToDetailsProvider(): (Long) -> Unit = { id -> navigate("tvShowDetail/$id") }
 
 @ExperimentalCoilApi
 @Composable
@@ -18,7 +18,7 @@ fun NavHostController.SetupNavHost() {
     NavHost(navController = this, startDestination = "topShows") {
         composable("topShows") {
             TopShowList(
-                navigateToDetails()
+                navigateToDetailsProvider()
             )
         }
         composable(
