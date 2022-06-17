@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import org.koin.androidx.compose.getViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.*
+import org.m0skit0.android.dabestmoviedbapp.presentation.process
 
 @ExperimentalCoilApi
 @Composable
@@ -78,22 +78,15 @@ fun TopShowList(
     topRatedListViewModel: TopRatedListViewModel = getViewModel(),
 ) {
     val viewState = remember { topRatedListViewModel.viewState }
-    when (viewState.value) {
-        is Loading -> Progress()
-        is Error -> Error()
-        is Result<*> -> viewState.value.asResultTopRatedTVShowsItems()?.data?.let { items ->
-            LazyColumn {
-                itemsIndexed(items) { index, item ->
-                    topRatedListViewModel.checkAndTriggerNextPageLoading(index)
-                    TopRatedTVShowsItem(navigateToDetails, topRatedTVShowData = item)
-                }
+    viewState.value.process<List<TopRatedTVShowView>> { topRatedTVShows ->
+        LazyColumn {
+            itemsIndexed(topRatedTVShows) { index, item ->
+                topRatedListViewModel.checkAndTriggerNextPageLoading(index)
+                TopRatedTVShowsItem(navigateToDetails, topRatedTVShowData = item)
             }
-        } ?: Error()
+        }
     }
 }
-
-private fun <T : ViewState> T.asResultTopRatedTVShowsItems(): Result<List<TopRatedTVShowView>>? =
-    this as? Result<List<TopRatedTVShowView>>
 
 @Composable
 private fun TopListItemCard(content: @Composable () -> Unit) {

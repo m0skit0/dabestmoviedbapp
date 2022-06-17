@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import org.m0skit0.android.dabestmoviedbapp.di.getTVShowDetailsViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.*
+import org.m0skit0.android.dabestmoviedbapp.presentation.process
 
 @ExperimentalCoilApi
 @Composable
@@ -24,26 +24,18 @@ fun TVShowDetailItem(
     tvShowDetailsViewModel: TVShowDetailsViewModel = getTVShowDetailsViewModel(tvShowId),
 ) {
     val viewState = remember { tvShowDetailsViewModel.viewState }
-    when (viewState.value) {
-        is Loading -> Progress()
-        is Error -> Error()
-        is Result<*> -> viewState.value.asResultTVShowDetailsPresentation()?.data?.let { details ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                TVShowDetailPosterImage(posterUrl = details.poster)
-                TVShowDetailText(tvShowDetail = details)
-            }
-        } ?: Error()
+    viewState.value.process<TVShowDetailsView> { details ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            TVShowDetailPosterImage(posterUrl = details.poster)
+            TVShowDetailText(tvShowDetail = details)
+        }
     }
-
 }
-
-private fun <T : ViewState> T.asResultTVShowDetailsPresentation(): Result<TVShowDetailsView>? =
-    this as? Result<TVShowDetailsView>
 
 @ExperimentalCoilApi
 @Composable
