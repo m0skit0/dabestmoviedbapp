@@ -67,13 +67,19 @@ private fun TVShowTitleAndVotingAverage(tvShowDetail: TVShowDetailsView) {
     Text(
         text = tvShowDetail.title,
         textAlign = TextAlign.Center,
-        fontSize = 25.sp,
-        modifier = Modifier.padding(20.dp)
+        fontSize = 30.sp,
+        modifier = Modifier.padding(5.dp)
     )
     Text(
-        text = tvShowDetail.voteAverage,
+        text = "${tvShowDetail.voteAverage} ${tvShowDetail.voteCount}",
         fontSize = 15.sp,
-        modifier = Modifier.padding(20.dp)
+        modifier = Modifier.padding(5.dp)
+    )
+    Text(
+        text = tvShowDetail.genres,
+        textAlign = TextAlign.Center,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(5.dp)
     )
 }
 
@@ -85,6 +91,7 @@ private fun TVShowDescriptionText(tvShowDetail: TVShowDetailsView) {
         fontSize = 20.sp,
         modifier = Modifier
             .padding(20.dp)
-            .verticalScroll(scrollState)
+            .verticalScroll(scrollState),
+        textAlign = TextAlign.Justify
     )
 }
