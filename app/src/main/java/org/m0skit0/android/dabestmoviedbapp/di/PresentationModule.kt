@@ -8,7 +8,6 @@ import org.koin.dsl.module
 import org.m0skit0.android.dabestmoviedbapp.presentation.showdetails.TVShowDetailsViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.similarshows.SimilarTVShowsViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopRatedListViewModel
-import org.m0skit0.android.dabestmoviedbapp.state.ShowDetailsState
 import org.m0skit0.android.dabestmoviedbapp.state.SimilarShowsState
 
 val presentationModule = module {
@@ -17,9 +16,8 @@ val presentationModule = module {
             topRatedUseCase = get(NAMED_TOP_TV_SHOWS_USE_CASE)
         )
     }
-    viewModel { (tvShowDetailsState: ShowDetailsState) ->
+    viewModel {
         TVShowDetailsViewModel(
-            tvShowDetailsState = tvShowDetailsState,
             tvShowDetailsUseCase = get(NAMED_TV_SHOW_DETAILS_USE_CASE),
         )
     }
@@ -30,12 +28,6 @@ val presentationModule = module {
         )
     }
 }
-
-@Composable
-fun getTVShowDetailsViewModel(tvShowId: Long): TVShowDetailsViewModel =
-    ShowDetailsState(
-        currentShowId = tvShowId
-    ).let { getViewModel { parametersOf(it) } }
 
 @Composable
 fun getSimilarTVShowsViewModel(tvShowId: Long): SimilarTVShowsViewModel =

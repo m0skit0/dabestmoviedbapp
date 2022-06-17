@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,16 +16,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import org.m0skit0.android.dabestmoviedbapp.di.getTVShowDetailsViewModel
+import org.koin.androidx.compose.getViewModel
+import org.m0skit0.android.dabestmoviedbapp.presentation.Loading
+import org.m0skit0.android.dabestmoviedbapp.presentation.ViewState
 import org.m0skit0.android.dabestmoviedbapp.presentation.process
 
 @ExperimentalCoilApi
 @Composable
 fun TVShowDetailItem(
     tvShowId: Long,
-    tvShowDetailsViewModel: TVShowDetailsViewModel = getTVShowDetailsViewModel(tvShowId),
+    tvShowDetailsViewModel: TVShowDetailsViewModel = getViewModel(),
 ) {
-    val viewState = remember { tvShowDetailsViewModel.viewState }
+    val viewState = remember { mutableStateOf<ViewState>(Loading) }
+    LaunchedEffect(key1 = "key", block = {
+        viewState.value = tvShowDetailsViewModel.load(tvShowId)
+    })
     viewState.value.process<TVShowDetailsView> { details ->
         Column(
             modifier = Modifier
