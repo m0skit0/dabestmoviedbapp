@@ -2,6 +2,7 @@ package org.m0skit0.android.dabestmoviedbapp.data.toprated
 
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.result.shouldBeFailureOfType
+import io.kotest.matchers.result.shouldBeSuccess
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.m0skit0.android.dabestmoviedbapp.state.TopRatedState
@@ -26,6 +27,24 @@ class TopRatedTVShowsRepositoryTest : BehaviorSpec({
                     topRatedTVShowsService = mockTopRatedTVShowsService,
                     tvGenreService = mockTVGenreService
                 ).shouldBeFailureOfType<IOException>()
+            }
+        }
+        When("tvGenreService throws an exception") {
+            coEvery { mockTopRatedTVShowsService.topRatedTVShows(any(), any()) } returns TopRatedTVShowsDTO()
+            coEvery { mockTVGenreService.tvGenres(any()) } throws IOException()
+            Then("It should return a failure if genres are not cached") {
+                topRatedTVShowsRepository(
+                    state = TopRatedState(),
+                    topRatedTVShowsService = mockTopRatedTVShowsService,
+                    tvGenreService = mockTVGenreService
+                ).shouldBeFailureOfType<IOException>()
+            }
+            Then("It should return a success if genres are cached") {
+                topRatedTVShowsRepository(
+                    state = TopRatedState(genreMappingCache = mapOf(1 to "foo")),
+                    topRatedTVShowsService = mockTopRatedTVShowsService,
+                    tvGenreService = mockTVGenreService
+                ).shouldBeSuccess()
             }
         }
     }
