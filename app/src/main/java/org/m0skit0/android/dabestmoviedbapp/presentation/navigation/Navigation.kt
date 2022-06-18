@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
+import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopShowList
 
 private const val ROUTE_TOP_TV_SHOWS = "topShows"
 
@@ -15,7 +16,7 @@ private const val ROUTE_TOP_TV_SHOWS = "topShows"
 fun NavHostController.SetupNavHost() {
     NavHost(navController = this, startDestination = ROUTE_TOP_TV_SHOWS) {
         composable(ROUTE_TOP_TV_SHOWS) {
-            TODO()
+            TopShowList()
         }
     }
 }
