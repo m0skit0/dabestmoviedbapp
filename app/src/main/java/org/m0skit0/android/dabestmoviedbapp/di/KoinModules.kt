@@ -16,6 +16,7 @@ fun Application.startKoin() {
         androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
         androidContext(this@startKoin)
         modules(
+            presentationModule,
             domainModule,
             retrofitModule,
             repositoryModule,
