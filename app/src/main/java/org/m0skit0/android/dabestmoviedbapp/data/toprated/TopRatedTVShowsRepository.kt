@@ -11,7 +11,7 @@ typealias TopRatedTVShowsRepository = suspend (state: TopRatedState) -> Result<T
 suspend fun topRatedTVShowsRepository(
     state: TopRatedState,
     topRatedTVShowsService: TopRatedTVShowsService = koin().get(),
-    tvGenreService: () -> TVGenreService = { koin().get() },
+    tvGenreService: TVGenreService = koin().get(),
 ): Result<TopRatedState> = runCatching {
     topRatedTVShowsService
         .topRatedTVShows(page = state.currentPage)
@@ -21,7 +21,7 @@ suspend fun topRatedTVShowsRepository(
 
 private suspend fun List<TopRatedTVShowDTO>.toTVShows(
     state: TopRatedState,
-    tvGenreService: () -> TVGenreService,
+    tvGenreService: TVGenreService,
 ): TopRatedState = cacheTVGenres(state, tvGenreService).let { newState ->
     newState updateTopRatedShowsWith map {
         TopRatedTVShowData(
@@ -50,10 +50,10 @@ private fun String.toPreviewPosterFullUrl(): String =
 
 private suspend fun cacheTVGenres(
     state: TopRatedState,
-    tvGenreService: () -> TVGenreService,
+    tvGenreService: TVGenreService,
 ): TopRatedState =
     if (state.genreMappingCache.isEmpty())
-        tvGenreService().tvGenres().toMap().let {
+        tvGenreService.tvGenres().toMap().let {
             state updateGenreMappingCacheWith it
         }
     else state
