@@ -22,8 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import org.koin.androidx.compose.getViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.process
+
+@ExperimentalCoilApi
+@Composable
+fun TopShowList(
+    navigateToDetails: (id: Long) -> Unit,
+    topRatedListViewModel: TopRatedListViewModel,
+) {
+    val viewState = remember { topRatedListViewModel.viewState }
+    viewState.value.process<List<TopRatedTVShowView>> { topRatedTVShows ->
+        LazyColumn {
+            itemsIndexed(topRatedTVShows) { index, item ->
+                topRatedListViewModel.checkAndTriggerNextPageLoading(index)
+                TopRatedTVShowsItem(navigateToDetails, topRatedTVShowData = item)
+            }
+        }
+    }
+}
 
 @ExperimentalCoilApi
 @Composable
@@ -66,23 +82,6 @@ fun TopRatedTVShowsItemPreview(
             with(topRatedTVShowData) {
                 TopListItemPosterImage(posterUrl = poster)
                 TopListItemTitleAndVoteAverage(title = title, voteAverage = voteAverage)
-            }
-        }
-    }
-}
-
-@ExperimentalCoilApi
-@Composable
-fun TopShowList(
-    navigateToDetails: (id: Long) -> Unit,
-    topRatedListViewModel: TopRatedListViewModel = getViewModel(),
-) {
-    val viewState = remember { topRatedListViewModel.viewState }
-    viewState.value.process<List<TopRatedTVShowView>> { topRatedTVShows ->
-        LazyColumn {
-            itemsIndexed(topRatedTVShows) { index, item ->
-                topRatedListViewModel.checkAndTriggerNextPageLoading(index)
-                TopRatedTVShowsItem(navigateToDetails, topRatedTVShowData = item)
             }
         }
     }

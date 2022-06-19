@@ -10,7 +10,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.similarshows.SimilarTVS
 import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopRatedListViewModel
 import org.m0skit0.android.dabestmoviedbapp.state.SimilarShowsState
 
-val presentationModule = module {
+val viewModelModule = module {
     viewModel {
         TopRatedListViewModel(
             topRatedUseCase = get(NAMED_TOP_TV_SHOWS_USE_CASE)
