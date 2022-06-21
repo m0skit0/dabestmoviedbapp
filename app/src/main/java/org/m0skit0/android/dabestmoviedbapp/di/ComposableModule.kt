@@ -16,10 +16,10 @@ var NAMED_SIMILAR_TV_SHOWS_COMPOSABLE = named("NAMED_SIMILAR_TV_SHOWS_COMPOSABLE
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 val composableModule = module {
-    single<@Composable () -> Unit>(NAMED_TOP_SHOW_LIST_COMPOSABLE) { (navigateToDetails: (id: Long) -> Unit) ->
+    factory<@Composable () -> Unit>(NAMED_TOP_SHOW_LIST_COMPOSABLE) { (navigateToDetails: (id: Long) -> Unit) ->
         @Composable { TopShowList(navigateToDetails, getViewModel()) }
     }
-    single<@Composable () -> Unit>(NAMED_SIMILAR_TV_SHOWS_COMPOSABLE) { (tvShowId: Long)  ->
+    factory<@Composable () -> Unit>(NAMED_SIMILAR_TV_SHOWS_COMPOSABLE) { (tvShowId: Long)  ->
         @Composable { SimilarTVShowsPager(getSimilarTVShowsViewModel(tvShowId)) }
     }
 }

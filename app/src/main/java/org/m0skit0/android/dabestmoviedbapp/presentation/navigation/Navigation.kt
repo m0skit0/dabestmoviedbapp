@@ -24,14 +24,14 @@ private fun NavHostController.navigateToDetailsProvider(): (Long) -> Unit = { id
 fun NavHostController.SetupNavHost() {
     NavHost(navController = this, startDestination = ROUTE_TOP_TV_SHOWS) {
         composable(ROUTE_TOP_TV_SHOWS) {
-            getTopShowListComposable(navigateToDetailsProvider())
+            getTopShowListComposable(navigateToDetailsProvider())()
         }
         composable(
             route = ROUTE_SIMILAR_TV_SHOWS,
             arguments = listOf(navArgument(ROUTE_SIMILAR_TV_SHOWS_ID) { type = NavType.LongType })
         ) { backStackEntry ->
             val tvShowId = backStackEntry.arguments?.getLong(ROUTE_SIMILAR_TV_SHOWS_ID) ?: 0
-            getSimilarTVShowsComposable(tvShowId)
+            getSimilarTVShowsComposable(tvShowId)()
         }
     }
 }
