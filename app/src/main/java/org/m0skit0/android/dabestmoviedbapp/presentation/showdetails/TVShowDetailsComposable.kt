@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -86,6 +87,7 @@ private fun TVShowDetailPosterImage(posterUrl: String) {
     Image(
         painter = rememberImagePainter(data = posterUrl),
         contentDescription = null,
+        contentScale = ContentScale.FillBounds,
         modifier = Modifier
             .padding(20.dp)
             .height(300.dp)
