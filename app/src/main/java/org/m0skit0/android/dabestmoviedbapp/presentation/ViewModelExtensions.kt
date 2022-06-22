@@ -4,19 +4,23 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlin.Result
 
-fun <T> ViewModel.load(
-    useCase: suspend () -> Result<T>,
-    viewState: MutableState<ViewState>,
-    viewStateResult: (T) -> ViewState
+fun <USE_CASE_DATA, VIEW_DATA> ViewModel.load(
+    currentState: VIEW_DATA,
+    useCase: suspend () -> Result<USE_CASE_DATA>,
+    mapping: (USE_CASE_DATA) -> VIEW_DATA,
+    viewState: MutableState<StateResult<VIEW_DATA>>,
 ) {
     viewModelScope.launch {
-        useCase().fold({ state ->
-            viewState.value = viewStateResult(state)
-        }){
-            it.printStackTrace()
-            viewState.value = Error
-        }
+        useCase()
+            .map(mapping)
+            .fold(
+                onSuccess = { value ->
+                    viewState.value = StateResult(Success, value)
+                },
+                onFailure = {
+                    viewState.value = StateResult(Failure, currentState)
+                },
+            )
     }
 }

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import org.koin.androidx.compose.getViewModel
-import org.m0skit0.android.dabestmoviedbapp.presentation.process
+import org.m0skit0.android.dabestmoviedbapp.presentation.Process
 
 @ExperimentalCoilApi
 @Composable
@@ -78,7 +78,7 @@ fun TopShowList(
     topRatedListViewModel: TopRatedListViewModel = getViewModel(),
 ) {
     val viewState = remember { topRatedListViewModel.viewState }
-    viewState.value.process<List<TopRatedTVShowView>> { topRatedTVShows ->
+    viewState.value.Process<List<TopRatedTVShowView>> { topRatedTVShows ->
         LazyColumn {
             itemsIndexed(topRatedTVShows) { index, item ->
                 topRatedListViewModel.checkAndTriggerNextPageLoading(index)

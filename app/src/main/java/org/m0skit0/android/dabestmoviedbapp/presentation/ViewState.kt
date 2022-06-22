@@ -1,19 +1,29 @@
 package org.m0skit0.android.dabestmoviedbapp.presentation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 sealed class ViewState
-object Loading : ViewState()
-object Error: ViewState()
-class Result<out T>(val value: T): ViewState()
+object Loading: ViewState()
+object Failure: ViewState()
+object Success: ViewState()
 
-fun <T> ViewState.resultValue(): T? = (this as? Result<T>)?.value
+data class StateResult<out T>(val viewState: ViewState, val value: T)
 
 @Composable
-inline fun <reified T> ViewState.process(onResult: @Composable (T) -> Unit) {
-    when (this) {
-        is Loading -> Progress()
-        is Error -> Error()
-        is Result<*> -> resultValue<T>()?.let { onResult(it) } ?: Error()
+fun <T> StateResult<T>.Process(onResult: @Composable (T) -> Unit) {
+    when (viewState) {
+        is Loading -> Box(modifier = Modifier.fillMaxSize()) {
+            Progress()
+            onResult(value)
+        }
+        is Failure -> Column(modifier = Modifier.fillMaxSize()) {
+            onResult(value)
+            Error()
+        }
+        is Success -> onResult(value)
     }
 }

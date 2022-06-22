@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
-import org.m0skit0.android.dabestmoviedbapp.presentation.similarshows.SimilarTVShowsPager
+//import org.m0skit0.android.dabestmoviedbapp.presentation.similarshows.SimilarTVShowsPager
 import org.m0skit0.android.dabestmoviedbapp.presentation.topratedlist.TopShowList
 
 private const val ROUTE_TOP_TV_SHOWS = "topShows"
@@ -33,7 +33,7 @@ fun NavHostController.SetupNavHost() {
             arguments = listOf(navArgument(ROUTE_SIMILAR_TV_SHOWS_ID) { type = NavType.LongType })
         ) { backStackEntry ->
             val tvShowId = backStackEntry.arguments?.getLong(ROUTE_SIMILAR_TV_SHOWS_ID) ?: 0
-            SimilarTVShowsPager(tvShowId)
+//            SimilarTVShowsPager(tvShowId)
         }
     }
 }
