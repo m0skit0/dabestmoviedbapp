@@ -14,7 +14,5 @@ infix fun TopRatedState.updateGenreMappingCacheWith(newMap: Map<Int, String>): T
 infix fun TopRatedState.updateCurrentPageWith(newPage: Int): TopRatedState =
     copy(currentPage = newPage)
 
-fun TopRatedState.updateWithNextPage(): TopRatedState = updateCurrentPageWith(currentPage.inc())
-
 infix fun TopRatedState.updateTopRatedShowsWith(newList: List<TopRatedTVShowData>): TopRatedState =
     copy(topRatedShows = topRatedShows + newList)
