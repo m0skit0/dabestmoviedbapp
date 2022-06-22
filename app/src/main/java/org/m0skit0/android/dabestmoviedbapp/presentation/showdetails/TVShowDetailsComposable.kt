@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import org.koin.androidx.compose.getViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.Loading
 import org.m0skit0.android.dabestmoviedbapp.presentation.Orientation
 import org.m0skit0.android.dabestmoviedbapp.presentation.ViewState
@@ -28,7 +29,7 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.process
 @Composable
 fun TVShowDetailItem(
     tvShowId: Long,
-    tvShowDetailsViewModel: TVShowDetailsViewModel,
+    tvShowDetailsViewModel: TVShowDetailsViewModel = getViewModel(),
 ) {
     val viewState = remember { mutableStateOf<ViewState>(Loading) }
     LaunchedEffect(key1 = "key") {
