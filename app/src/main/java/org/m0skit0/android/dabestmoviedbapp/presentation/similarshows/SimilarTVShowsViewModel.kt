@@ -25,11 +25,7 @@ class SimilarTVShowsViewModel(
                 viewStateResult = { state ->
                     state.similarShows
                     .map { it.id }
-                    .let {
-                        val currentShowId = similarShowsState.currentShowId
-                        if (it.first() == currentShowId) it
-                        else listOf(currentShowId) + it
-                    }.let { Result(it) }
+                    .let { Result(listOf(state.currentShowId) + it) }
                 }
             )
         }

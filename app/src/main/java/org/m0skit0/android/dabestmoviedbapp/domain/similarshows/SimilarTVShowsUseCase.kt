@@ -11,4 +11,8 @@ typealias SimilarTVShowsUseCase = suspend (state: SimilarShowsState) -> Result<S
 suspend fun similarTVShowsUseCase(
     state: SimilarShowsState,
     repository: SimilarTVShowsRepository = koin().get(NAMED_SIMILAR_TV_SHOWS_REPOSITORY)
-): Result<SimilarShowsState> = withUseCaseContext { repository(state) }
+): Result<SimilarShowsState> = withUseCaseContext {
+    repository(state).map { newState ->
+        newState.copy(similarShows = newState.similarShows.dropWhile { it.id == newState.currentShowId })
+    }
+}
