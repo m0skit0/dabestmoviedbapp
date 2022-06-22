@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import org.koin.androidx.compose.getViewModel
 import org.m0skit0.android.dabestmoviedbapp.presentation.Loading
+import org.m0skit0.android.dabestmoviedbapp.presentation.Orientation
 import org.m0skit0.android.dabestmoviedbapp.presentation.ViewState
 import org.m0skit0.android.dabestmoviedbapp.presentation.process
 
@@ -27,21 +27,53 @@ import org.m0skit0.android.dabestmoviedbapp.presentation.process
 @Composable
 fun TVShowDetailItem(
     tvShowId: Long,
-    tvShowDetailsViewModel: TVShowDetailsViewModel = getViewModel(),
+    tvShowDetailsViewModel: TVShowDetailsViewModel,
 ) {
     val viewState = remember { mutableStateOf<ViewState>(Loading) }
     LaunchedEffect(key1 = "key") {
         viewState.value = tvShowDetailsViewModel.load(tvShowId)
     }
     viewState.value.process<TVShowDetailsView> { details ->
+        Orientation(
+            onPortrait = { TVShowDetailItemPortrait(details) },
+            onLandscape = { TVShowDetailItemLandscape(details) },
+        )
+    }
+}
+
+@ExperimentalCoilApi
+@Composable
+private fun TVShowDetailItemPortrait(
+    details: TVShowDetailsView,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        TVShowDetailPosterImage(posterUrl = details.poster)
+        TVShowTitleAndVotingAverage(tvShowDetail = details)
+        TVShowDescriptionText(tvShowDetail = details)
+    }
+}
+
+@ExperimentalCoilApi
+@Composable
+private fun TVShowDetailItemLandscape(
+    details: TVShowDetailsView,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp),
+    ) {
+        TVShowDetailPosterImage(posterUrl = details.poster)
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            TVShowDetailPosterImage(posterUrl = details.poster)
             TVShowTitleAndVotingAverage(tvShowDetail = details)
             TVShowDescriptionText(tvShowDetail = details)
         }
