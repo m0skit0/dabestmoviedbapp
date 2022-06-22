@@ -32,6 +32,7 @@ class TopRatedListViewModel(
         load(
             currentState = topRatedState.toTopRatedListingItems(),
             useCase = { topRatedUseCase(topRatedState) },
+            onSuccess = { topRatedState = it },
             mapping = { it.toTopRatedListingItems() },
             viewState = _viewState
         )

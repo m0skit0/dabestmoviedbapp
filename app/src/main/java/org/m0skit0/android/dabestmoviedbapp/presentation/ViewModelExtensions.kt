@@ -8,11 +8,13 @@ import kotlinx.coroutines.launch
 fun <USE_CASE_DATA, VIEW_DATA> ViewModel.load(
     currentState: VIEW_DATA,
     useCase: suspend () -> Result<USE_CASE_DATA>,
+    onSuccess: (USE_CASE_DATA) -> Unit,
     mapping: (USE_CASE_DATA) -> VIEW_DATA,
     viewState: MutableState<StateResult<VIEW_DATA>>,
 ) {
     viewModelScope.launch {
         useCase()
+            .onSuccess(onSuccess)
             .map(mapping)
             .fold(
                 onSuccess = { value ->
