@@ -78,8 +78,9 @@ fun TopShowList(
     topRatedListViewModel: TopRatedListViewModel = getViewModel(),
 ) {
     val viewState = remember { topRatedListViewModel.viewState }
-    viewState.value.Process<List<TopRatedTVShowView>> { topRatedTVShows ->
-        LazyColumn {
+    viewState.value.Process { topRatedTVShows, scope ->
+        val modifier = if (scope is ColumnScope) scope.run { Modifier.weight(1f) } else Modifier
+        LazyColumn(modifier = modifier) {
             itemsIndexed(topRatedTVShows) { index, item ->
                 topRatedListViewModel.checkAndTriggerNextPageLoading(index)
                 TopRatedTVShowsItem(navigateToDetails, topRatedTVShowData = item)

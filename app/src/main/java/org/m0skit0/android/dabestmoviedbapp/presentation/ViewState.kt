@@ -14,16 +14,16 @@ object Success: ViewState()
 data class StateResult<out T>(val viewState: ViewState, val value: T)
 
 @Composable
-fun <T> StateResult<T>.Process(onResult: @Composable (T) -> Unit) {
+fun <T> StateResult<T>.Process(onResult: @Composable (T, Any) -> Unit) {
     when (viewState) {
         is Loading -> Box(modifier = Modifier.fillMaxSize()) {
             Progress()
-            onResult(value)
+            onResult(value, this)
         }
         is Failure -> Column(modifier = Modifier.fillMaxSize()) {
-            onResult(value)
+            onResult(value, this)
             Error()
         }
-        is Success -> onResult(value)
+        is Success -> onResult(value, Unit)
     }
 }
